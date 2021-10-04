@@ -13,13 +13,13 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@Ignore
 @SpringBootTest(classes = Application.class)
 class PrestoDbConnectionTests {
 
     @Autowired
     PrestoDbRepository prestoDbRepository;
 
+    @Ignore
     @Test
     void prestoDbConnection_ok() {
         List<Map<String, Object>> resultList = null;
