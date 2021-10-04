@@ -1,4 +1,4 @@
 language: java
 
 before_install:
-  - mvn clean -DskipTests=true package -Dmaven.javadoc.skip=true install
+  - mvn clean -DskipTests=true -Dmaven.javadoc.skip=true install
