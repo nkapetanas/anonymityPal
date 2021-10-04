@@ -1,4 +1,5 @@
 language: java
 
+jdk: ora
 before_install:
-  - mvn clean -DskipTests=true -Dmaven.javadoc.skip=true install
+  - mvn clean -DskipTests -Dmaven.javadoc.skip=true install
