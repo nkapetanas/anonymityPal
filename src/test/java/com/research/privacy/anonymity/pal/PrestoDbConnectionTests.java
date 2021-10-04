@@ -1,7 +1,7 @@
 package com.research.privacy.anonymity.pal;
 
 import com.research.privacy.anonymity.pal.exceptions.AnonymityPalException;
-import com.research.privacy.anonymity.pal.services.PrestoDbRepository;
+import com.research.privacy.anonymity.pal.infrastructure.repository.PrestoDbRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.research.privacy.anonymity.pal.services;
+package com.research.privacy.anonymity.pal.infrastructure.repository;
 
 import com.research.privacy.anonymity.pal.exceptions.AnonymityPalErrorCode;
 import com.research.privacy.anonymity.pal.exceptions.AnonymityPalException;
