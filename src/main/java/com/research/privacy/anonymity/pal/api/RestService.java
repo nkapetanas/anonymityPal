@@ -1,6 +1,7 @@
 package com.research.privacy.anonymity.pal.api;
 
 import com.research.privacy.anonymity.pal.common.utils.Utils;
+import com.research.privacy.anonymity.pal.exceptions.AnonymityPalException;
 import com.research.privacy.anonymity.pal.services.PrestoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +25,17 @@ public class RestService {
 
     @GetMapping("/getQueryResults")
     @ResponseStatus()
-    public ResponseEntity<?> getQueryResults(@RequestParam String query) {
+    public ResponseEntity<List<ResultsJson>> getQueryResults(@RequestParam String query) {
         if (Utils.isEmpty(query)) {
             ResponseEntity.ok(new ArrayList<>());
         }
-        final List<Objects> queryResults = prestoService.getQueryResults(query);
+
+        List<ResultsJson> queryResults = null;
+        try {
+            queryResults = prestoService.getQueryResults(query);
+        } catch (AnonymityPalException e) {
+            ResponseEntity.badRequest();
+        }
         return ResponseEntity.ok(queryResults);
     }
 }
