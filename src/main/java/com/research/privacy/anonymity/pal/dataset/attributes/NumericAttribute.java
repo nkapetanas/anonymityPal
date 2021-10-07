@@ -1,13 +1,14 @@
 package com.research.privacy.anonymity.pal.dataset.attributes;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
 public class NumericAttribute extends Attribute {
+    public Integer numericValue;
 
-    private Integer value;
+    public NumericAttribute(AttributeEnumType attributeEnumType, IdentifierEnumType identifierEnumType, String columnName, Object value) {
+        super(attributeEnumType, identifierEnumType, columnName);
+        setNumericValue(value);
+    }
 
-    public NumericAttribute(AttributeEnumType attributeEnumType, IdentifierEnumType identifierEnumType, String columnName) {
-        super(attributeEnumType, identifierEnumType, null, columnName);
+    private void setNumericValue(final Object numericValue) {
+        this.numericValue = Integer.valueOf((String) numericValue);
     }
 }
