@@ -2,7 +2,6 @@ package com.research.privacy.anonymity.pal.dataset.attributes;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Date;
@@ -12,8 +11,8 @@ import java.sql.Date;
 @NoArgsConstructor
 public abstract class Attribute {
 
-    private AttributeEnumType attributeType;
-    private IdentifierEnumType identifierType;
+    private AttributeEnumType attributeEnumType;
+    private IdentifierEnumType identifierEnumType;
 
     // name of column in the corresponding db schema
     private String columnName;
@@ -21,10 +20,12 @@ public abstract class Attribute {
     private String modifiedValue; // Where the generalised value is stored
 
     protected Attribute(AttributeEnumType attributeType, IdentifierEnumType identifierType, String columnName) {
-        this.attributeType = attributeType;
-        this.identifierType = identifierType;
+        this.attributeEnumType = attributeType;
+        this.identifierEnumType = identifierType;
         this.columnName = columnName;
     }
+
+    public abstract boolean equivalentTo(Attribute other);
 
     public static AttributeEnumType resolveAttributeEnumType(final Object value) {
         if (value.getClass() == Integer.class) {

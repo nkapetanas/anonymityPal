@@ -18,15 +18,26 @@ import java.util.Map;
 public class PrestoService {
 
     private final PrestoDbRepository prestoDbRepository;
+    private final PrivacyService privacyService;
 
-    public PrestoService(PrestoDbRepository prestoDbRepository) {
+
+    public PrestoService(PrestoDbRepository prestoDbRepository, PrivacyService privacyService) {
         this.prestoDbRepository = prestoDbRepository;
+        this.privacyService = privacyService;
     }
 
     public List<ResultsJson> getQueryResults(final String query) throws AnonymityPalException {
         final List<Map<String, Object>> resultList = prestoDbRepository.findResultList(query);
 
-        final List<DBRecord> dbRecords = convertResultList(resultList);
+        List<DBRecord> dbRecords = convertResultList(resultList);
+
+        if(!privacyService.isAnonymous(dbRecords)){
+            dbRecords = privacyService.anonymize(dbRecords);
+        }
+        return convertAnonymizedDBResultsToJson(dbRecords);
+    }
+
+    private List<ResultsJson> convertAnonymizedDBResultsToJson(final List<DBRecord> dbRecords) {
         return null;
     }
 

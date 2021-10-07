@@ -1,5 +1,7 @@
 package com.research.privacy.anonymity.pal.privacyalgorithms;
+
 import com.research.privacy.anonymity.pal.common.utils.Utils;
+import com.research.privacy.anonymity.pal.dataset.DBRecord;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -18,18 +20,62 @@ import java.util.List;
 public class KAnonymity {
 
     private Integer desiredK;
+
+    public boolean isKAnonymous(final List<DBRecord> dbRecords) {
+        if (desiredK == null) {
+            return false;
+        }
+
+        // Returns true if k is equal to 1. All data sets have a k of 1.
+        if (desiredK == 1) {
+            return true;
+        }
+
+        // Create a queue of all records to iterate through.
+        List<DBRecord> dbRecordsQueue = new LinkedList<>(dbRecords);
+
+        // For each record check if there are at least k matches
+        while (!dbRecordsQueue.isEmpty()) {
+            // Get the number of matched records
+            int matches = findMatches(dbRecordsQueue);
+
+            // If matches is less than k return false.
+            if (matches < desiredK) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Given an List of records, return the number of times the first element if found within that list.
+     *
+     * @param recordsQueue List of Records
+     * @return The number of matches the first element is found within that list.
+     */
+    private int findMatches(List<DBRecord> recordsQueue) {
+        // Get the first element of the list
+        DBRecord dbRecord1 = recordsQueue.remove(0);
+
+        // Count the number of similar records for this record
+        int numberOfSimilarRecords = 1;
+
+        // Uses an iterator to look for matching pair
+        Iterator<DBRecord> itr = recordsQueue.iterator();
+
+        while (itr.hasNext()) {
+            DBRecord dbRecord2 = itr.next();
+
+            // When found removes the record from the list to speed things up.
+            if (dbRecord1.equivalentTo(dbRecord2)) {
+                numberOfSimilarRecords++;
+                itr.remove();
+            }
+        }
+        return numberOfSimilarRecords;
+    }
 }
-//package com.research.privacy.anonymity.pal.privacyalgorithms;
-//
-//
 
-//
-
-//public class KAnonymity {
-//
-//    int desiredK;
-//    protected Dataset dataset;
-//
 //    public GeneralisationResult anonymise() {
 //        DAG dag = new DAG(this);
 //        GeneralisationResult best = dag.getBestGeneralisation();
@@ -44,37 +90,7 @@ public class KAnonymity {
 //
 //        return best;
 //    }
-//
-//    /**
-//     * Giving a size k, the method will return whether the dataset is k-anonymized
-//     * @param k the size of k
-//     * @return true of false if the dataset is k-anonymized
-//     */
-//    boolean isKAnonymous(final Integer k) {
-//        if(k == null){
-//            return false;
-//        }
-//
-//        // Returns true if k is equal to 1. All data sets have a k of 1.
-//        if (k == 1) {
-//            return true;
-//        }
-//
-//        // Create a queue of all records to iterate through.
-//        List<Record> recordsQueue = new LinkedList<>(dataset.getRecords());
-//
-//        // For each record check if there are at least k matches
-//        while (!recordsQueue.isEmpty()) {
-//            // Get the number of matched records
-//            int matches = findMatches(recordsQueue);
-//
-//            // If matches is less than k return false.
-//            if (matches < k) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
+
 //
 //    /**
 //     * Calculates the size of k from the current dataset.
@@ -102,44 +118,3 @@ public class KAnonymity {
 //
 //        return maxK;
 //    }
-//
-//    /**
-//     * Given an List of records, return the number of times the first element if found within that list.
-//     * @param recordsQueue List of Records
-//     * @return The number of matches the first element is found within that list.
-//     */
-//    private int findMatches(List<Record> recordsQueue) {
-//        // Get the first element of the list
-//        Record r1 = recordsQueue.remove(0);
-//
-//        // Count the number of matches for this record
-//        int matches = 1;
-//
-//        // Uses an iterator to look for matching pair
-//        Iterator<Record> itr = recordsQueue.iterator();
-//        while (itr.hasNext()) {
-//            Record r2 = itr.next();
-//
-//            // When found removes the Record from the list to speed things up.
-//            if (r1.equivalentTo(r2)) {
-//                matches++;
-//                itr.remove();
-//            }
-//        }
-//
-//        return matches;
-//    }
-//
-//    /**
-//     * For KAnonymity it, just ensures that k is met.
-//     * @return true if the dataset is k-anonymous
-//     */
-//    public boolean meetsConditions() {
-//        return isKAnonymous(desiredK);
-//    }
-//
-//    public double getFitness() {
-//        HashMap<String, Integer> equivalentClasses = dataset.getEquivalenceClasses();
-//        return equivalentClasses.size();
-//    }
-//}

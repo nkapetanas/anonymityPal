@@ -1,15 +1,13 @@
 package com.research.privacy.anonymity.pal.privacyalgorithms;
 import com.research.privacy.anonymity.pal.common.utils.Utils;
+import com.research.privacy.anonymity.pal.dataset.DBRecord;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -18,6 +16,45 @@ import java.util.List;
 public class LDiversity {
 
     private Integer desiredL;
+
+    public boolean isLDiverse(final List<DBRecord> dbRecords) {
+        HashMap<String, List<String>> equivalenceClasses = getEquivalenceClasses();
+
+        // Check each list inside the HashMap has > desiredL
+        for (Map.Entry<String, List<String>> entry : equivalenceClasses.entrySet()) {
+            List<String> sensitiveList = entry.getValue();
+            if (sensitiveList.size() < desiredL) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private HashMap<String, List<String>> getEquivalenceClasses() {
+        HashMap<String, List<String>> equivalenceClasses = new HashMap<>();
+
+//        // Loop through all records
+//        for (DBRecord r : dataset.getRecords()) {
+//            // Get the modified values string
+//            String qids = r.getModifiedQIDValues();
+//            String sensitive = r.getModifiedSensitiveValues();
+//            List<String> sensitiveList = equivalenceClasses.get(qids);
+//
+//            // If the list doesn't exist, create a new list and add it to the hashMap
+//            if (sensitiveList == null) {
+//                sensitiveList = new ArrayList<>();
+//                equivalenceClasses.put(qids, sensitiveList);
+//            }
+//
+//            // Put the sensitive value into the list inside the HashMap
+//            if (!sensitiveList.contains(sensitive)) {
+//                sensitiveList.add(sensitive);
+//            }
+//        }
+
+        return equivalenceClasses;
+    }
 }
 
 //package com.research.privacy.anonymity.pal.privacyalgorithms;
