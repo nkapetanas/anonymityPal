@@ -1,8 +1,8 @@
 package com.research.privacy.anonymity.pal.services;
 
 import com.research.privacy.anonymity.pal.dataset.DBRecord;
-import com.research.privacy.anonymity.pal.privacyalgorithms.KAnonymity;
-import com.research.privacy.anonymity.pal.privacyalgorithms.LDiversity;
+import com.research.privacy.anonymity.pal.privacycriteria.KAnonymity;
+import com.research.privacy.anonymity.pal.privacycriteria.LDiversity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class PrivacyService {
         this.lDiversity = lDiversity;
     }
 
-    public boolean isAnonymous(final List<DBRecord> dbRecords) {
+    public boolean isPrivacyModelFulfilled(final List<DBRecord> dbRecords) {
         boolean isKAnonymous = kAnonymity.isKAnonymous(dbRecords);
         boolean isLDiverse = lDiversity.isLDiverse(dbRecords);
         return isKAnonymous && isLDiverse;

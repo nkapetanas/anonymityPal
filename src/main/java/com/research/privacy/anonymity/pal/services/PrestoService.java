@@ -31,7 +31,7 @@ public class PrestoService {
 
         List<DBRecord> dbRecords = convertResultList(resultList);
 
-        if(!privacyService.isAnonymous(dbRecords)){
+        if(!privacyService.isPrivacyModelFulfilled(dbRecords)){
             dbRecords = privacyService.anonymize(dbRecords);
         }
         return convertAnonymizedDBResultsToJson(dbRecords);
