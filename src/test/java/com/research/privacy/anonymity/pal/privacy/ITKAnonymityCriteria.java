@@ -84,7 +84,6 @@ class ITKAnonymityCriteria {
 
         final List<DBRecord> dbRecords = Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4);
 
-        kAnonymity.setDesiredK(2);
         Assertions.assertTrue(kAnonymity.isKAnonymous(dbRecords));
     }
 
@@ -163,8 +162,44 @@ class ITKAnonymityCriteria {
         ));
 
         final List<DBRecord> dbRecords = Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4);
+        Assertions.assertFalse(kAnonymity.isKAnonymous(dbRecords));
+    }
 
-        kAnonymity.setDesiredK(2);
+    @Test
+    void privacyService_isAnonymous_NOK_2() {
+        final DBRecord dbRecord1 = new DBRecord(Utils.asList(
+                new NumericAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, ZIP_CODE_1),
+                new NumericAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, AGE_2),
+                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_SEX, MALE),
+                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_1)
+        ));
+
+        final DBRecord dbRecord2 = new DBRecord(Utils.asList(
+                new NumericAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, ZIP_CODE_2),
+                new NumericAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, AGE_1),
+                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_SEX, MALE),
+                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_3),
+                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_2)
+        ));
+
+        final DBRecord dbRecord3 = new DBRecord(Utils.asList(
+                new NumericAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, ZIP_CODE_3),
+                new NumericAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, AGE_2),
+                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_SEX, FEMALE),
+                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_3)
+        ));
+
+        final DBRecord dbRecord4 = new DBRecord(Utils.asList(
+                new NumericAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, ZIP_CODE_2),
+                new NumericAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, AGE_2),
+                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_SEX, FEMALE),
+                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_2),
+                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_4)
+        ));
+
+        final List<DBRecord> dbRecords = Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4);
         Assertions.assertFalse(kAnonymity.isKAnonymous(dbRecords));
     }
 }

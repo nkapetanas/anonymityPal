@@ -4,6 +4,7 @@ import com.research.privacy.anonymity.pal.common.utils.Utils;
 import com.research.privacy.anonymity.pal.dataset.DBRecord;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,8 @@ import java.util.Map;
 @NoArgsConstructor
 public class LDiversity {
 
-    private Integer desiredL;
+    @Setter
+    private Integer desiredL = 2; // default value
 
     public boolean isLDiverse(final List<DBRecord> dbRecords) {
         HashMap<String, List<String>> equivalentClasses = getEquivalentClasses(dbRecords);
