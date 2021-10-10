@@ -3,7 +3,12 @@ package com.research.privacy.anonymity.pal.services;
 import com.research.privacy.anonymity.pal.api.ResultsJson;
 import com.research.privacy.anonymity.pal.common.utils.Utils;
 import com.research.privacy.anonymity.pal.dataset.DBRecord;
-import com.research.privacy.anonymity.pal.dataset.attributes.*;
+import com.research.privacy.anonymity.pal.dataset.attributes.Attribute;
+import com.research.privacy.anonymity.pal.dataset.attributes.DateAttribute;
+import com.research.privacy.anonymity.pal.dataset.attributes.NumericAttribute;
+import com.research.privacy.anonymity.pal.dataset.attributes.TextAttribute;
+import com.research.privacy.anonymity.pal.dataset.attributes.enums.AttributeEnumType;
+import com.research.privacy.anonymity.pal.dataset.attributes.enums.IdentifierEnumType;
 import com.research.privacy.anonymity.pal.exceptions.AnonymityPalException;
 import com.research.privacy.anonymity.pal.infrastructure.repository.PrestoDbRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +36,7 @@ public class PrestoService {
 
         List<DBRecord> dbRecords = convertResultList(resultList);
 
-        if(!privacyService.isPrivacyModelFulfilled(dbRecords)){
+        if (!privacyService.isPrivacyModelFulfilled(dbRecords)) {
             dbRecords = privacyService.anonymize(dbRecords);
         }
         return convertAnonymizedDBResultsToJson(dbRecords);
@@ -58,7 +63,7 @@ public class PrestoService {
                 Attribute attribute = getResolvedAttribute(key, value);
                 attributeList.add(attribute);
             }
-            dbRecords.add(new DBRecord(attributeList));
+            dbRecords.add(new DBRecord(attributeList, false));
         }
         return dbRecords;
     }

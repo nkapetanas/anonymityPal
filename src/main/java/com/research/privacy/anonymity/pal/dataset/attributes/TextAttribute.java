@@ -1,19 +1,23 @@
 package com.research.privacy.anonymity.pal.dataset.attributes;
 
 
-import lombok.Getter;
+import com.research.privacy.anonymity.pal.dataset.attributes.enums.AttributeEnumType;
+import com.research.privacy.anonymity.pal.dataset.attributes.enums.IdentifierEnumType;
 
 public class TextAttribute extends Attribute {
-    @Getter
-    public String textValue;
+
+    public TextAttribute(IdentifierEnumType identifierEnumType, String columnName, Object value) {
+        super(AttributeEnumType.TEXT, identifierEnumType, columnName, null);
+        setTextValue(value);
+    }
 
     public TextAttribute(AttributeEnumType attributeEnumType, IdentifierEnumType identifierEnumType, String columnName, Object value) {
         super(attributeEnumType, identifierEnumType, columnName, null);
         setTextValue(value);
     }
 
-    private void setTextValue(final Object textValue) {
-        this.textValue = String.valueOf(textValue);
+    private void setTextValue(final Object value) {
+        this.value = String.valueOf(value);
     }
 
     @Override
@@ -21,6 +25,6 @@ public class TextAttribute extends Attribute {
         if (other == null || this.getClass() != other.getClass()) {
             return false;
         }
-        return getColumnName().equals(other.getColumnName()) && getTextValue().equals(((TextAttribute) other).getTextValue());
+        return getColumnName().equals(other.getColumnName()) && getValue().equals(other.getValue());
     }
 }

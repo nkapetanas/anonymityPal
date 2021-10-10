@@ -1,7 +1,7 @@
 package com.research.privacy.anonymity.pal.dataset;
 
 import com.research.privacy.anonymity.pal.dataset.attributes.Attribute;
-import com.research.privacy.anonymity.pal.dataset.attributes.IdentifierEnumType;
+import com.research.privacy.anonymity.pal.dataset.attributes.enums.IdentifierEnumType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +23,10 @@ public class DBRecord {
     @Setter
     private boolean suppressed;
 
+    public DBRecord(List<Attribute> attributes){
+        this.attributes = attributes;
+        this.suppressed = false;
+    }
     public boolean equivalentTo(final DBRecord otherDbRecord) {
 
         final List<Attribute> otherDbRecordAttributes = otherDbRecord.getAttributes();

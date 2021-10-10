@@ -1,19 +1,22 @@
 package com.research.privacy.anonymity.pal.dataset.attributes;
 
-import lombok.Getter;
+import com.research.privacy.anonymity.pal.dataset.attributes.enums.AttributeEnumType;
+import com.research.privacy.anonymity.pal.dataset.attributes.enums.IdentifierEnumType;
 
 public class DateAttribute extends Attribute {
-
-    @Getter
-    public String dateValue;
 
     public DateAttribute(AttributeEnumType attributeEnumType, IdentifierEnumType identifierEnumType, String columnName, Object value) {
         super(attributeEnumType, identifierEnumType, columnName, null);
         setValue(value);
     }
 
+    public DateAttribute( IdentifierEnumType identifierEnumType, String columnName, Object value) {
+        super(AttributeEnumType.DATE, identifierEnumType, columnName, null);
+        setValue(value);
+    }
+
     private void setValue(final Object value) {
-        this.dateValue = String.valueOf(value);
+        this.value = String.valueOf(value);
     }
 
     @Override
@@ -21,6 +24,6 @@ public class DateAttribute extends Attribute {
         if (other == null || this.getClass() != other.getClass()) {
             return false;
         }
-        return getColumnName().equals(other.getColumnName()) && getDateValue().equals(((DateAttribute) other).getDateValue());
+        return getColumnName().equals(other.getColumnName()) && getValue().equals(other.getValue());
     }
 }

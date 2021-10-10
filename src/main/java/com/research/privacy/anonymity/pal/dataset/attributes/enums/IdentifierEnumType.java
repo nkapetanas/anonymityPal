@@ -1,4 +1,4 @@
-package com.research.privacy.anonymity.pal.dataset.attributes;
+package com.research.privacy.anonymity.pal.dataset.attributes.enums;
 
 import com.facebook.presto.jdbc.internal.guava.collect.ImmutableList;
 
@@ -6,9 +6,9 @@ import java.util.List;
 
 
 public enum IdentifierEnumType {
-    IDENTIFIER("columnName1", "columnName2", "columnName3"),
-    QUASI_IDENTIFIER("columnName4", "columnName5", "columnName6"),
-    SENSITIVE("columnName7", "columnName8", "columnName9");
+    IDENTIFIER("name", "lastname", "resident_registration_number"),
+    QUASI_IDENTIFIER("zip_code", "age", "sex", "nationality", "phone_number"),
+    SENSITIVE("health_condition");
 
     private final List<String> dbColumnNames;
 

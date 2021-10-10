@@ -1,5 +1,7 @@
 package com.research.privacy.anonymity.pal.dataset.attributes;
 
+import com.research.privacy.anonymity.pal.dataset.attributes.enums.AttributeEnumType;
+import com.research.privacy.anonymity.pal.dataset.attributes.enums.IdentifierEnumType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +21,7 @@ public abstract class Attribute {
 
     private String generalisedValue;
 
-    private Object value;
+    protected Object value;
 
     protected Attribute(AttributeEnumType attributeType, IdentifierEnumType identifierType, String columnName, Object value) {
         this.attributeEnumType = attributeType;

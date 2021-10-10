@@ -1,19 +1,22 @@
 package com.research.privacy.anonymity.pal.dataset.attributes;
 
-import lombok.Getter;
+import com.research.privacy.anonymity.pal.dataset.attributes.enums.AttributeEnumType;
+import com.research.privacy.anonymity.pal.dataset.attributes.enums.IdentifierEnumType;
 
 public class NumericAttribute extends Attribute {
-
-    @Getter
-    public Integer numericValue;
 
     public NumericAttribute(AttributeEnumType attributeEnumType, IdentifierEnumType identifierEnumType, String columnName, Object value) {
         super(attributeEnumType, identifierEnumType, columnName, null);
         setNumericValue(value);
     }
 
+    public NumericAttribute(IdentifierEnumType identifierEnumType, String columnName, Object value) {
+        super(AttributeEnumType.NUMERIC, identifierEnumType, columnName, null);
+        setNumericValue(value);
+    }
+
     private void setNumericValue(final Object numericValue) {
-        this.numericValue = Integer.valueOf((String) numericValue);
+        this.value = Integer.valueOf((String) numericValue);
     }
 
     @Override
@@ -21,6 +24,6 @@ public class NumericAttribute extends Attribute {
         if (other == null || this.getClass() != other.getClass()) {
             return false;
         }
-        return getColumnName().equals(other.getColumnName()) && getNumericValue().equals(((NumericAttribute) other).getNumericValue());
+        return getColumnName().equals(other.getColumnName()) && getValue().equals(other.getValue());
     }
 }

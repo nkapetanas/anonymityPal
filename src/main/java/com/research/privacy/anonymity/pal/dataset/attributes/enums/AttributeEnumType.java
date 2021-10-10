@@ -1,4 +1,4 @@
-package com.research.privacy.anonymity.pal.dataset.attributes;
+package com.research.privacy.anonymity.pal.dataset.attributes.enums;
 
 public enum AttributeEnumType {
     TEXT,
