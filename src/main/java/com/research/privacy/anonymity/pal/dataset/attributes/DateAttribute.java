@@ -8,8 +8,8 @@ public class DateAttribute extends Attribute {
     public String dateValue;
 
     public DateAttribute(AttributeEnumType attributeEnumType, IdentifierEnumType identifierEnumType, String columnName, Object value) {
-        super(attributeEnumType, identifierEnumType, columnName);
-        setValue(dateValue);
+        super(attributeEnumType, identifierEnumType, columnName, null);
+        setValue(value);
     }
 
     private void setValue(final Object value) {

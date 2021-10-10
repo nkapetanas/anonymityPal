@@ -17,12 +17,15 @@ public abstract class Attribute {
     // name of column in the corresponding db schema
     private String columnName;
 
-    private String modifiedValue; // Where the generalised value is stored
+    private String generalisedValue;
 
-    protected Attribute(AttributeEnumType attributeType, IdentifierEnumType identifierType, String columnName) {
+    private Object value;
+
+    protected Attribute(AttributeEnumType attributeType, IdentifierEnumType identifierType, String columnName, Object value) {
         this.attributeEnumType = attributeType;
         this.identifierEnumType = identifierType;
         this.columnName = columnName;
+        this.value = value;
     }
 
     public abstract boolean equivalentTo(Attribute other);

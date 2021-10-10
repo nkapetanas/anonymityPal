@@ -8,7 +8,7 @@ public class NumericAttribute extends Attribute {
     public Integer numericValue;
 
     public NumericAttribute(AttributeEnumType attributeEnumType, IdentifierEnumType identifierEnumType, String columnName, Object value) {
-        super(attributeEnumType, identifierEnumType, columnName);
+        super(attributeEnumType, identifierEnumType, columnName, null);
         setNumericValue(value);
     }
 

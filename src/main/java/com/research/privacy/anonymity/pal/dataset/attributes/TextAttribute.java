@@ -8,7 +8,7 @@ public class TextAttribute extends Attribute {
     public String textValue;
 
     public TextAttribute(AttributeEnumType attributeEnumType, IdentifierEnumType identifierEnumType, String columnName, Object value) {
-        super(attributeEnumType, identifierEnumType, columnName);
+        super(attributeEnumType, identifierEnumType, columnName, null);
         setTextValue(value);
     }
 
