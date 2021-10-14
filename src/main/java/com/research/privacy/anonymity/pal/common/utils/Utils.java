@@ -1,16 +1,15 @@
 package com.research.privacy.anonymity.pal.common.utils;
 
 
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Array;
 import java.util.*;
 
 @Slf4j
+@NoArgsConstructor
 public class Utils {
-
-    private Utils() {
-    }
 
     public static boolean isEmpty(Object value) {
         if (value == null) {

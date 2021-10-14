@@ -14,10 +14,12 @@ public class PrivacyService {
 
     private final KAnonymity kAnonymity;
     private final LDiversity lDiversity;
+    private final AnonymityPalAnonymizer anonymityPalAnonymizer;
 
-    public PrivacyService(KAnonymity kAnonymity, LDiversity lDiversity) {
+    public PrivacyService(KAnonymity kAnonymity, LDiversity lDiversity, AnonymityPalAnonymizer anonymityPalAnonymizer) {
         this.kAnonymity = kAnonymity;
         this.lDiversity = lDiversity;
+        this.anonymityPalAnonymizer = anonymityPalAnonymizer;
     }
 
     public boolean isPrivacyModelFulfilled(final List<DBRecord> dbRecords) {
@@ -27,6 +29,7 @@ public class PrivacyService {
     }
 
     public List<DBRecord> anonymize(List<DBRecord> dbRecords) {
+        anonymityPalAnonymizer.anonymize(dbRecords);
         return null;
     }
 }
