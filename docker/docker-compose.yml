@@ -10,6 +10,7 @@ services:
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
+      - ./db-initialization-scripts/postgres-init.sql:/docker-entrypoint-initdb.d/postgres-init.sql
     ports:
       - "5432:5432"
     networks:
@@ -27,6 +28,7 @@ services:
       - data_platform_demo
     volumes:
       - mongodb_data_container:/data/mongodb
+      - ./db-initialization-scripts/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
 
   presto:
     build:
