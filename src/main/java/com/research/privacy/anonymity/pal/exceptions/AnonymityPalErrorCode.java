@@ -7,7 +7,8 @@ import lombok.Getter;
 public enum AnonymityPalErrorCode {
 
     AP_E_0000(0, ErrorMessagesEnum.AP_E_0000, "Unexpected server error."),
-    AP_E_0001(1, ErrorMessagesEnum.AP_E_0001, "Database exception occured"),
+    AP_E_0001(1, ErrorMessagesEnum.AP_E_0001, "Database exception occurred"),
+    AP_E_0002(2, ErrorMessagesEnum.AP_E_0002, "The query results do not meet the privacy requirements"),
     ;
 
     @Getter

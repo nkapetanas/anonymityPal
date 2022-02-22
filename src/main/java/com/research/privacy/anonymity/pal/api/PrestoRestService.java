@@ -55,15 +55,15 @@ public class PrestoRestService {
         return ResponseEntity.ok(queryResults);
     }
 
+    @GetMapping("/getAvailableDbs")
+    @ResponseStatus()
+    public ResponseEntity<List<String>> getAvailableDbs() {
+        return ResponseEntity.ok(prestoService.getAvailableDBs());
+    }
+
     @GetMapping("/getAvailableDbTables")
     @ResponseStatus()
-    public ResponseEntity<List<String>> getAvailableDbTables() {
-        List<String> availableDbTables;
-        try {
-            availableDbTables = prestoService.getAvailableDbTables();
-        } catch (AnonymityPalException e) {
-            ResponseEntity.badRequest();
-        }
-        return ResponseEntity.ok(availableDbTables);
+    public ResponseEntity<List<String>> getAvailableDbTables(@RequestParam String query) {
+        return ResponseEntity.ok(prestoService.getAvailableSchemasFromDB(query));
     }
 }

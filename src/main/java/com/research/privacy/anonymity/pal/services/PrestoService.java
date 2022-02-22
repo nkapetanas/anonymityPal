@@ -9,14 +9,14 @@ import com.research.privacy.anonymity.pal.dataset.attributes.NumericAttribute;
 import com.research.privacy.anonymity.pal.dataset.attributes.TextAttribute;
 import com.research.privacy.anonymity.pal.dataset.attributes.enums.AttributeEnumType;
 import com.research.privacy.anonymity.pal.dataset.attributes.enums.IdentifierEnumType;
+import com.research.privacy.anonymity.pal.exceptions.AnonymityPalErrorCode;
 import com.research.privacy.anonymity.pal.exceptions.AnonymityPalException;
 import com.research.privacy.anonymity.pal.infrastructure.repository.PrestoDbRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -31,19 +31,34 @@ public class PrestoService {
         this.privacyService = privacyService;
     }
 
-    public List<ResultsJson> getQueryResults(final String query) throws AnonymityPalException {
+    public List<DBRecord> getQueryResultsPrivacyChecked(final String query) throws AnonymityPalException {
         final List<Map<String, Object>> resultList = prestoDbRepository.findResultList(query);
 
         List<DBRecord> dbRecords = convertResultList(resultList);
 
         if (!privacyService.isPrivacyModelFulfilled(dbRecords)) {
-            dbRecords = privacyService.anonymize(dbRecords);
+             // TODO is it needed?
+//            dbRecords = privacyService.anonymize(dbRecords);
+            throw new AnonymityPalException(AnonymityPalErrorCode.AP_E_0002);
         }
-        return convertAnonymizedDBResultsToJson(dbRecords);
+        return dbRecords;
     }
 
-    private List<ResultsJson> convertAnonymizedDBResultsToJson(final List<DBRecord> dbRecords) {
+    public ResultsJson getQueryResultsSimple(final String query) throws AnonymityPalException {
+        final List<Map<String, Object>> resultList = prestoDbRepository.findResultList(query);
+        if(Utils.isNotEmpty(resultList)){
+            final List<DBRecord> dbRecords = convertResultList(resultList);
+            return convertDBResultsToJson(dbRecords);
+        }
         return null;
+    }
+
+    private ResultsJson convertDBResultsToJson(final List<DBRecord> dbRecords) {
+        ResultsJson resultsJson = new ResultsJson();
+        dbRecords.forEach(dbRecord -> {
+
+        });
+        return resultsJson;
     }
 
     private List<DBRecord> convertResultList(List<Map<String, Object>> resultList) {
@@ -66,6 +81,16 @@ public class PrestoService {
             dbRecords.add(new DBRecord(attributeList, false));
         }
         return dbRecords;
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> getAvailableDBs() {
+        return prestoDbRepository.findAvailableCatalogs();
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> getAvailableSchemasFromDB(final String selectedDB) {
+        return prestoDbRepository.getAvailableSchemasFromDB(selectedDB);
     }
 
     private Attribute getResolvedAttribute(final String key, final Object value) {
