@@ -12,6 +12,7 @@ import com.research.privacy.anonymity.pal.infrastructure.repository.PrestoDbRepo
 import com.research.privacy.anonymity.pal.services.PrestoService;
 import com.research.privacy.anonymity.pal.services.PrivacyService;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -23,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.research.privacy.anonymity.pal.exceptions.AnonymityPalErrorCode.AP_E_0003;
+import static com.research.privacy.anonymity.pal.exceptions.AnonymityPalErrorCode.AP_E_0004;
 import static org.mockito.Mockito.when;
 
 @Slf4j
@@ -42,7 +45,14 @@ class ITQueryRestServices {
     private static final String POSTGRES_DB_NAME = "postgresql";
     private static final String MONGO_DB_NAME = "mongodb";
 
+    private static final String MONGO_DB_COLUMN_1 = "zip";
+    private static final String MONGO_DB_COLUMN_2 = "age";
+    private static final String MONGO_DB_COLUMN_3 = "marital_status";
+    private static final String MONGO_DB_COLUMN_4 = "health_condition";
+
     private static final String MONGO_DB_HEALTH_DATA_DB_1 = "health_data_db_1";
+
+
 
     private static final String QUERY = "SELECT * FROM tpcds.sf10.hospital";
 
@@ -61,6 +71,8 @@ class ITQueryRestServices {
     private static final String HEALTH_CONDITION_2 = "Broken Arm";
     private static final String HEALTH_CONDITION_3 = "Diabetes";
     private static final String HEALTH_CONDITION_4 = "Broken Neck";
+    private static final String SHOULD_NOT_FAIL = "Should not fail";
+    private static final String SHOULD_FAIL = "Should fail";
 
     @Autowired
     PrestoService prestoService;
@@ -113,21 +125,59 @@ class ITQueryRestServices {
         final List<String> availableDbTables = prestoService.getAvailableDBs();
         Assertions.assertEquals(7, availableDbTables.size());
 
-        final Optional<String> postgresDBexists = availableDbTables.stream().filter(POSTGRES_DB_NAME::equals).findAny();
-        Assertions.assertTrue(postgresDBexists.isPresent());
-
-        final Optional<String> mongoDBexists = availableDbTables.stream().filter(MONGO_DB_NAME::equals).findAny();
-        Assertions.assertTrue(mongoDBexists.isPresent());
+        Assertions.assertTrue(availableDbTables.stream().anyMatch(POSTGRES_DB_NAME::equals));
+        Assertions.assertTrue(availableDbTables.stream().anyMatch(MONGO_DB_NAME::equals));
     }
 
     @Test
     void privacyService_getAvailableSchemasFromDB_OK(){
-        final List<String> availableDbSchemas = prestoService.getAvailableSchemasFromDB("mongodb");
-        Assertions.assertEquals(5, availableDbSchemas.size());
+         List<String> availableDbSchemas = null;
+        try {
+            availableDbSchemas = prestoService.getAvailableSchemasFromDB("mongodb");
+        } catch (Exception e) {
+            Assertions.fail(SHOULD_NOT_FAIL);
+        }
 
-        final Optional<String> mongoShemaExists = availableDbSchemas.stream().filter(MONGO_DB_HEALTH_DATA_DB_1::equals).findAny();
-        Assertions.assertTrue(mongoShemaExists.isPresent());
+        Assertions.assertEquals(5, availableDbSchemas.size());
+        Assertions.assertTrue(availableDbSchemas.stream().anyMatch(MONGO_DB_HEALTH_DATA_DB_1::equals));
     }
+
+//    @Test
+//    void privacyService_getAvailableSchemasFromDB_NOK_EMPTY_SELECTED_DB(){
+//        try {
+//            prestoService.getAvailableSchemasFromDB("");
+//            Assertions.fail(SHOULD_FAIL);
+//        } catch (AnonymityPalException e) {
+//            Assertions.assertEquals(AP_E_0003, e.getAnonymityPalErrorCode());
+//        }
+//    }
+
+    @Test
+    void privacyService_getTableColumns_OK(){
+        List<String> tableColumns = null;
+        try {
+            tableColumns = prestoService.getColumnsFromTable("mongodb.health_data_db_1.health_data_collection_1");
+        } catch (Exception e) {
+            Assertions.fail(SHOULD_NOT_FAIL);
+        }
+
+        Assertions.assertEquals(4, tableColumns.size());
+
+        Assertions.assertTrue(tableColumns.stream().anyMatch(MONGO_DB_COLUMN_1::equals));
+        Assertions.assertTrue(tableColumns.stream().anyMatch(MONGO_DB_COLUMN_2::equals));
+        Assertions.assertTrue(tableColumns.stream().anyMatch(MONGO_DB_COLUMN_3::equals));
+        Assertions.assertTrue(tableColumns.stream().anyMatch(MONGO_DB_COLUMN_4::equals));
+    }
+
+//    @Test
+//    void privacyService_getTableColumns_OK_NOK_EMPTY_SELECTED_DB(){
+//        try {
+//            prestoService.getColumnsFromTable("");
+//            Assertions.fail(SHOULD_FAIL);
+//        } catch (Exception e) {
+//
+//        }
+//    }
 
     private List<Map<String, Object>> getMockResults() {
         return null;

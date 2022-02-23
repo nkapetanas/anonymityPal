@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -46,11 +47,11 @@ public class PrestoRestService {
             ResponseEntity.ok(new ArrayList<>());
         }
 
-        ResultsJson queryResults = null;
+        ResultsJson queryResults;
         try {
             queryResults = prestoService.getQueryResultsSimple(query);
         } catch (AnonymityPalException e) {
-            ResponseEntity.badRequest();
+            return ResponseEntity.badRequest().body(null);
         }
         return ResponseEntity.ok(queryResults);
     }
@@ -63,7 +64,31 @@ public class PrestoRestService {
 
     @GetMapping("/getAvailableDbTables")
     @ResponseStatus()
-    public ResponseEntity<List<String>> getAvailableDbTables(@RequestParam String query) {
-        return ResponseEntity.ok(prestoService.getAvailableSchemasFromDB(query));
+    public ResponseEntity<List<String>> getAvailableDbTables(@RequestParam String selectedDB) {
+        if(Utils.isEmpty(selectedDB)){
+            return ResponseEntity.badRequest().body(Collections.emptyList());
+        }
+
+        try {
+            final List<String> availableSchemasFromDB = prestoService.getAvailableSchemasFromDB(selectedDB);
+            return ResponseEntity.ok(availableSchemasFromDB);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @GetMapping("/getColumnsFromTable")
+    @ResponseStatus()
+    public ResponseEntity<List<String>> getColumnsFromTable(@RequestParam String selectedTable) {
+        if(Utils.isEmpty(selectedTable)){
+            return ResponseEntity.badRequest().body(Collections.emptyList());
+        }
+
+        try {
+            final List<String> columnsFromTable = prestoService.getColumnsFromTable(selectedTable);
+            return ResponseEntity.ok(columnsFromTable);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 }

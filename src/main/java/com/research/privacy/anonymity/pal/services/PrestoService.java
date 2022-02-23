@@ -13,6 +13,7 @@ import com.research.privacy.anonymity.pal.exceptions.AnonymityPalErrorCode;
 import com.research.privacy.anonymity.pal.exceptions.AnonymityPalException;
 import com.research.privacy.anonymity.pal.infrastructure.repository.PrestoDbRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -89,8 +90,13 @@ public class PrestoService {
     }
 
     @Transactional(readOnly = true)
-    public List<String> getAvailableSchemasFromDB(final String selectedDB) {
+    public List<String> getAvailableSchemasFromDB(final String selectedDB){
         return prestoDbRepository.getAvailableSchemasFromDB(selectedDB);
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> getColumnsFromTable(final String table){
+        return prestoDbRepository.getColumnsFromTable(table);
     }
 
     private Attribute getResolvedAttribute(final String key, final Object value) {

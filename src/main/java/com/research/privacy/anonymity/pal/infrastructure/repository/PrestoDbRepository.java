@@ -14,8 +14,10 @@ import java.util.Map;
 @Slf4j
 @Repository
 public class PrestoDbRepository {
+
     private static final String SHOW_CATALOGS_QUERY = "SHOW CATALOGS";
     private static final String SHOW_TABLES_FROM_DB_QUERY = "SHOW SCHEMAS FROM %s";
+    private static final String SHOW_COLUMNS_FROM_TABLE_QUERY = "SHOW COLUMNS FROM %s";
 
     private final JdbcTemplate prestoTemplate;
 
@@ -51,5 +53,18 @@ public class PrestoDbRepository {
             }
         }
         return dbTables;
+    }
+
+    public List<String> getColumnsFromTable(final String table) {
+        final List<Map<String, Object>> columns = prestoTemplate.queryForList(String.format(SHOW_COLUMNS_FROM_TABLE_QUERY, table));
+        List<String> tableColumns = new ArrayList<>();
+        for (Map<String, Object> map : columns) {
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                if("Column".equals(entry.getKey())){
+                    tableColumns.add(String.valueOf(entry.getValue()));
+                }
+            }
+        }
+        return tableColumns;
     }
 }
