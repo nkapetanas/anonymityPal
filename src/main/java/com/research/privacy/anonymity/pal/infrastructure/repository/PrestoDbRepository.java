@@ -16,8 +16,9 @@ import java.util.Map;
 public class PrestoDbRepository {
 
     private static final String SHOW_CATALOGS_QUERY = "SHOW CATALOGS";
-    private static final String SHOW_TABLES_FROM_DB_QUERY = "SHOW SCHEMAS FROM %s";
+    private static final String SHOW_SCHEMAS_FROM_DB_QUERY = "SHOW SCHEMAS FROM %s";
     private static final String SHOW_COLUMNS_FROM_TABLE_QUERY = "SHOW COLUMNS FROM %s";
+    private static final String SHOW_TABLES_FROM_SCHEMA_QUERY = "SHOW TABLES FROM %s";
 
     private final JdbcTemplate prestoTemplate;
 
@@ -45,9 +46,20 @@ public class PrestoDbRepository {
     }
 
     public List<String> getAvailableSchemasFromDB(final String selectedDB) {
-        final List<Map<String, Object>> schemas = prestoTemplate.queryForList(String.format(SHOW_TABLES_FROM_DB_QUERY, selectedDB));
-        List<String> dbTables = new ArrayList<>();
+        final List<Map<String, Object>> schemas = prestoTemplate.queryForList(String.format(SHOW_SCHEMAS_FROM_DB_QUERY, selectedDB));
+        List<String> schemasList = new ArrayList<>();
         for (Map<String, Object> map : schemas) {
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                schemasList.add(String.valueOf(entry.getValue()));
+            }
+        }
+        return schemasList;
+    }
+
+    public List<String> getTablesFromSchema(final String schema) {
+        final List<Map<String, Object>> tables = prestoTemplate.queryForList(String.format(SHOW_TABLES_FROM_SCHEMA_QUERY, schema));
+        List<String> dbTables = new ArrayList<>();
+        for (Map<String, Object> map : tables) {
             for (Map.Entry<String, Object> entry : map.entrySet()) {
                 dbTables.add(String.valueOf(entry.getValue()));
             }

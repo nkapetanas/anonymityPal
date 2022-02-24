@@ -62,9 +62,9 @@ public class PrestoRestService {
         return ResponseEntity.ok(prestoService.getAvailableDBs());
     }
 
-    @GetMapping("/getAvailableDbTables")
+    @GetMapping("/getAvailableDbSchemas")
     @ResponseStatus()
-    public ResponseEntity<List<String>> getAvailableDbTables(@RequestParam String selectedDB) {
+    public ResponseEntity<List<String>> getAvailableDbSchemas(@RequestParam String selectedDB) {
         if(Utils.isEmpty(selectedDB)){
             return ResponseEntity.badRequest().body(Collections.emptyList());
         }
@@ -72,6 +72,21 @@ public class PrestoRestService {
         try {
             final List<String> availableSchemasFromDB = prestoService.getAvailableSchemasFromDB(selectedDB);
             return ResponseEntity.ok(availableSchemasFromDB);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @GetMapping("/getAvailableSchemaTables")
+    @ResponseStatus()
+    public ResponseEntity<List<String>> getAvailableSchemaTables(@RequestParam String schema) {
+        if(Utils.isEmpty(schema)){
+            return ResponseEntity.badRequest().body(Collections.emptyList());
+        }
+
+        try {
+            final List<String> tablesFromSchema = prestoService.getTablesFromSchema(schema);
+            return ResponseEntity.ok(tablesFromSchema);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
         }

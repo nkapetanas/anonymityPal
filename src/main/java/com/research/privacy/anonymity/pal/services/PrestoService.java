@@ -95,6 +95,11 @@ public class PrestoService {
     }
 
     @Transactional(readOnly = true)
+    public List<String> getTablesFromSchema(final String schema){
+        return prestoDbRepository.getTablesFromSchema(schema);
+    }
+
+    @Transactional(readOnly = true)
     public List<String> getColumnsFromTable(final String table){
         return prestoDbRepository.getColumnsFromTable(table);
     }
