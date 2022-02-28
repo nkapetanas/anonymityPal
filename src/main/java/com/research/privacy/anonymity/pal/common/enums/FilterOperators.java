@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @Slf4j
 @AllArgsConstructor
 public enum FilterOperators {
@@ -24,4 +28,10 @@ public enum FilterOperators {
 
     @Getter
     private String sqlOperation;
+
+    public static List<String> getFilterOperators() {
+        List<String> filterOperatorsList = new ArrayList<>();
+        Arrays.stream(FilterOperators.values()).forEach(filterOperators -> filterOperatorsList.add(filterOperators.getField()));
+        return filterOperatorsList;
+    }
 }
