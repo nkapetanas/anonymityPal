@@ -38,7 +38,7 @@ public class PrestoService {
         List<DBRecord> dbRecords = convertResultList(resultList);
 
         if (!privacyService.isPrivacyModelFulfilled(dbRecords)) {
-             // TODO is it needed?
+            // TODO is it needed?
 //            dbRecords = privacyService.anonymize(dbRecords);
             throw new AnonymityPalException(AnonymityPalErrorCode.AP_E_0002);
         }
@@ -47,7 +47,7 @@ public class PrestoService {
 
     public ResultsJson getQueryResultsSimple(final String query) throws AnonymityPalException {
         final List<Map<String, Object>> resultList = prestoDbRepository.findResultList(query);
-        if(Utils.isNotEmpty(resultList)){
+        if (Utils.isNotEmpty(resultList)) {
             final List<DBRecord> dbRecords = convertResultList(resultList);
             return convertDBResultsToJson(dbRecords);
         }
@@ -84,23 +84,19 @@ public class PrestoService {
         return dbRecords;
     }
 
-    @Transactional(readOnly = true)
     public List<String> getAvailableDBs() {
         return prestoDbRepository.findAvailableCatalogs();
     }
 
-    @Transactional(readOnly = true)
-    public List<String> getAvailableSchemasFromDB(final String selectedDB){
+    public List<String> getAvailableSchemasFromDB(final String selectedDB) {
         return prestoDbRepository.getAvailableSchemasFromDB(selectedDB);
     }
 
-    @Transactional(readOnly = true)
-    public List<String> getTablesFromSchema(final String schema){
+    public List<String> getTablesFromSchema(final String schema) {
         return prestoDbRepository.getTablesFromSchema(schema);
     }
 
-    @Transactional(readOnly = true)
-    public List<String> getColumnsFromTable(final String table){
+    public List<String> getColumnsFromTable(final String table) {
         return prestoDbRepository.getColumnsFromTable(table);
     }
 

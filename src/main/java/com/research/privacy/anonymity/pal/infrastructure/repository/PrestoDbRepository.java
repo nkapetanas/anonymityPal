@@ -72,7 +72,7 @@ public class PrestoDbRepository {
         List<String> tableColumns = new ArrayList<>();
         for (Map<String, Object> map : columns) {
             for (Map.Entry<String, Object> entry : map.entrySet()) {
-                if("Column".equals(entry.getKey())){
+                if ("Column".equals(entry.getKey())) {
                     tableColumns.add(String.valueOf(entry.getValue()));
                 }
             }
