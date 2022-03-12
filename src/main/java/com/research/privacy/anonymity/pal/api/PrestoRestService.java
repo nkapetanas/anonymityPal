@@ -65,45 +65,30 @@ public class PrestoRestService {
     @GetMapping("/getAvailableDbSchemas")
     @ResponseStatus()
     public ResponseEntity<List<String>> getAvailableDbSchemas(@RequestParam String selectedDB) {
-        if(Utils.isEmpty(selectedDB)){
+        if (Utils.isEmpty(selectedDB)) {
             return ResponseEntity.badRequest().body(Collections.emptyList());
         }
-
-        try {
-            final List<String> availableSchemasFromDB = prestoService.getAvailableSchemasFromDB(selectedDB);
-            return ResponseEntity.ok(availableSchemasFromDB);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+        final List<String> availableSchemasFromDB = prestoService.getAvailableSchemasFromDB(selectedDB);
+        return ResponseEntity.ok(availableSchemasFromDB);
     }
 
     @GetMapping("/getAvailableSchemaTables")
     @ResponseStatus()
     public ResponseEntity<List<String>> getAvailableSchemaTables(@RequestParam String schema) {
-        if(Utils.isEmpty(schema)){
+        if (Utils.isEmpty(schema)) {
             return ResponseEntity.badRequest().body(Collections.emptyList());
         }
-
-        try {
-            final List<String> tablesFromSchema = prestoService.getTablesFromSchema(schema);
-            return ResponseEntity.ok(tablesFromSchema);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+        final List<String> tablesFromSchema = prestoService.getTablesFromSchema(schema);
+        return ResponseEntity.ok(tablesFromSchema);
     }
 
     @GetMapping("/getColumnsFromTable")
     @ResponseStatus()
     public ResponseEntity<List<String>> getColumnsFromTable(@RequestParam String selectedTable) {
-        if(Utils.isEmpty(selectedTable)){
+        if (Utils.isEmpty(selectedTable)) {
             return ResponseEntity.badRequest().body(Collections.emptyList());
         }
-
-        try {
-            final List<String> columnsFromTable = prestoService.getColumnsFromTable(selectedTable);
-            return ResponseEntity.ok(columnsFromTable);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+        final List<String> columnsFromTable = prestoService.getColumnsFromTable(selectedTable);
+        return ResponseEntity.ok(columnsFromTable);
     }
 }

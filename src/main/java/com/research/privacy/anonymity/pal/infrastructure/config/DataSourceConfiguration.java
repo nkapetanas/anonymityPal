@@ -1,12 +1,13 @@
 package com.research.privacy.anonymity.pal.infrastructure.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.jdbi.v3.core.Jdbi;
+import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 
@@ -26,8 +27,9 @@ public class DataSourceConfiguration {
         return DataSourceBuilder.create().build();
     }
 
-    @Bean(name = "prestoTemplate")
-    public JdbcTemplate prestoJdbcTemplate(@Qualifier("prestoDataSource") DataSource dataSource) {
-        return new JdbcTemplate(dataSource);
+    @Bean
+    public Jdbi jdbi(@Qualifier("prestoDataSource") DataSource dataSource) {
+        return Jdbi.create(dataSource)
+                .installPlugin(new SqlObjectPlugin());
     }
 }

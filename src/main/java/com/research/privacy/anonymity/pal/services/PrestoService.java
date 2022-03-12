@@ -13,11 +13,11 @@ import com.research.privacy.anonymity.pal.exceptions.AnonymityPalErrorCode;
 import com.research.privacy.anonymity.pal.exceptions.AnonymityPalException;
 import com.research.privacy.anonymity.pal.infrastructure.repository.PrestoDbRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service

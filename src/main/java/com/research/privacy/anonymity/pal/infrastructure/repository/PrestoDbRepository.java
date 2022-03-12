@@ -3,11 +3,11 @@ package com.research.privacy.anonymity.pal.infrastructure.repository;
 import com.research.privacy.anonymity.pal.exceptions.AnonymityPalErrorCode;
 import com.research.privacy.anonymity.pal.exceptions.AnonymityPalException;
 import lombok.extern.slf4j.Slf4j;
+import org.jdbi.v3.core.Jdbi;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -20,63 +20,63 @@ public class PrestoDbRepository {
     private static final String SHOW_COLUMNS_FROM_TABLE_QUERY = "SHOW COLUMNS FROM %s";
     private static final String SHOW_TABLES_FROM_SCHEMA_QUERY = "SHOW TABLES FROM %s";
 
-    private final JdbcTemplate prestoTemplate;
+    private final Jdbi jdbi;
 
-    public PrestoDbRepository(@Qualifier("prestoTemplate") JdbcTemplate prestoTemplate) {
-        this.prestoTemplate = prestoTemplate;
+    public PrestoDbRepository(@Qualifier("jdbi") Jdbi jdbi) {
+        this.jdbi = jdbi;
     }
 
     public List<Map<String, Object>> findResultList(final String query) throws AnonymityPalException {
         try {
-            return prestoTemplate.queryForList(query);
+            return jdbi.withHandle(handle ->
+                    handle.createQuery(query)
+                            .mapToMap()
+                            .list());
         } catch (Exception e) {
             throw new AnonymityPalException(AnonymityPalErrorCode.AP_E_0001);
         }
     }
 
     public List<String> findAvailableCatalogs() {
-        final List<Map<String, Object>> catalogs = prestoTemplate.queryForList(SHOW_CATALOGS_QUERY);
-        List<String> dbNames = new ArrayList<>();
-        for (Map<String, Object> map : catalogs) {
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                dbNames.add(String.valueOf(entry.getValue()));
-            }
-        }
-        return dbNames;
+        return jdbi.withHandle(handle ->
+                handle.createQuery(SHOW_CATALOGS_QUERY)
+                        .mapTo(String.class)
+                        .list());
     }
 
     public List<String> getAvailableSchemasFromDB(final String selectedDB) {
-        final List<Map<String, Object>> schemas = prestoTemplate.queryForList(String.format(SHOW_SCHEMAS_FROM_DB_QUERY, selectedDB));
-        List<String> schemasList = new ArrayList<>();
-        for (Map<String, Object> map : schemas) {
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                schemasList.add(String.valueOf(entry.getValue()));
-            }
+        try {
+            return jdbi.withHandle(handle ->
+                    handle.createQuery(String.format(SHOW_SCHEMAS_FROM_DB_QUERY, selectedDB))
+                            .mapTo(String.class)
+                            .list());
+        } catch (Exception e) {
+            log.warn("Exception occurred when retrieving the available schemas from db", e);
+            return Collections.emptyList();
         }
-        return schemasList;
     }
 
     public List<String> getTablesFromSchema(final String schema) {
-        final List<Map<String, Object>> tables = prestoTemplate.queryForList(String.format(SHOW_TABLES_FROM_SCHEMA_QUERY, schema));
-        List<String> dbTables = new ArrayList<>();
-        for (Map<String, Object> map : tables) {
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                dbTables.add(String.valueOf(entry.getValue()));
-            }
+        try {
+            return jdbi.withHandle(handle ->
+                    handle.createQuery(String.format(SHOW_TABLES_FROM_SCHEMA_QUERY, schema))
+                            .mapTo(String.class)
+                            .list());
+        } catch (Exception e) {
+            log.warn("Exception occurred when retrieving the tables from the schema", e);
+            return Collections.emptyList();
         }
-        return dbTables;
     }
 
     public List<String> getColumnsFromTable(final String table) {
-        final List<Map<String, Object>> columns = prestoTemplate.queryForList(String.format(SHOW_COLUMNS_FROM_TABLE_QUERY, table));
-        List<String> tableColumns = new ArrayList<>();
-        for (Map<String, Object> map : columns) {
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                if ("Column".equals(entry.getKey())) {
-                    tableColumns.add(String.valueOf(entry.getValue()));
-                }
-            }
+        try {
+            return jdbi.withHandle(handle ->
+                    handle.createQuery(String.format(SHOW_COLUMNS_FROM_TABLE_QUERY, table))
+                            .mapTo(String.class)
+                            .list());
+        } catch (Exception e) {
+            log.warn("Exception occurred when retrieving the columns from the table", e);
+            return Collections.emptyList();
         }
-        return tableColumns;
     }
 }
