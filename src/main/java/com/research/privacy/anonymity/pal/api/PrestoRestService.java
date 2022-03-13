@@ -3,6 +3,7 @@ package com.research.privacy.anonymity.pal.api;
 import com.research.privacy.anonymity.pal.common.utils.Utils;
 import com.research.privacy.anonymity.pal.dataset.DBRecord;
 import com.research.privacy.anonymity.pal.exceptions.AnonymityPalException;
+import com.research.privacy.anonymity.pal.services.LooselyCoupledPrivacyPreservationService;
 import com.research.privacy.anonymity.pal.services.PrestoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +20,11 @@ import java.util.List;
 public class PrestoRestService {
 
     private final PrestoService prestoService;
+    private final LooselyCoupledPrivacyPreservationService looselyCoupledPrivacyPreservationService;
 
-    public PrestoRestService(PrestoService prestoService) {
+    public PrestoRestService(PrestoService prestoService, LooselyCoupledPrivacyPreservationService looselyCoupledPrivacyPreservationService) {
         this.prestoService = prestoService;
+        this.looselyCoupledPrivacyPreservationService = looselyCoupledPrivacyPreservationService;
     }
 
     @GetMapping("/getQueryResultsPrivacyChecked")
@@ -54,6 +57,20 @@ public class PrestoRestService {
             return ResponseEntity.badRequest().body(null);
         }
         return ResponseEntity.ok(queryResults);
+    }
+
+    @GetMapping("/checkPrivacyPreservation")
+    @ResponseStatus()
+    public ResponseEntity<QueryResultsJson> checkPrivacyPreservation(@RequestBody QueryResultsJson queryResults) {
+        if (Utils.isEmpty(queryResults)) {
+            ResponseEntity.ok(new ArrayList<>());
+        }
+
+        QueryResultsJson checkedQueryResults;
+
+        checkedQueryResults = looselyCoupledPrivacyPreservationService.looselyCoupledPrivacyPreservationCheck(queryResults);
+
+        return ResponseEntity.ok(checkedQueryResults);
     }
 
     @GetMapping("/getAvailableDbs")
