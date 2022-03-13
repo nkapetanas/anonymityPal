@@ -1,0 +1,17 @@
+<div class="row">
+    <div class="col-12">
+        <label class="py-3"><strong>Filter</strong></label>
+        <div class="row purple-background radius">
+            <div class="col-12">
+                <button pButton pRipple type="button" label="Add filters to narrow your answer" class="purple-background" (click)="addFilter()"></button>
+            </div>
+            <div *ngIf="showFilterAdd">
+                <div class="row">
+                    <div class="col-12">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

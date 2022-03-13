@@ -1,0 +1,10 @@
+:host ::ng-deep {
+    .p-panel .p-panel-content {
+        padding: unset;
+    }
+
+    .p-multiselect {
+        min-width: 15rem;
+        width: 18rem;
+    }
+}

@@ -1,0 +1,14 @@
+<div class="p-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="p-inputgroup">
+                <input type="text" pInputText placeholder="Please Enter a query and filter the results"
+                    [(ngModel)]="query">
+                <button type="button" pButton pRipple styleClass="p-button-warn" label="Execute"
+                    (click)="execute()"></button>
+            </div>
+        </div>
+    </div>
+    <app-tabs-content *ngIf="results"></app-tabs-content>
+</div>
+

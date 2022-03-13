@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="col-12">
+        <p-panel header="Selected columns">
+            <ng-template pTemplate="icons">
+                <button pButton label="Privacy check" (click)="getPrivacyCheck()">
+                </button>
+            </ng-template>
+            <div class="row px-5">
+                <div class="col-12">
+                    <p-multiSelect [options]="columns" [(ngModel)]="selectedColumns3" defaultLabel="Select a column"
+                        optionLabel="name" display="chip" styleClass="mt-4">
+                    </p-multiSelect>
+                </div>
+            </div>
+
+            <p-table [value]="selectedColumns3">
+                <ng-template pTemplate="body" let-car>
+                    <tr>
+                        <td>{{car.name}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-panel>
+    </div>
+</div>
