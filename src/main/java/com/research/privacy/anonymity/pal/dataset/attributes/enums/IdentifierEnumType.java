@@ -6,8 +6,8 @@ import java.util.List;
 
 
 public enum IdentifierEnumType {
-    IDENTIFIER("name", "lastname", "resident_registration_number"),
-    QUASI_IDENTIFIER("zip_code", "age", "sex", "nationality", "phone_number"),
+    IDENTIFIER("name", "lastname", "resident_registration_number", "email"),
+    QUASI_IDENTIFIER("zip_code", "zip", "age", "sex", "gender", "nationality", "phone_number", "marital_status", "blood_type"),
     SENSITIVE("health_condition");
 
     private final List<String> dbColumnNames;

@@ -15,9 +15,7 @@ import com.research.privacy.anonymity.pal.infrastructure.repository.PrestoDbRepo
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -55,11 +53,10 @@ public class PrestoService {
     }
 
     private ResultsJson convertDBResultsToJson(final List<DBRecord> dbRecords) {
-        ResultsJson resultsJson = new ResultsJson();
-        dbRecords.forEach(dbRecord -> {
+        Set<String> quasiColumns = new HashSet<>();
+        dbRecords.forEach(dbRecord -> quasiColumns.addAll(dbRecord.getQIColumnsLabels()));
 
-        });
-        return resultsJson;
+        return new ResultsJson(quasiColumns, dbRecords);
     }
 
     private List<DBRecord> convertResultList(List<Map<String, Object>> resultList) {

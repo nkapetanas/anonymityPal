@@ -59,6 +59,10 @@ public class DBRecord {
         return attributes.stream().filter(a -> IdentifierEnumType.SENSITIVE.equals(a.getIdentifierEnumType())).collect(Collectors.toList());
     }
 
+    public List<String> getQIColumnsLabels(){
+        return this.attributes.stream().filter(a -> IdentifierEnumType.QUASI_IDENTIFIER.equals(a.getIdentifierEnumType())).map(Attribute::getColumnName).collect(Collectors.toList());
+    }
+
     public String getModifiedQIDValues() {
         StringBuilder quIdsAsString = new StringBuilder();
         final List<Attribute> qiRecords = getQIRecords();
