@@ -58,6 +58,9 @@ public class PrestoDbRepository {
 
     public List<String> getTablesFromSchema(final String schema) {
         try {
+
+            jdbi.withHandle(handle ->
+                    handle.createQuery(String.format(SHOW_TABLES_FROM_SCHEMA_QUERY, schema)));
             return jdbi.withHandle(handle ->
                     handle.createQuery(String.format(SHOW_TABLES_FROM_SCHEMA_QUERY, schema))
                             .mapTo(String.class)

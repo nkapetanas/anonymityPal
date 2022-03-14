@@ -14,7 +14,8 @@ import java.util.Collections;
 import java.util.List;
 
 @Slf4j
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/presto")
 public class PrestoRestService {
