@@ -11,8 +11,9 @@ export class QueryPrestoService {
   }
 
   getResults(query: string): Observable<any> {
-    const params = new HttpParams().append('query', query);
-    return this.http.get<any>('http://localhost:8000/api/presto/getQueryResults', {params});
+    return this.http.get<any>('http://localhost:8000/api/presto/getQueryResults', {
+      params: new HttpParams().set('query', query),
+    });
   }
 
   getAvailableDbs(): Observable<string> {
@@ -20,12 +21,20 @@ export class QueryPrestoService {
   }
 
   getAvailableDbSchemas(selectedDB: string): Observable<string> {
-    const params = new HttpParams().append('selectedDB', selectedDB);
-    return this.http.get<any>('http://localhost:8000/api/presto/getAvailableDbSchemas', {params});
+    return this.http.get<any>('http://localhost:8000/api/presto/getAvailableDbSchemas', {
+      params: new HttpParams().set('selectedDB', selectedDB),
+    });
   }
 
   getAvailableSchemaTables(schema: string): Observable<string> {
-    const params = new HttpParams().append('schema', schema);
-    return this.http.get<any>('http://localhost:8000/api/presto/getAvailableSchemaTables', {params});
+    return this.http.get<any>('http://localhost:8000/api/presto/getAvailableSchemaTables', {
+      params: new HttpParams().set('schema', schema),
+    });
+  }
+
+  getColumnsFromTable(selectedTable: string): Observable<string> {
+    return this.http.get<any>('http://localhost:8000/api/presto/getColumnsFromTable', {
+      params: new HttpParams().set('selectedTable', selectedTable),
+    });
   }
 }
