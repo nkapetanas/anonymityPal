@@ -1,6 +1,8 @@
 package com.research.privacy.anonymity.pal.restservices;
 
 import com.research.privacy.anonymity.pal.Application;
+import com.research.privacy.anonymity.pal.api.DBRecordJson;
+import com.research.privacy.anonymity.pal.api.DBRecordWrapper;
 import com.research.privacy.anonymity.pal.api.ResultsJson;
 import com.research.privacy.anonymity.pal.common.utils.Utils;
 import com.research.privacy.anonymity.pal.dataset.DBRecord;
@@ -116,7 +118,7 @@ class ITQueryRestServices {
 
         Assertions.assertNotNull(queryResults);
         final Set<String> quasiColumns = queryResults.getQuasiColumns();
-        final List<DBRecord> dbRecordList = queryResults.getDbRecordList();
+        final List<DBRecordWrapper> dbRecordList = queryResults.getDbRecordList();
         Assertions.assertTrue(Utils.isNotEmpty(quasiColumns));
         Assertions.assertTrue(Utils.isNotEmpty(dbRecordList));
         Assertions.assertEquals(17, dbRecordList.size());

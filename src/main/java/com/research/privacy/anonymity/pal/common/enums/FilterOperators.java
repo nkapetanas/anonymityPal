@@ -1,5 +1,6 @@
 package com.research.privacy.anonymity.pal.common.enums;
 
+import com.research.privacy.anonymity.pal.common.utils.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -33,5 +34,9 @@ public enum FilterOperators {
         List<String> filterOperatorsList = new ArrayList<>();
         Arrays.stream(FilterOperators.values()).forEach(filterOperators -> filterOperatorsList.add(filterOperators.getField()));
         return filterOperatorsList;
+    }
+
+    public static FilterOperators fromField(String field){
+        return Utils.isEmpty(field) ? null : Arrays.stream(values()).filter((filterOperator -> filterOperator.getField().equals(field.trim()))).findFirst().orElse(null);
     }
 }

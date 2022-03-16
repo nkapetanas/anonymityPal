@@ -9,7 +9,7 @@ export class DataTableComponent implements OnInit, OnChanges {
 
     results: any[] = []; // TODO: type of results
     columns: Array<{field: string, header: string}> = [];
-    // @Input() dataTable;
+    @Input() data : any;
 
     constructor() { }
 

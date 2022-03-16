@@ -55,6 +55,10 @@ public class DBRecord {
         return attributes.stream().filter(a -> IdentifierEnumType.QUASI_IDENTIFIER.equals(a.getIdentifierEnumType())).collect(Collectors.toList());
     }
 
+    public List<String> getColumnNames() {
+        return attributes.stream().map(Attribute::getColumnName).collect(Collectors.toList());
+    }
+
     public List<Attribute> getSensitiveRecords() {
         return attributes.stream().filter(a -> IdentifierEnumType.SENSITIVE.equals(a.getIdentifierEnumType())).collect(Collectors.toList());
     }

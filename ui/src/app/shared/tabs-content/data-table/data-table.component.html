@@ -1,8 +1,8 @@
 <p-table [value]="results" styleClass="background-color pt-4">
     <ng-template pTemplate="header">
         <tr>
-            <th *ngFor="let col of columns">
-                {{col.header}}
+            <th *ngFor="let col of data.columnNames">
+                {{col}}
             </th>
         </tr>
     </ng-template>

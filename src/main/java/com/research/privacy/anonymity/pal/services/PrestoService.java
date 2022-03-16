@@ -1,5 +1,7 @@
 package com.research.privacy.anonymity.pal.services;
 
+import com.research.privacy.anonymity.pal.api.DBRecordJson;
+import com.research.privacy.anonymity.pal.api.DBRecordWrapper;
 import com.research.privacy.anonymity.pal.api.ResultsJson;
 import com.research.privacy.anonymity.pal.common.utils.Utils;
 import com.research.privacy.anonymity.pal.dataset.DBRecord;
@@ -54,9 +56,23 @@ public class PrestoService {
 
     private ResultsJson convertDBResultsToJson(final List<DBRecord> dbRecords) {
         Set<String> quasiColumns = new HashSet<>();
-        dbRecords.forEach(dbRecord -> quasiColumns.addAll(dbRecord.getQIColumnsLabels()));
+        Set<String> columnNames = new HashSet<>();
+        List<DBRecordWrapper> dbRecordWrapper = new ArrayList<>();
 
-        return new ResultsJson(quasiColumns, dbRecords);
+        dbRecords.forEach(dbRecord -> {
+            quasiColumns.addAll(dbRecord.getQIColumnsLabels());
+            columnNames.addAll(dbRecord.getColumnNames());
+
+            final List<Attribute> attributes = dbRecord.getAttributes();
+
+            List<DBRecordJson> dbRecordList = new ArrayList<>();
+            attributes.forEach(a-> dbRecordList.add(new DBRecordJson(a.getColumnName(), String.valueOf(a.getValue()))));
+
+            dbRecordWrapper.add(new DBRecordWrapper(dbRecordList));
+        });
+
+
+        return new ResultsJson(quasiColumns, columnNames, dbRecordWrapper);
     }
 
     private List<DBRecord> convertResultList(List<Map<String, Object>> resultList) {
