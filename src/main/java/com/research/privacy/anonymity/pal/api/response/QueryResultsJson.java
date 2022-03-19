@@ -1,4 +1,4 @@
-package com.research.privacy.anonymity.pal.api;
+package com.research.privacy.anonymity.pal.api.response;
 
 import com.research.privacy.anonymity.pal.dataset.DBRecord;
 import lombok.AllArgsConstructor;

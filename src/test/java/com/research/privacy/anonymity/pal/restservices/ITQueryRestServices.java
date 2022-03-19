@@ -1,11 +1,9 @@
 package com.research.privacy.anonymity.pal.restservices;
 
 import com.research.privacy.anonymity.pal.Application;
-import com.research.privacy.anonymity.pal.api.DBRecordJson;
-import com.research.privacy.anonymity.pal.api.DBRecordWrapper;
-import com.research.privacy.anonymity.pal.api.ResultsJson;
+import com.research.privacy.anonymity.pal.api.response.DBRecordWrapper;
+import com.research.privacy.anonymity.pal.api.response.QueryResultsResponseJson;
 import com.research.privacy.anonymity.pal.common.utils.Utils;
-import com.research.privacy.anonymity.pal.dataset.DBRecord;
 import com.research.privacy.anonymity.pal.exceptions.AnonymityPalException;
 import com.research.privacy.anonymity.pal.services.PrestoService;
 import lombok.extern.slf4j.Slf4j;
@@ -109,7 +107,7 @@ class ITQueryRestServices {
 
     @Test
     void privacyService_getQueryResultsSimple_OK() {
-         ResultsJson queryResults = null;
+         QueryResultsResponseJson queryResults = null;
         try {
             queryResults = prestoService.getQueryResultsSimple(VALID_QUERY);
         } catch (AnonymityPalException e) {

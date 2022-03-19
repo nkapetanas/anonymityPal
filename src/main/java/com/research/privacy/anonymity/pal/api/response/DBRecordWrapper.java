@@ -1,9 +1,9 @@
-package com.research.privacy.anonymity.pal.api;
+package com.research.privacy.anonymity.pal.api.response;
 
 import lombok.AllArgsConstructor;
 import java.util.List;
 
 @AllArgsConstructor
 public class DBRecordWrapper {
-    List<DBRecordJson> dbRecordJsonList;
+    List<DBRecordKeyValue> dbRecordJsonList;
 }

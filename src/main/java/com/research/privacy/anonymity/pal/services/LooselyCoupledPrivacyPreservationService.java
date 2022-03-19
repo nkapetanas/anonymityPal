@@ -1,6 +1,6 @@
 package com.research.privacy.anonymity.pal.services;
 
-import com.research.privacy.anonymity.pal.api.QueryResultsJson;
+import com.research.privacy.anonymity.pal.api.response.QueryResultsJson;
 import com.research.privacy.anonymity.pal.dataset.DBRecord;
 import com.research.privacy.anonymity.pal.dataset.attributes.Attribute;
 import lombok.extern.slf4j.Slf4j;

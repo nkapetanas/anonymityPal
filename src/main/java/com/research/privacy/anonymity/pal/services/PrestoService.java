@@ -1,8 +1,8 @@
 package com.research.privacy.anonymity.pal.services;
 
-import com.research.privacy.anonymity.pal.api.DBRecordJson;
-import com.research.privacy.anonymity.pal.api.DBRecordWrapper;
-import com.research.privacy.anonymity.pal.api.ResultsJson;
+import com.research.privacy.anonymity.pal.api.response.DBRecordKeyValue;
+import com.research.privacy.anonymity.pal.api.response.DBRecordWrapper;
+import com.research.privacy.anonymity.pal.api.response.QueryResultsResponseJson;
 import com.research.privacy.anonymity.pal.common.utils.Utils;
 import com.research.privacy.anonymity.pal.dataset.DBRecord;
 import com.research.privacy.anonymity.pal.dataset.attributes.Attribute;
@@ -45,7 +45,7 @@ public class PrestoService {
         return dbRecords;
     }
 
-    public ResultsJson getQueryResultsSimple(final String query) throws AnonymityPalException {
+    public QueryResultsResponseJson getQueryResultsSimple(final String query) throws AnonymityPalException {
         final List<Map<String, Object>> resultList = prestoDbRepository.findResultList(query);
         if (Utils.isNotEmpty(resultList)) {
             final List<DBRecord> dbRecords = convertResultList(resultList);
@@ -54,7 +54,7 @@ public class PrestoService {
         return null;
     }
 
-    private ResultsJson convertDBResultsToJson(final List<DBRecord> dbRecords) {
+    private QueryResultsResponseJson convertDBResultsToJson(final List<DBRecord> dbRecords) {
         Set<String> quasiColumns = new HashSet<>();
         Set<String> columnNames = new HashSet<>();
         List<DBRecordWrapper> dbRecordWrapper = new ArrayList<>();
@@ -65,14 +65,14 @@ public class PrestoService {
 
             final List<Attribute> attributes = dbRecord.getAttributes();
 
-            List<DBRecordJson> dbRecordList = new ArrayList<>();
-            attributes.forEach(a-> dbRecordList.add(new DBRecordJson(a.getColumnName(), String.valueOf(a.getValue()))));
+            List<DBRecordKeyValue> dbRecordList = new ArrayList<>();
+            attributes.forEach(a-> dbRecordList.add(new DBRecordKeyValue(a.getColumnName(), String.valueOf(a.getValue()))));
 
             dbRecordWrapper.add(new DBRecordWrapper(dbRecordList));
         });
 
 
-        return new ResultsJson(quasiColumns, columnNames, dbRecordWrapper);
+        return new QueryResultsResponseJson(quasiColumns, columnNames, dbRecordWrapper);
     }
 
     private List<DBRecord> convertResultList(List<Map<String, Object>> resultList) {
