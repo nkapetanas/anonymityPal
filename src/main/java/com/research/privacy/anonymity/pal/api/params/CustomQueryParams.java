@@ -15,5 +15,6 @@ import java.util.List;
 public class CustomQueryParams {
     private String completeTablePath;
     private boolean isJoin;
+    private String completeTableToJoinPath;
     private List<FilterOperations> filterOperationsList;
 }
