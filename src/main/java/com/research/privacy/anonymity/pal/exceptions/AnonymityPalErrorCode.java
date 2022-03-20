@@ -11,6 +11,9 @@ public enum AnonymityPalErrorCode {
     AP_E_0002(2, ErrorMessagesEnum.AP_E_0002, "The query results do not meet the privacy requirements"),
     AP_E_0003(3, ErrorMessagesEnum.AP_E_0003, "The selected DB is empty"),
     AP_E_0004(4, ErrorMessagesEnum.AP_E_0004, "The selected table is empty"),
+    AP_E_0005(5, ErrorMessagesEnum.AP_E_0005, "Join info is missing"),
+    AP_E_0006(6, ErrorMessagesEnum.AP_E_0006, "Join table is empty"),
+    AP_E_0007(7, ErrorMessagesEnum.AP_E_0007, "One or both of the join columns are invalid"),
     ;
 
     @Getter

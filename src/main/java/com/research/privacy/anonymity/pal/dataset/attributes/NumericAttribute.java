@@ -16,7 +16,8 @@ public class NumericAttribute extends Attribute {
     }
 
     private void setNumericValue(final Object numericValue) {
-        this.value = Integer.valueOf((String) numericValue);
+        final String numericValueToString = String.valueOf(numericValue);
+        this.value = Integer.valueOf(numericValueToString);
     }
 
     @Override

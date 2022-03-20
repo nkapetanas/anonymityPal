@@ -34,6 +34,8 @@ class ITQueryRestServices {
     private static final String UNKNOWN_TABLE = "mongodb.health_data_db_1.unknown";
     private static final String VALID_TABLE = "mongodb.health_data_db_1.health_data_collection_1";
     private static final String VALID_QUERY = "SELECT * FROM mongodb.health_data_db_1.health_data_collection_1";
+    private static final String VALID_JOIN_QUERY = "SELECT * FROM mongodb.health_data_db_1.health_data_collection_1 t1 LEFT OUTER JOIN postgresql.public.health_data_collection_2 t2 ON " +
+            "t1.zip = t2.zipcode WHERE t2.nationality = 'European'";
 
     private static final String MONGO_DB_HEALTH_DATA_DB_1 = "health_data_db_1";
     private static final String SHOULD_NOT_FAIL = "Should not fail";
@@ -124,5 +126,22 @@ class ITQueryRestServices {
         Assertions.assertTrue(quasiColumns.stream().anyMatch(QUASI_COLUMN_1::equals));
         Assertions.assertTrue(quasiColumns.stream().anyMatch(QUASI_COLUMN_2::equals));
         Assertions.assertTrue(quasiColumns.stream().anyMatch(QUASI_COLUMN_3::equals));
+    }
+
+    @Test
+    void privacyService_getQueryResultsSimple_Join_OK() {
+         QueryResultsResponseJson queryResults = null;
+        try {
+            queryResults = prestoService.getQueryResultsSimple(VALID_JOIN_QUERY);
+        } catch (AnonymityPalException e) {
+            Assertions.fail(SHOULD_NOT_FAIL);
+        }
+
+        Assertions.assertNotNull(queryResults);
+        final Set<String> quasiColumns = queryResults.getQuasiColumns();
+        final List<DBRecordWrapper> dbRecordList = queryResults.getDbRecordList();
+        Assertions.assertTrue(Utils.isNotEmpty(quasiColumns));
+        Assertions.assertTrue(Utils.isNotEmpty(dbRecordList));
+        Assertions.assertEquals(40, dbRecordList.size());
     }
 }

@@ -3,7 +3,6 @@ package com.research.privacy.anonymity.pal.api;
 import com.research.privacy.anonymity.pal.api.params.CustomQueryParams;
 import com.research.privacy.anonymity.pal.api.response.QueryResultsJson;
 import com.research.privacy.anonymity.pal.api.response.QueryResultsResponseJson;
-import com.research.privacy.anonymity.pal.common.enums.FilterOperators;
 import com.research.privacy.anonymity.pal.common.utils.Utils;
 import com.research.privacy.anonymity.pal.dataset.DBRecord;
 import com.research.privacy.anonymity.pal.exceptions.AnonymityPalException;
@@ -60,7 +59,7 @@ public class QueriesRestService {
         try {
             queryResults = prestoService.getQueryResultsSimple(query);
         } catch (AnonymityPalException e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(queryResults);
     }
@@ -73,12 +72,12 @@ public class QueriesRestService {
             ResponseEntity.ok(new ArrayList<>());
         }
 
-        final String customQuery = customQueryBuilderService.buildQuery(customQueryParams);
         QueryResultsResponseJson queryResults;
         try {
+            final String customQuery = customQueryBuilderService.buildQuery(customQueryParams);
             queryResults = prestoService.getQueryResultsSimple(customQuery);
         } catch (AnonymityPalException e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().body(queryResults);
     }

@@ -9,14 +9,14 @@ CREATE TABLE health_data_collection_2
 (
     id               SERIAL PRIMARY KEY,
     nationality      VARCHAR(255) NOT NULL,
-    sex              VARCHAR(2)   NOT NULL,
+    gender              VARCHAR(2)   NOT NULL,
     blood_type       VARCHAR(2)   NOT NULL,
     zipCode          VARCHAR(255) NOT NULL,
-    health_condition VARCHAR(255)
+    disease VARCHAR(255)
 );
 
 INSERT INTO health_data_collection_2
-    (id, nationality, sex, blood_type, zipCode, health_condition)
+    (id, nationality, gender, blood_type, zipCode, disease)
 VALUES (1, 'European', 'M', 'A', '130**', 'Cancer'),
        (2, 'European', 'M', 'B', '150**', 'Broken Arm'),
        (3, 'European', 'M', 'A', '130**', 'Diabetes'),

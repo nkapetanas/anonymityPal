@@ -7,6 +7,9 @@ public enum ErrorMessagesEnum {
     AP_E_0002("AP_E_0002"),
     AP_E_0003("AP_E_0003"),
     AP_E_0004("AP_E_0004"),
+    AP_E_0005("AP_E_0005"),
+    AP_E_0006("AP_E_0006"),
+    AP_E_0007("AP_E_0007"),
     ;
 
     private String key;
