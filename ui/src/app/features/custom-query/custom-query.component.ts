@@ -104,4 +104,19 @@ export class CustomQueryComponent implements OnInit {
       });
   }
 
+  showJoinData(){
+    this.value = 1;
+  }
+
+  visualizeData() {
+    this.queryPrestoService.getResults(this.completeCatalog).subscribe((response: string) => {
+        this.tablesOptions = createDropdownOptions(response);
+      },
+      (error) => {
+        const tables = [
+          'vTable'
+        ];
+        this.tablesOptions = createDropdownOptions(tables);
+      });
+  }
 }

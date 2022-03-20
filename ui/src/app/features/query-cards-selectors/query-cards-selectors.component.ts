@@ -14,7 +14,7 @@ export class QueryCardsSelectorsComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        debugger;
+
     }
 
     createCustomQuestion() {

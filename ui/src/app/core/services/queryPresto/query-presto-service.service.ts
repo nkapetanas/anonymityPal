@@ -38,4 +38,8 @@ export class QueryPrestoService {
       params: new HttpParams().set('selectedTable', selectedTable),
     });
   }
+
+  getFilterOperationOptions(): Observable<string> {
+    return this.http.get<any>(Consts.API_PATH + Consts.API_FILTER_OPERATIONS);
+  }
 }

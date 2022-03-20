@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
     results: any[] = []; // TODO: type of results
     columns: Array<{field: string, header: string}> = [];
 
-    constructor(private privacyService: PrivacyService, 
+    constructor(private privacyService: PrivacyService,
         private queryPrestoService: QueryPrestoService,
         private router: Router) { }
 
@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
 
     /**
      * Get the table results
-     * @returns 
+     * @returns
      */
     getResults() {
         return this.queryPrestoService.getResults(this.query).subscribe(response => { // TODO: type of response
@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
     }
 
     askQuestion() {
-        debugger;
+
         this.router.navigate(['privacy-buddy/create-question']);
     }
 

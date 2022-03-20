@@ -18,7 +18,6 @@ export class CustomQueryResolver implements Resolve<Observable<string>> {
     ]
 
     resolve(): Observable<any> {
-        debugger;
         return this.queryPrestoService.getAvailableDbs().pipe(
             map(response => (
                 { databaseData: response }
