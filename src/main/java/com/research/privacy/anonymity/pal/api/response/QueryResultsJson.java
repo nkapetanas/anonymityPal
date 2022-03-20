@@ -17,4 +17,5 @@ public class QueryResultsJson {
     private Set<String> quasiColumns;
     private List<DBRecord> dbRecordList;
     private Set<String> quasiColumnsToCheck;
+    private boolean isPrivacyPreserved;
 }

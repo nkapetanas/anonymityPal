@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
@@ -61,6 +62,11 @@ public class DBRecord {
 
     public List<Attribute> getSensitiveRecords() {
         return attributes.stream().filter(a -> IdentifierEnumType.SENSITIVE.equals(a.getIdentifierEnumType())).collect(Collectors.toList());
+    }
+
+    public String getSingleSensitiveRecordValue() {
+        final Optional<Attribute> sensitiveAttribute = attributes.stream().filter(a -> IdentifierEnumType.SENSITIVE.equals(a.getIdentifierEnumType())).findFirst();
+        return sensitiveAttribute.map(attribute -> String.valueOf(attribute.getValue())).orElse(null);
     }
 
     public List<String> getQIColumnsLabels(){
