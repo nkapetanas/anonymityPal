@@ -7,6 +7,7 @@ import com.research.privacy.anonymity.pal.dataset.attributes.NumericAttribute;
 import com.research.privacy.anonymity.pal.dataset.attributes.TextAttribute;
 import com.research.privacy.anonymity.pal.dataset.attributes.enums.IdentifierEnumType;
 import com.research.privacy.anonymity.pal.privacycriteria.KAnonymity;
+import com.research.privacy.anonymity.pal.utils.AnonymizedHealthSampleDataGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -201,5 +202,11 @@ class ITKAnonymityCriteria {
 
         final List<DBRecord> dbRecords = Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4);
         Assertions.assertFalse(kAnonymity.isKAnonymous(dbRecords));
+    }
+
+    @Test
+    void kAnonymity_data_generator_OK() {
+        final List<DBRecord> dbRecords = AnonymizedHealthSampleDataGenerator.generateData(3, 100);
+        Assertions.assertTrue(kAnonymity.isKAnonymous(dbRecords));
     }
 }

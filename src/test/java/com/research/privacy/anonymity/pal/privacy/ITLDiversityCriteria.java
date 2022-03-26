@@ -8,6 +8,7 @@ import com.research.privacy.anonymity.pal.dataset.attributes.TextAttribute;
 import com.research.privacy.anonymity.pal.dataset.attributes.enums.IdentifierEnumType;
 import com.research.privacy.anonymity.pal.privacycriteria.LDiversity;
 import com.research.privacy.anonymity.pal.services.PrivacyService;
+import com.research.privacy.anonymity.pal.utils.AnonymizedHealthSampleDataGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -387,5 +388,11 @@ class ITLDiversityCriteria {
 
         lDiversity.setDesiredL(3);
         Assertions.assertFalse(lDiversity.isLDiverse(dbRecords));
+    }
+
+    @Test
+    void privacyService_isLDiverse_data_generator_OK() {
+        final List<DBRecord> dbRecords = AnonymizedHealthSampleDataGenerator.generateData(3, 100);
+        Assertions.assertTrue(lDiversity.isLDiverse(dbRecords));
     }
 }

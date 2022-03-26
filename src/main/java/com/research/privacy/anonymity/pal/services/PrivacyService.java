@@ -14,22 +14,15 @@ public class PrivacyService {
 
     private final KAnonymity kAnonymity;
     private final LDiversity lDiversity;
-    private final AnonymityPalAnonymizer anonymityPalAnonymizer;
 
-    public PrivacyService(KAnonymity kAnonymity, LDiversity lDiversity, AnonymityPalAnonymizer anonymityPalAnonymizer) {
+    public PrivacyService(KAnonymity kAnonymity, LDiversity lDiversity) {
         this.kAnonymity = kAnonymity;
         this.lDiversity = lDiversity;
-        this.anonymityPalAnonymizer = anonymityPalAnonymizer;
     }
 
     public boolean isPrivacyModelFulfilled(final List<DBRecord> dbRecords) {
         boolean isKAnonymous = kAnonymity.isKAnonymous(dbRecords);
         boolean isLDiverse = lDiversity.isLDiverse(dbRecords);
         return isKAnonymous && isLDiverse;
-    }
-
-    public List<DBRecord> anonymize(List<DBRecord> dbRecords) {
-        anonymityPalAnonymizer.anonymize(dbRecords);
-        return null;
     }
 }
