@@ -4,6 +4,7 @@ import com.research.privacy.anonymity.pal.Application;
 import com.research.privacy.anonymity.pal.api.response.DBRecordWrapper;
 import com.research.privacy.anonymity.pal.api.response.QueryResultsResponseJson;
 import com.research.privacy.anonymity.pal.common.utils.Utils;
+import com.research.privacy.anonymity.pal.dataset.DBRecord;
 import com.research.privacy.anonymity.pal.exceptions.AnonymityPalException;
 import com.research.privacy.anonymity.pal.services.PrestoService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,7 @@ class ITQueryRestServices {
     private static final String UNKNOWN_TABLE = "mongodb.health_data_db_1.unknown";
     private static final String VALID_TABLE = "mongodb.health_data_db_1.health_data_collection_1";
     private static final String VALID_QUERY = "SELECT * FROM mongodb.health_data_db_1.health_data_collection_1";
+    private static final String VALID_QUERY_2 = "SELECT * FROM postgresql.public.health_data_collection_2";
     private static final String VALID_JOIN_QUERY = "SELECT * FROM mongodb.health_data_db_1.health_data_collection_1 t1 LEFT OUTER JOIN postgresql.public.health_data_collection_2 t2 ON " +
             "t1.zip = t2.zipcode WHERE t2.nationality = 'European'";
 
@@ -143,5 +145,20 @@ class ITQueryRestServices {
         Assertions.assertTrue(Utils.isNotEmpty(quasiColumns));
         Assertions.assertTrue(Utils.isNotEmpty(dbRecordList));
         Assertions.assertEquals(40, dbRecordList.size());
+    }
+
+    @Test
+    void privacyService_getQueryResultsPrivacyChecked_OK() {
+        try {
+            prestoService.getQueryResultsPrivacyChecked(VALID_QUERY);
+        } catch (AnonymityPalException e) {
+            Assertions.fail(SHOULD_NOT_FAIL);
+        }
+
+        try {
+            prestoService.getQueryResultsPrivacyChecked(VALID_QUERY_2);
+        } catch (AnonymityPalException e) {
+            Assertions.fail(SHOULD_NOT_FAIL);
+        }
     }
 }

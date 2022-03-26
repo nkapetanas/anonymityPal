@@ -18,9 +18,6 @@ public abstract class Attribute {
 
     // name of column in the corresponding db schema
     private String columnName;
-
-    private String generalisedValue;
-
     protected Object value;
 
     protected Attribute(AttributeEnumType attributeType, IdentifierEnumType identifierType, String columnName, Object value) {

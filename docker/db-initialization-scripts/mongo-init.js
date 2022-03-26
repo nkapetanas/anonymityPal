@@ -2,107 +2,102 @@ db = db.getSiblingDB('health_data_db_1');
 
 db.createCollection('health_data_collection_1');
 
-db.health_data_collection_1.insertMany([
-    {
-        zip: '130**',
-        age: '20-30',
-        marital_status: 'single',
-        health_condition: 'Heart Disease'
-    },
-    {
-        zip: '130**',
-        age: '20-30',
-        marital_status: 'married',
-        health_condition: 'HIV'
-    },
-    {
-        zip: '130**',
-        age: '20-30',
-        marital_status: 'single',
-        health_condition: 'Diabetes'
-    },
-    {
-        zip: '771**',
-        age: '30-40',
-        marital_status: 'single',
-        health_condition: 'Diabetes'
-    },
-    {
-        zip: '450**',
-        age: '40-50',
-        marital_status: 'single',
-        health_condition: 'Heart Disease'
-    },
-    {
-        zip: '150**',
-        age: '30-40',
-        marital_status: 'single',
-        health_condition: 'Broken Arm'
-    },
-    {
-        zip: '160**',
-        age: '50-60',
-        marital_status: 'married',
-        health_condition: 'Eye Disease'
-    },
-    {
-        zip: '450**',
-        age: '40-50',
-        marital_status: 'single',
-        health_condition: 'Diabetes'
-    },
-    {
-        zip: '160**',
-        age: '50-60',
-        marital_status: 'married',
-        health_condition: 'Heart Disease'
-    },
-    {
-        zip: '150**',
-        age: '60-70',
-        marital_status: 'married',
-        health_condition: 'Broken Leg'
-    },
-    {
-        zip: '450**',
-        age: '40-50',
-        marital_status: 'single',
-        health_condition: 'HIV'
-    },
-    {
-        zip: '771**',
-        age: '30-40',
-        marital_status: 'single',
-        health_condition: 'Cancer'
-    },
-    {
-        zip: '130**',
-        age: '20-30',
-        marital_status: 'married',
-        health_condition: 'Diabetes'
-    },
-    {
-        zip: '771**',
-        age: '30-40',
-        marital_status: 'single',
-        health_condition: 'HIV'
-    },
-    {
-        zip: '160**',
-        age: '50-60',
-        marital_status: 'married',
-        health_condition: 'Broken Arm'
-    },
-    {
-        zip: '150**',
-        age: '60-70',
-        marital_status: 'married',
-        health_condition: 'Broken Arm'
-    },
-    {
-        zip: '150**',
-        age: '30-40',
-        marital_status: 'married',
-        health_condition: 'Broken Pelvis'
-    }
-]);
+db.health_data_collection_1.insertOne({ zip: '130**', age: '20-30', marital_status: 'Single', health_condition: 'Broken Leg'});
+db.health_data_collection_1.insertOne({ zip: '130**', age: '20-30', marital_status: 'Single', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '130**', age: '20-30', marital_status: 'Single', health_condition: 'Diabetes'});
+db.health_data_collection_1.insertOne({ zip: '150**', age: '50-60', marital_status: 'Married', health_condition: 'Broken Arm'});
+db.health_data_collection_1.insertOne({ zip: '150**', age: '50-60', marital_status: 'Married', health_condition: 'HIV'});
+db.health_data_collection_1.insertOne({ zip: '150**', age: '50-60', marital_status: 'Married', health_condition: 'Broken Arm'});
+db.health_data_collection_1.insertOne({ zip: '160**', age: '60-70', marital_status: 'Single', health_condition: 'Broken Arm'});
+db.health_data_collection_1.insertOne({ zip: '160**', age: '60-70', marital_status: 'Single', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '160**', age: '60-70', marital_status: 'Single', health_condition: 'HIV'});
+db.health_data_collection_1.insertOne({ zip: '450**', age: '40-50', marital_status: 'Married', health_condition: 'Broken Leg'});
+db.health_data_collection_1.insertOne({ zip: '450**', age: '40-50', marital_status: 'Married', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '450**', age: '40-50', marital_status: 'Married', health_condition: 'Diabetes'});
+db.health_data_collection_1.insertOne({ zip: '771**', age: '20-30', marital_status: 'Single', health_condition: 'Broken Leg'});
+db.health_data_collection_1.insertOne({ zip: '771**', age: '20-30', marital_status: 'Single', health_condition: 'Broken Leg'});
+db.health_data_collection_1.insertOne({ zip: '771**', age: '20-30', marital_status: 'Single', health_condition: 'Diabetes'});
+db.health_data_collection_1.insertOne({ zip: '130**', age: '50-60', marital_status: 'Married', health_condition: 'HIV'});
+db.health_data_collection_1.insertOne({ zip: '130**', age: '50-60', marital_status: 'Married', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '130**', age: '50-60', marital_status: 'Married', health_condition: 'Broken Leg'});
+db.health_data_collection_1.insertOne({ zip: '150**', age: '60-70', marital_status: 'Single', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '150**', age: '60-70', marital_status: 'Single', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '150**', age: '60-70', marital_status: 'Single', health_condition: 'HIV'});
+db.health_data_collection_1.insertOne({ zip: '160**', age: '40-50', marital_status: 'Married', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '160**', age: '40-50', marital_status: 'Married', health_condition: 'Diabetes'});
+db.health_data_collection_1.insertOne({ zip: '160**', age: '40-50', marital_status: 'Married', health_condition: 'Diabetes'});
+db.health_data_collection_1.insertOne({ zip: '450**', age: '20-30', marital_status: 'Single', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '450**', age: '20-30', marital_status: 'Single', health_condition: 'Diabetes'});
+db.health_data_collection_1.insertOne({ zip: '450**', age: '20-30', marital_status: 'Single', health_condition: 'HIV'});
+db.health_data_collection_1.insertOne({ zip: '771**', age: '50-60', marital_status: 'Married', health_condition: 'Diabetes'});
+db.health_data_collection_1.insertOne({ zip: '771**', age: '50-60', marital_status: 'Married', health_condition: 'Broken Arm'});
+db.health_data_collection_1.insertOne({ zip: '771**', age: '50-60', marital_status: 'Married', health_condition: 'Broken Arm'});
+db.health_data_collection_1.insertOne({ zip: '130**', age: '60-70', marital_status: 'Single', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '130**', age: '60-70', marital_status: 'Single', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '130**', age: '60-70', marital_status: 'Single', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '150**', age: '40-50', marital_status: 'Married', health_condition: 'Broken Arm'});
+db.health_data_collection_1.insertOne({ zip: '150**', age: '40-50', marital_status: 'Married', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '150**', age: '40-50', marital_status: 'Married', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '160**', age: '20-30', marital_status: 'Single', health_condition: 'Diabetes'});
+db.health_data_collection_1.insertOne({ zip: '160**', age: '20-30', marital_status: 'Single', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '160**', age: '20-30', marital_status: 'Single', health_condition: 'Broken Leg'});
+db.health_data_collection_1.insertOne({ zip: '450**', age: '50-60', marital_status: 'Married', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '450**', age: '50-60', marital_status: 'Married', health_condition: 'Broken Arm'});
+db.health_data_collection_1.insertOne({ zip: '450**', age: '50-60', marital_status: 'Married', health_condition: 'Diabetes'});
+db.health_data_collection_1.insertOne({ zip: '771**', age: '60-70', marital_status: 'Single', health_condition: 'HIV'});
+db.health_data_collection_1.insertOne({ zip: '771**', age: '60-70', marital_status: 'Single', health_condition: 'Broken Leg'});
+db.health_data_collection_1.insertOne({ zip: '771**', age: '60-70', marital_status: 'Single', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '130**', age: '40-50', marital_status: 'Married', health_condition: 'Broken Arm'});
+db.health_data_collection_1.insertOne({ zip: '130**', age: '40-50', marital_status: 'Married', health_condition: 'Broken Arm'});
+db.health_data_collection_1.insertOne({ zip: '130**', age: '40-50', marital_status: 'Married', health_condition: 'Diabetes'});
+db.health_data_collection_1.insertOne({ zip: '150**', age: '20-30', marital_status: 'Single', health_condition: 'Broken Arm'});
+db.health_data_collection_1.insertOne({ zip: '150**', age: '20-30', marital_status: 'Single', health_condition: 'Diabetes'});
+db.health_data_collection_1.insertOne({ zip: '150**', age: '20-30', marital_status: 'Single', health_condition: 'Broken Arm'});
+db.health_data_collection_1.insertOne({ zip: '160**', age: '50-60', marital_status: 'Married', health_condition: 'Broken Arm'});
+db.health_data_collection_1.insertOne({ zip: '160**', age: '50-60', marital_status: 'Married', health_condition: 'Diabetes'});
+db.health_data_collection_1.insertOne({ zip: '160**', age: '50-60', marital_status: 'Married', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '450**', age: '60-70', marital_status: 'Single', health_condition: 'Broken Leg'});
+db.health_data_collection_1.insertOne({ zip: '450**', age: '60-70', marital_status: 'Single', health_condition: 'HIV'});
+db.health_data_collection_1.insertOne({ zip: '450**', age: '60-70', marital_status: 'Single', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '771**', age: '40-50', marital_status: 'Married', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '771**', age: '40-50', marital_status: 'Married', health_condition: 'Broken Leg'});
+db.health_data_collection_1.insertOne({ zip: '771**', age: '40-50', marital_status: 'Married', health_condition: 'Broken Arm'});
+db.health_data_collection_1.insertOne({ zip: '130**', age: '20-30', marital_status: 'Single', health_condition: 'Diabetes'});
+db.health_data_collection_1.insertOne({ zip: '130**', age: '20-30', marital_status: 'Single', health_condition: 'Broken Leg'});
+db.health_data_collection_1.insertOne({ zip: '130**', age: '20-30', marital_status: 'Single', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '150**', age: '50-60', marital_status: 'Married', health_condition: 'Broken Leg'});
+db.health_data_collection_1.insertOne({ zip: '150**', age: '50-60', marital_status: 'Married', health_condition: 'Broken Leg'});
+db.health_data_collection_1.insertOne({ zip: '150**', age: '50-60', marital_status: 'Married', health_condition: 'Broken Arm'});
+db.health_data_collection_1.insertOne({ zip: '160**', age: '60-70', marital_status: 'Single', health_condition: 'HIV'});
+db.health_data_collection_1.insertOne({ zip: '160**', age: '60-70', marital_status: 'Single', health_condition: 'Diabetes'});
+db.health_data_collection_1.insertOne({ zip: '160**', age: '60-70', marital_status: 'Single', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '450**', age: '40-50', marital_status: 'Married', health_condition: 'Broken Arm'});
+db.health_data_collection_1.insertOne({ zip: '450**', age: '40-50', marital_status: 'Married', health_condition: 'Diabetes'});
+db.health_data_collection_1.insertOne({ zip: '450**', age: '40-50', marital_status: 'Married', health_condition: 'Broken Arm'});
+db.health_data_collection_1.insertOne({ zip: '771**', age: '20-30', marital_status: 'Single', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '771**', age: '20-30', marital_status: 'Single', health_condition: 'Broken Leg'});
+db.health_data_collection_1.insertOne({ zip: '771**', age: '20-30', marital_status: 'Single', health_condition: 'HIV'});
+db.health_data_collection_1.insertOne({ zip: '130**', age: '50-60', marital_status: 'Married', health_condition: 'Broken Leg'});
+db.health_data_collection_1.insertOne({ zip: '130**', age: '50-60', marital_status: 'Married', health_condition: 'HIV'});
+db.health_data_collection_1.insertOne({ zip: '130**', age: '50-60', marital_status: 'Married', health_condition: 'HIV'});
+db.health_data_collection_1.insertOne({ zip: '150**', age: '60-70', marital_status: 'Single', health_condition: 'HIV'});
+db.health_data_collection_1.insertOne({ zip: '150**', age: '60-70', marital_status: 'Single', health_condition: 'HIV'});
+db.health_data_collection_1.insertOne({ zip: '150**', age: '60-70', marital_status: 'Single', health_condition: 'Broken Leg'});
+db.health_data_collection_1.insertOne({ zip: '160**', age: '40-50', marital_status: 'Married', health_condition: 'Diabetes'});
+db.health_data_collection_1.insertOne({ zip: '160**', age: '40-50', marital_status: 'Married', health_condition: 'HIV'});
+db.health_data_collection_1.insertOne({ zip: '160**', age: '40-50', marital_status: 'Married', health_condition: 'Diabetes'});
+db.health_data_collection_1.insertOne({ zip: '450**', age: '20-30', marital_status: 'Single', health_condition: 'HIV'});
+db.health_data_collection_1.insertOne({ zip: '450**', age: '20-30', marital_status: 'Single', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '450**', age: '20-30', marital_status: 'Single', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '771**', age: '50-60', marital_status: 'Married', health_condition: 'Broken Leg'});
+db.health_data_collection_1.insertOne({ zip: '771**', age: '50-60', marital_status: 'Married', health_condition: 'Diabetes'});
+db.health_data_collection_1.insertOne({ zip: '771**', age: '50-60', marital_status: 'Married', health_condition: 'Broken Leg'});
+db.health_data_collection_1.insertOne({ zip: '130**', age: '60-70', marital_status: 'Single', health_condition: 'HIV'});
+db.health_data_collection_1.insertOne({ zip: '130**', age: '60-70', marital_status: 'Single', health_condition: 'Broken Leg'});
+db.health_data_collection_1.insertOne({ zip: '130**', age: '60-70', marital_status: 'Single', health_condition: 'Diabetes'});
+db.health_data_collection_1.insertOne({ zip: '150**', age: '40-50', marital_status: 'Married', health_condition: 'HIV'});
+db.health_data_collection_1.insertOne({ zip: '150**', age: '40-50', marital_status: 'Married', health_condition: 'Diabetes'});
+db.health_data_collection_1.insertOne({ zip: '150**', age: '40-50', marital_status: 'Married', health_condition: 'Broken Arm'});
+db.health_data_collection_1.insertOne({ zip: '160**', age: '20-30', marital_status: 'Single', health_condition: 'Cardiovascular'});
+db.health_data_collection_1.insertOne({ zip: '160**', age: '20-30', marital_status: 'Single', health_condition: 'HIV'});
+db.health_data_collection_1.insertOne({ zip: '160**', age: '20-30', marital_status: 'Single', health_condition: 'Broken Arm'});

@@ -38,8 +38,6 @@ public class PrestoService {
         List<DBRecord> dbRecords = convertResultList(resultList);
 
         if (!privacyService.isPrivacyModelFulfilled(dbRecords)) {
-            // TODO is it needed?
-//            dbRecords = privacyService.anonymize(dbRecords);
             throw new AnonymityPalException(AnonymityPalErrorCode.AP_E_0002);
         }
         return dbRecords;
@@ -66,7 +64,7 @@ public class PrestoService {
             final List<Attribute> attributes = dbRecord.getAttributes();
 
             List<DBRecordKeyValue> dbRecordList = new ArrayList<>();
-            attributes.forEach(a-> dbRecordList.add(new DBRecordKeyValue(a.getColumnName(), String.valueOf(a.getValue()))));
+            attributes.forEach(a -> dbRecordList.add(new DBRecordKeyValue(a.getColumnName(), String.valueOf(a.getValue()))));
 
             dbRecordWrapper.add(new DBRecordWrapper(dbRecordList));
         });
