@@ -41,7 +41,6 @@ class ITQueryRestServices {
 
     private static final String MONGO_DB_HEALTH_DATA_DB_1 = "health_data_db_1";
     private static final String SHOULD_NOT_FAIL = "Should not fail";
-    private static final String SHOULD_FAIL = "Should fail";
 
     @Autowired
     PrestoService prestoService;
@@ -110,10 +109,10 @@ class ITQueryRestServices {
     }
 
     @Test
-    void privacyService_getQueryResultsSimple_OK() {
-         QueryResultsResponseJson queryResults = null;
+    void privacyService_getQueryResultsPrivacyChecked_OK() {
+        QueryResultsResponseJson queryResults = null;
         try {
-            queryResults = prestoService.getQueryResultsSimple(VALID_QUERY);
+            queryResults = prestoService.getQueryResultsPrivacyChecked(VALID_QUERY);
         } catch (AnonymityPalException e) {
             Assertions.fail(SHOULD_NOT_FAIL);
         }
@@ -123,7 +122,7 @@ class ITQueryRestServices {
         final List<DBRecordWrapper> dbRecordList = queryResults.getDbRecordList();
         Assertions.assertTrue(Utils.isNotEmpty(quasiColumns));
         Assertions.assertTrue(Utils.isNotEmpty(dbRecordList));
-        Assertions.assertEquals(17, dbRecordList.size());
+        Assertions.assertEquals(99, dbRecordList.size());
 
         Assertions.assertTrue(quasiColumns.stream().anyMatch(QUASI_COLUMN_1::equals));
         Assertions.assertTrue(quasiColumns.stream().anyMatch(QUASI_COLUMN_2::equals));
@@ -131,10 +130,10 @@ class ITQueryRestServices {
     }
 
     @Test
-    void privacyService_getQueryResultsSimple_Join_OK() {
-         QueryResultsResponseJson queryResults = null;
+    void privacyService_getQueryResultsPrivacyChecked_Join_OK() {
+        QueryResultsResponseJson queryResults = null;
         try {
-            queryResults = prestoService.getQueryResultsSimple(VALID_JOIN_QUERY);
+            queryResults = prestoService.getQueryResultsPrivacyChecked(VALID_JOIN_QUERY);
         } catch (AnonymityPalException e) {
             Assertions.fail(SHOULD_NOT_FAIL);
         }
@@ -144,11 +143,11 @@ class ITQueryRestServices {
         final List<DBRecordWrapper> dbRecordList = queryResults.getDbRecordList();
         Assertions.assertTrue(Utils.isNotEmpty(quasiColumns));
         Assertions.assertTrue(Utils.isNotEmpty(dbRecordList));
-        Assertions.assertEquals(40, dbRecordList.size());
+        Assertions.assertEquals(441, dbRecordList.size());
     }
 
     @Test
-    void privacyService_getQueryResultsPrivacyChecked_OK() {
+    void privacyService_getQueryResultsPrivacyChecked_OK_2() {
         try {
             prestoService.getQueryResultsPrivacyChecked(VALID_QUERY);
         } catch (AnonymityPalException e) {

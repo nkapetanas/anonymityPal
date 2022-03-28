@@ -4,7 +4,6 @@ import com.research.privacy.anonymity.pal.api.params.CustomQueryParams;
 import com.research.privacy.anonymity.pal.api.response.QueryResultsJson;
 import com.research.privacy.anonymity.pal.api.response.QueryResultsResponseJson;
 import com.research.privacy.anonymity.pal.common.utils.Utils;
-import com.research.privacy.anonymity.pal.dataset.DBRecord;
 import com.research.privacy.anonymity.pal.exceptions.AnonymityPalException;
 import com.research.privacy.anonymity.pal.services.LooselyCoupledPrivacyPreservationService;
 import com.research.privacy.anonymity.pal.services.PrestoService;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @CrossOrigin(origins = "http://localhost:4200")
@@ -34,16 +32,16 @@ public class QueriesRestService {
 
     @GetMapping("/getQueryResultsPrivacyChecked")
     @ResponseStatus()
-    public ResponseEntity<List<DBRecord>> getQueryResultsPrivacyChecked(@RequestParam String query) {
+    public ResponseEntity<QueryResultsResponseJson> getQueryResultsPrivacyChecked(@RequestParam String query) {
         if (Utils.isEmpty(query)) {
             ResponseEntity.ok(new ArrayList<>());
         }
 
-        List<DBRecord> queryResults = null;
+        QueryResultsResponseJson queryResults;
         try {
             queryResults = prestoService.getQueryResultsPrivacyChecked(query);
         } catch (AnonymityPalException e) {
-            ResponseEntity.badRequest();
+            return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(queryResults);
     }
@@ -90,9 +88,11 @@ public class QueriesRestService {
         }
 
         QueryResultsJson checkedQueryResults;
-
-        checkedQueryResults = looselyCoupledPrivacyPreservationService.looselyCoupledPrivacyPreservationCheck(queryResults);
-
-        return ResponseEntity.ok(checkedQueryResults);
+        try {
+            checkedQueryResults = looselyCoupledPrivacyPreservationService.looselyCoupledPrivacyPreservationCheck(queryResults);
+        } catch (AnonymityPalException e) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().body(checkedQueryResults);
     }
 }

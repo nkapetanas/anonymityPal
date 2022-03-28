@@ -32,15 +32,16 @@ public class PrestoService {
         this.privacyService = privacyService;
     }
 
-    public List<DBRecord> getQueryResultsPrivacyChecked(final String query) throws AnonymityPalException {
+    public QueryResultsResponseJson getQueryResultsPrivacyChecked(final String query) throws AnonymityPalException {
         final List<Map<String, Object>> resultList = prestoDbRepository.findResultList(query);
 
         List<DBRecord> dbRecords = convertResultList(resultList);
 
-        if (!privacyService.isPrivacyModelFulfilled(dbRecords)) {
+        if (Utils.isNotEmpty(resultList) && !privacyService.isPrivacyModelFulfilled(dbRecords)) {
             throw new AnonymityPalException(AnonymityPalErrorCode.AP_E_0002);
         }
-        return dbRecords;
+
+        return convertDBResultsToJson(dbRecords);
     }
 
     public QueryResultsResponseJson getQueryResultsSimple(final String query) throws AnonymityPalException {

@@ -14,6 +14,7 @@ public enum AnonymityPalErrorCode {
     AP_E_0005(5, ErrorMessagesEnum.AP_E_0005, "Join info is missing"),
     AP_E_0006(6, ErrorMessagesEnum.AP_E_0006, "Join table is empty"),
     AP_E_0007(7, ErrorMessagesEnum.AP_E_0007, "One or both of the join columns are invalid"),
+    AP_E_0008(8, ErrorMessagesEnum.AP_E_0008, "The quasi column/s to check or the values are empty"),
     ;
 
     @Getter

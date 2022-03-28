@@ -10,6 +10,7 @@ public enum ErrorMessagesEnum {
     AP_E_0005("AP_E_0005"),
     AP_E_0006("AP_E_0006"),
     AP_E_0007("AP_E_0007"),
+    AP_E_0008("AP_E_0008"),
     ;
 
     private String key;
