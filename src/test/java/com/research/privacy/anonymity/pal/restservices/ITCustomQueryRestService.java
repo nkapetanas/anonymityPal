@@ -44,7 +44,7 @@ class ITCustomQueryRestService {
     void privacyService_getCustomQueryResults_Filter_OK() {
 
         List<FilterOperations> filterOperationsList = new ArrayList<>();
-        filterOperationsList.add(new FilterOperations("marital_status", Collections.singletonList("single"), FilterOperators.EQUAL_TO));
+        filterOperationsList.add(new FilterOperations("marital_status", Collections.singletonList("Single"), FilterOperators.EQUAL_TO));
 
         final ResponseEntity<QueryResultsResponseJson> restServiceResponse = queriesRestService.getCustomQueryResults(createCustomQuery(VALID_TABLE_1, false, null, filterOperationsList));
 
@@ -56,7 +56,7 @@ class ITCustomQueryRestService {
         final List<DBRecordWrapper> dbRecordList = queryResultsResponseJson.getDbRecordList();
         Assertions.assertTrue(Utils.isNotEmpty(quasiColumns));
         Assertions.assertTrue(Utils.isNotEmpty(dbRecordList));
-        Assertions.assertEquals(9, dbRecordList.size());
+        Assertions.assertEquals(51, dbRecordList.size());
     }
 
 
@@ -77,7 +77,7 @@ class ITCustomQueryRestService {
         final List<DBRecordWrapper> dbRecordList = queryResultsResponseJson.getDbRecordList();
         Assertions.assertTrue(Utils.isNotEmpty(quasiColumns));
         Assertions.assertTrue(Utils.isNotEmpty(dbRecordList));
-        Assertions.assertEquals(40, dbRecordList.size());
+        Assertions.assertEquals(441, dbRecordList.size());
     }
 
     @Test

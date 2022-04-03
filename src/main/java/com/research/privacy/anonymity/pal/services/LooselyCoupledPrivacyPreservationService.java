@@ -68,23 +68,33 @@ public class LooselyCoupledPrivacyPreservationService {
             return false;
         }
 
-        Set<String> uniqueSensitiveAttributeValues = new HashSet<>();
-        filteredDBRecords.forEach(f -> uniqueSensitiveAttributeValues.add(f.getSingleSensitiveRecordValue()));
+        HashMap<String, Integer> uniqueSensitiveAttributeValues = new HashMap<>();
+        filteredDBRecords.forEach(f -> {
+            final String recordsSensitiveValue = f.getSingleSensitiveRecordValue();
+
+            if (uniqueSensitiveAttributeValues.containsKey(recordsSensitiveValue)) {
+                final int numberOfTimesExists = uniqueSensitiveAttributeValues.get(recordsSensitiveValue) + 1;
+                uniqueSensitiveAttributeValues.put(recordsSensitiveValue, numberOfTimesExists);
+            } else {
+                uniqueSensitiveAttributeValues.put(recordsSensitiveValue, 1);
+            }
+        });
 
         if (numberOfRecords >= 2 && uniqueSensitiveAttributeValues.size() == 1) {
             return false;
         }
 
-        return uniqueSensitiveAttributeValues.stream().noneMatch(uniqueSensitiveValue -> THRESHOLD_PROBABILITY <= calculateProbability(numberOfRecords, uniqueSensitiveValue, filteredDBRecords));
+        for(Map.Entry<String, Integer> uniqueSensitiveAttributeValue : uniqueSensitiveAttributeValues.entrySet()) {
+            int numberOfRecordsWithSensitiveValue = uniqueSensitiveAttributeValue.getValue();
+            if(THRESHOLD_PROBABILITY <= calculateProbability(numberOfRecords, numberOfRecordsWithSensitiveValue)){
+                return false;
+            }
+        }
+
+        return true;
     }
 
-    private double calculateProbability(final int numberOfRecords, final String uniqueSensitiveValue, final List<DBRecord> filteredDBRecords) {
-        AtomicInteger numberOfRecordsWithSensitiveValue = new AtomicInteger();
-        filteredDBRecords.forEach(r -> {
-            if (uniqueSensitiveValue.equals(r.getSingleSensitiveRecordValue())) {
-                numberOfRecordsWithSensitiveValue.getAndIncrement();
-            }
-        });
-        return Math.round((double) numberOfRecordsWithSensitiveValue.get() / (double) numberOfRecords * 100) / 100.f;
+    private double calculateProbability(final int numberOfRecords, final int numberOfRecordsWithSensitiveValue) {
+        return Math.round((double) numberOfRecordsWithSensitiveValue / (double) numberOfRecords * 100) / 100.f;
     }
 }
