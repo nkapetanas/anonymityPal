@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 
 @Slf4j
@@ -55,8 +57,9 @@ public class QueriesRestService {
 
         QueryResultsResponseJson queryResults;
         try {
-            queryResults = prestoService.getQueryResultsSimple(query);
-        } catch (AnonymityPalException e) {
+            final String decodedQuery = URLDecoder.decode(query, "UTF-8");
+            queryResults = prestoService.getQueryResultsSimple(decodedQuery);
+        } catch (AnonymityPalException | UnsupportedEncodingException e) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(queryResults);
