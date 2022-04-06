@@ -3,31 +3,37 @@
         <label class="py-3"><strong>Filter</strong></label>
         <div class="row purple-background radius">
             <div class="col-12">
-              <p-chip *ngFor="let filterOperator of filterOperationsList; let index = index" [label]="filterOperator.filterLabel" [removable]="true" (onRemove)="removeFilterOperation(index)" (click)="onClickChip(filterOperator)"></p-chip>
-                <button pButton pRipple type="button" icon="pi pi-plus" class="purple-background" (click)="showFilterDialog()"></button>
+                <p-chip *ngFor="let filterOperator of filterOperationsList; let index = index"
+                    [label]="filterOperator.filterLabel" [removable]="true" (onRemove)="removeFilterOperation(index)"
+                    (click)="onClickChip(filterOperator)"></p-chip>
+                <button pButton pRipple type="button" icon="pi pi-plus" class="purple-background"
+                    (click)="showFilterDialog()"></button>
             </div>
-          <div *ngIf="showFilterAdd">
+            <div *ngIf="showFilterAdd">
 
-          </div>
+            </div>
         </div>
     </div>
 </div>
 
-<p-dialog header="Please choose the column, the value and filter to apply" [(visible)]="display" [modal]="true" width="350">
-  <div class="col-6">
-    <p-dropdown [options]="availableTableColumnOptionsDropdown" [(ngModel)]="selectedColumn" placeholder="Select a Table Column" appendTo="body" [style]="{'width':'100%'}"></p-dropdown>
-  </div>
-
-  <div class="col-6">
-    <p-dropdown [options]="filterOperationOptionsDropdown" [(ngModel)]="selectedFilter" placeholder="Select Filter" appendTo="body" [style]="{'width':'100%'}"></p-dropdown>
-  </div>
-
-  <div class="col-4">
-    <input type="text" pInputText [(ngModel)]="inputColumnValue"/>
-  </div>
-  <p-footer>
-    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-      <button type="button" pButton icon="fa-check" (click)="addFilter()" label="Add"></button>
+<p-dialog header="Please choose the column, the value and filter to apply" [(visible)]="display" [modal]="true"
+    width="350">
+    <div class="col-6">
+        <p-dropdown [options]="availableTableColumnOptionsDropdown" [(ngModel)]="selectedColumn"
+            placeholder="Select a Table Column" appendTo="body" [style]="{'width':'100%'}"></p-dropdown>
     </div>
-  </p-footer>
+
+    <div class="col-6">
+        <p-dropdown [options]="filterOperationOptionsDropdown" [(ngModel)]="selectedFilter" placeholder="Select Filter"
+            appendTo="body" [style]="{'width':'100%'}"></p-dropdown>
+    </div>
+
+    <div class="col-4">
+        <input type="text" pInputText [(ngModel)]="inputColumnValue" />
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton icon="fa-check" (click)="addFilter()" label="Add"></button>
+        </div>
+    </p-footer>
 </p-dialog>

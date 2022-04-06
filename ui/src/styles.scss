@@ -1,9 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-body,
-.p-dropdown, 
-.p-steps .p-steps-item .p-menuitem-link {
-    background-color: #191c1f !important;
-}
 html, body { 
     height: 100%; 
 }
@@ -12,19 +7,10 @@ body {
     margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; 
 }
 
-.white-color,
-.p-inputtext {
-    color: white !important;
-}
-
 .logo {
     cursor: pointer;
 }
 
 .center-align {
     text-align: center;
-}
-
-.p-steps .p-steps-item.p-highlight .p-steps-title {
-    color: white !important; 
 }

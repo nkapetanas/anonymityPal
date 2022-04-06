@@ -1,4 +1,4 @@
 export interface JoinOperation {
-  tableToJoinPathCatalog: string;
-  columnValues: Array<string>;
+    tableToJoinPathCatalog: string;
+    columnValues: Array<string>;
 }

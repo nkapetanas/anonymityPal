@@ -1,54 +1,56 @@
 <div class="p-5">
-  <p-steps [model]="items" [activeIndex]="stepIndex"></p-steps>
-  <container-element [ngSwitch]="stepIndex">
-    <div class="p-5" *ngSwitchCase=wizardIndexes.STEP_1>
-      <div class="row">
-        <div class="col-12">
-          <p-dropdown [options]="databasesOptions" [(ngModel)]="database" placeholder="Select a database">
-          </p-dropdown>
+    <p-steps [model]="items" [activeIndex]="stepIndex"></p-steps>
+    <container-element [ngSwitch]="stepIndex">
+        <div class="p-5" *ngSwitchCase=wizardIndexes.STEP_1>
+            <div class="row">
+                <div class="col-12">
+                    <p-dropdown [options]="databasesOptions" [(ngModel)]="database" placeholder="Select a database">
+                    </p-dropdown>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="p-5" *ngSwitchCase=wizardIndexes.STEP_2>
-      <div class="row">
-        <div class="col-12">
-          <p-dropdown [options]="schemasOptions" [(ngModel)]="schema" placeholder="Select a schema">
-          </p-dropdown>
+        <div class="p-5" *ngSwitchCase=wizardIndexes.STEP_2>
+            <div class="row">
+                <div class="col-12">
+                    <p-dropdown [options]="schemasOptions" [(ngModel)]="schema" placeholder="Select a schema">
+                    </p-dropdown>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="p-5" *ngSwitchCase=wizardIndexes.STEP_3>
-      <div class="row">
-        <div class="col-12">
-          <p-dropdown [options]="tablesOptions" [(ngModel)]="table" placeholder="Select a table">
-          </p-dropdown>
+        <div class="p-5" *ngSwitchCase=wizardIndexes.STEP_3>
+            <div class="row">
+                <div class="col-12">
+                    <p-dropdown [options]="tablesOptions" [(ngModel)]="table" placeholder="Select a table">
+                    </p-dropdown>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="p-5" *ngSwitchCase=wizardIndexes.STEP_4>
-      <div class="row">
-        <div class="col-12">
-          <label>Selected table: </label><span>{{completeCatalog}}</span>
-        </div>
-      </div>
-      <button pButton pRipple type="button" (click)="showJoinData()" label="Join Data" class="p-button-outlined"></button>
-      <div *ngIf="value === 1">
-        <label class="py-3"><strong>Join</strong></label>
-      </div>
-      <app-filter [selectedTable]="completeCatalog"></app-filter>
+        <div class="p-5" *ngSwitchCase=wizardIndexes.STEP_4>
+            <div class="row">
+                <div class="col-12">
+                    <label>Selected table: </label><span>{{completeCatalog}}</span>
+                </div>
+            </div>
+            <button pButton pRipple type="button" (click)="showJoinData()" label="Join Data"
+                class="p-button-outlined"></button>
+            <div *ngIf="value === 1">
+                <label class="py-3"><strong>Join</strong></label>
+            </div>
+            <app-filter [selectedTable]="completeCatalog"></app-filter>
 
-      <button pButton pRipple type="button" (click)="visualizeData()" label="Visualize" class="p-button-outlined p-button-success"></button>
-    </div>
-  </container-element>
-  <div class="pt-3 d-flex justify-content-between">
+            <button pButton pRipple type="button" (click)="visualizeData()" label="Visualize"
+                class="p-button-outlined p-button-success"></button>
+        </div>
+    </container-element>
+    <div class="pt-3 d-flex justify-content-between">
         <span>
             <button *ngIf="stepIndex !== wizardIndexes.STEP_1" pButton pRipple type="button" class="p-button-secondary"
-                    label="Back" (click)="returnToPreviousStep()"></button>
+                label="Back" (click)="returnToPreviousStep()"></button>
         </span>
-    <span>
+        <span>
             <button *ngIf="stepIndex !== wizardIndexes.STEP_4" pButton pRipple type="button" class="p-button-secondary"
-                    label="Next" (click)="goToNextStep()"></button>
+                label="Next" (click)="goToNextStep()"></button>
         </span>
-  </div>
-  <app-tabs-content *ngIf="results"></app-tabs-content>
+    </div>
+    <app-tabs-content *ngIf="results"></app-tabs-content>
 </div>

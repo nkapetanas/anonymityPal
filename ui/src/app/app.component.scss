@@ -9,11 +9,6 @@
 }
 
 :host::ng-deep {
-    .p-tabmenu-nav,
-    .p-inputtext,
-    .background-color{
-        background-color: #191c1f;
-    }
 
     .mat-tab-body {
         min-height: 500px;

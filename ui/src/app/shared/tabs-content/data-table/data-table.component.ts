@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, SimpleChanges, OnChanges } from '@angular/core';
+import { DataTable, DBRecordJson } from './DataTable.model';
 
 @Component({
     selector: 'app-data-table',
@@ -7,31 +8,36 @@ import { Component, Input, OnInit, SimpleChanges, OnChanges } from '@angular/cor
 })
 export class DataTableComponent implements OnInit, OnChanges {
 
-    results: any[] = []; // TODO: type of results
-    columns: Array<{field: string, header: string}> = [];
-    @Input() data : any;
+    @Input() data: DataTable;
+    orderedColumns: Array<{ label: string, order: number}> = [];
 
     constructor() { }
 
-    ngOnInit(): void {
+    ngOnInit(): void { }
 
-        this.columns = [
-            { field: 'code', header: 'Code' },
-            { field: 'name', header: 'Name' },
-            { field: 'category', header: 'Category' },
-            { field: 'quantity', header: 'Quantity' }
-        ];
-
-        this.results = [
-            {code: 'code', name: 'name', category: 'category', quantity: 'quantity'}
-        ];
-    }
-
-    ngOnChanges(_changes: SimpleChanges) {
-        // if(changes.dataTable && changes.dataTable.currentValue && changes.dataTable.firstChange) {
-        //     this.columns = changes.dataTable.currentValue.columns;
-        //     this.results = changes.dataTable.currentValue.results;
-        // }
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['data'] && changes['data'].currentValue) {
+            this.orderedColumns = changes['data'].currentValue.columnNames.map((column: any, index: number) => {
+                const columnData = { label: column, order: index };
+                return columnData;
+            });
+            console.log(this.orderedColumns);
+            changes['data'].currentValue.dbRecordList.map((dbRecord: any) => {
+                if(dbRecord.dbRecordJsonList.length > 0) {
+                    dbRecord.dbRecordJsonList.sort((dbRecordJsonPrevious: any, dbRecordJsonNext: any) => {
+                        const previousValue: any = this.orderedColumns.find((res: any)=> res.label === dbRecordJsonPrevious.columnName);
+                        const nextValue: any = this.orderedColumns.find((res: any)=> res.label === dbRecordJsonNext.columnName);
+                        if (previousValue.order < nextValue.order) {
+                            return -1;
+                        } else if (previousValue > nextValue) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    })
+                }
+            })
+        }
     }
 
 }

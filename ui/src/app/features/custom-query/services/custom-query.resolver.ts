@@ -5,7 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 import { QueryPrestoService } from 'src/app/core/services/queryPresto/query-presto-service.service';
 
 @Injectable({
-    providedIn:'root'
+    providedIn: 'root'
 })
 export class CustomQueryResolver implements Resolve<Observable<string>> {
 
