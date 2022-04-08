@@ -1,0 +1,12 @@
+$light-blue-color: #cbdef7;
+:host::ng-deep {
+
+    .light-blue-background {
+        background-color: $light-blue-color;
+    }
+
+
+    .radius {
+        border-radius: 5px;
+    }
+}

@@ -1,12 +1,16 @@
-<div class="row">
+<div class="row py-3">
     <div class="col-12">
-        <label class="py-3"><strong>Filter</strong></label>
-        <div class="row purple-background radius">
+        <!-- <div class="row">
+            <div class="col-12"> -->
+                <h3 class="m-0"><strong>Filter</strong></h3>
+            <!-- </div>
+        </div> -->
+        <div class="row mx-0 light-purple-background radius">
             <div class="col-12">
-                <p-chip *ngFor="let filterOperator of filterOperationsList; let index = index"
+                <p-chip *ngFor="let filterOperator of filterOperationsList; let index = index" class="pr-2" 
                     [label]="filterOperator.filterLabel" [removable]="true" (onRemove)="removeFilterOperation(index)"
                     (click)="onClickChip(filterOperator)"></p-chip>
-                <button pButton pRipple type="button" icon="pi pi-plus" class="purple-background"
+                <button pButton pRipple type="button" icon="pi pi-plus" class="add-filter-button"
                     (click)="showFilterDialog()"></button>
             </div>
             <div *ngIf="showFilterAdd">

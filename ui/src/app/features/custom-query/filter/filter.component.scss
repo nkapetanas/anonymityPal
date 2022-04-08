@@ -1,9 +1,22 @@
+$light-purple-color: #ebaaf1;
+$dark-purple-color: #ce78e3;
 :host::ng-deep {
-    
-    color: #cc86d3;
 
-    .purple-background {
-        background-color: #e4ade9;
+    color: $light-purple-color;
+    .p-chip{
+        background-color: $dark-purple-color;
+    }
+
+    .light-purple-background {
+        background-color: $light-purple-color;
+    }
+
+    .add-filter-button {
+        background-color: $dark-purple-color;
+        border: unset;
+        &:hover {
+            background-color: $dark-purple-color;
+        }
     }
 
     .radius {

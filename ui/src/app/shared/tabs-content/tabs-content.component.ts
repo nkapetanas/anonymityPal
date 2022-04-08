@@ -6,6 +6,7 @@ import {Component, Input, OnInit} from '@angular/core';
   styleUrls: ['./tabs-content.component.scss']
 })
 export class TabsContentComponent implements OnInit {
+
   @Input() data : any;
   constructor() { }
 

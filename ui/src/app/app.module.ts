@@ -29,6 +29,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { FilterComponent } from './features/custom-query/filter/filter.component';
 import { DialogModule } from 'primeng/dialog';
 import { ChipModule } from 'primeng/chip';
+import { JoinDataComponent } from './features/custom-query/join-data/join-data.component';
 
 @NgModule({
     declarations: [
@@ -40,7 +41,8 @@ import { ChipModule } from 'primeng/chip';
         TabsContentComponent,
         HomeComponent,
         NativeQueryComponent,
-        FilterComponent
+        FilterComponent,
+        JoinDataComponent
     ],
     imports: [
         BrowserModule,

@@ -21,7 +21,6 @@ export class DataTableComponent implements OnInit, OnChanges {
                 const columnData = { label: column, order: index };
                 return columnData;
             });
-            console.log(this.orderedColumns);
             changes['data'].currentValue.dbRecordList.map((dbRecord: any) => {
                 if(dbRecord.dbRecordJsonList.length > 0) {
                     dbRecord.dbRecordJsonList.sort((dbRecordJsonPrevious: any, dbRecordJsonNext: any) => {

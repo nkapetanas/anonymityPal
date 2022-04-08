@@ -7,7 +7,7 @@ import { createDropdownOptions } from '../../../core/utils/dropdown-options.help
 })
 export class QuashiColumnsSelectorComponent implements OnInit, OnChanges {
 
-    selectedColumns3: any[] = [];
+    selectedColumns: any[] = [];
     @Input() data: string[] = [];
     options: Array<{value: any, label: string}> = [];
 
@@ -22,7 +22,7 @@ export class QuashiColumnsSelectorComponent implements OnInit, OnChanges {
     }
 
     getPrivacyCheck() {
-        
+
     }
 
 }

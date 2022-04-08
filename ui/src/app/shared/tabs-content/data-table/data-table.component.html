@@ -1,4 +1,6 @@
-<p-table [value]="data.dbRecordList" styleClass="background-color pt-4">
+<p-table [value]="data.dbRecordList" styleClass="background-color pt-4"
+    [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rows]="10"
+    [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]">
     <ng-template pTemplate="header">
         <tr>
             <th *ngFor="let col of data.columnNames">
@@ -7,8 +9,8 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-result>
-        <tr *ngFor="let row of data.dbRecordList; let index = index">
-            <td *ngFor="let columnData of row.dbRecordJsonList; let columnIndex = index">
+        <tr>
+            <td *ngFor="let columnData of result.dbRecordJsonList; let columnIndex = index">
                 {{columnData.recordValue}}
             </td>
         </tr>
