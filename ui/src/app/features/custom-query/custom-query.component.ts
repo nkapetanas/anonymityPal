@@ -26,6 +26,8 @@ export class CustomQueryComponent implements OnInit {
     results: Array<any>;
     options: any[];
     value: number;
+    joinDataOption: any;
+    joinDataValue: any[] = [];
 
     constructor(
         private router: Router,
@@ -42,9 +44,9 @@ export class CustomQueryComponent implements OnInit {
             { label: 'Step 4' },
         ];
 
-        this.options = [
-            { icon: 'pi pi-circle', value: 1 }
-        ];
+        this.joinDataOption = [
+            {name: 'Join', code: 1 }
+        ]
 
         this.route.data.subscribe(data => {
             this.onRouteDataChange(data);

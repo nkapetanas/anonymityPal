@@ -31,16 +31,17 @@
                     <label>Selected table: </label><span>{{completeCatalog}}</span>
                 </div>
             </div>
+
+            <p-selectButton [options]="joinDataOption" [multiple]="true" [(ngModel)]="joinDataValue" optionLabel="name" optionValue="code"></p-selectButton>
             
-            <button pButton pRipple type="button" (click)="showJoinData()" label="Join Data"
-                class="p-button-outlined"></button>
-            <div *ngIf="value === 1">
-                <label class="py-3"><strong>Join</strong></label>
+            <div *ngIf="joinDataValue.includes(1)" class="py-4">
+                <app-join-data [selectedTable]="completeCatalog" [databaseOptions]="databasesOptions"></app-join-data>
             </div>
+
             <app-filter [selectedTable]="completeCatalog"></app-filter>
 
-            <button pButton pRipple type="button" (click)="visualizeData()" label="Visualize"
-                class="p-button-outlined p-button-success"></button>
+            <!-- <button pButton pRipple type="button" (click)="visualizeData()" label="Visualize"
+                class="p-button-outlined p-button-success mt-3"></button> -->
         </div>
     </container-element>
     <div class="pt-3 d-flex justify-content-between">
