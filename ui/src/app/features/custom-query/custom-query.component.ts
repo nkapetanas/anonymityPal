@@ -4,6 +4,7 @@ import { MenuItem, SelectItem } from 'primeng/api';
 import { WizardIndexEnum } from './WizardIndexEnum';
 import { QueryPrestoService } from 'src/app/core/services/queryPresto/query-presto-service.service';
 import { createDropdownOptions } from '../../core/utils/dropdown-options.helper'
+import { StepSelectionEnum } from './model/StepSelectionEnum';
 
 @Component({
     selector: 'app-custom-query',
@@ -26,8 +27,7 @@ export class CustomQueryComponent implements OnInit {
     results: Array<any>;
     options: any[];
     value: number;
-    joinDataOption: any;
-    joinDataValue: any[] = [];
+
 
     constructor(
         private router: Router,
@@ -43,10 +43,6 @@ export class CustomQueryComponent implements OnInit {
             { label: 'Step 3' },
             { label: 'Step 4' },
         ];
-
-        this.joinDataOption = [
-            {name: 'Join', code: 1 }
-        ]
 
         this.route.data.subscribe(data => {
             this.onRouteDataChange(data);
@@ -77,6 +73,10 @@ export class CustomQueryComponent implements OnInit {
         }
     }
 
+    execute() {
+
+    }
+
     showJoinData() {
         this.value = 1;
     }
@@ -97,8 +97,9 @@ export class CustomQueryComponent implements OnInit {
         this.databasesOptions = createDropdownOptions(data.resolver.databaseData);
     }
 
-    private getAvailableDbSchemas() {
-        this.queryPrestoService.getAvailableDbSchemas(this.database).subscribe((response: string) => {
+    getAvailableDbSchemas(selectedDatabase?: string) {
+        const value = selectedDatabase ? selectedDatabase : this.database
+        this.queryPrestoService.getAvailableDbSchemas(value).subscribe((response: string) => {
             this.schemasOptions = createDropdownOptions(response);
         },
             (error) => {
@@ -120,5 +121,13 @@ export class CustomQueryComponent implements OnInit {
                 ];
                 this.tablesOptions = createDropdownOptions(tables);
             });
+    }
+
+    selectDatabase(database: SelectItem) {
+        console.log(database);
+    }
+
+    getSelectedTable(value: string) {
+        this.selectedTable = value;
     }
 }

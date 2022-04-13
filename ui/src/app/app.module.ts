@@ -26,10 +26,13 @@ import { HomeComponent } from './features/home/home.component';
 import { NativeQueryComponent } from './features/native-query/native-query.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { FilterComponent } from './features/custom-query/filter/filter.component';
+import { FilterComponent } from './features/custom-query/create-query/filter/filter.component';
 import { DialogModule } from 'primeng/dialog';
 import { ChipModule } from 'primeng/chip';
-import { JoinDataComponent } from './features/custom-query/join-data/join-data.component';
+import { JoinDataComponent } from './features/custom-query/create-query/join-data/join-data.component';
+import { CreateQueryComponent } from './features/custom-query/create-query/create-query.component';
+import {OverlayPanelModule} from 'primeng/overlaypanel';
+
 
 @NgModule({
     declarations: [
@@ -42,7 +45,8 @@ import { JoinDataComponent } from './features/custom-query/join-data/join-data.c
         HomeComponent,
         NativeQueryComponent,
         FilterComponent,
-        JoinDataComponent
+        JoinDataComponent,
+        CreateQueryComponent
     ],
     imports: [
         BrowserModule,
@@ -65,7 +69,8 @@ import { JoinDataComponent } from './features/custom-query/join-data/join-data.c
         DropdownModule,
         SelectButtonModule,
         DialogModule,
-        ChipModule
+        ChipModule,
+        OverlayPanelModule
     ],
     providers: [],
     bootstrap: [AppComponent]

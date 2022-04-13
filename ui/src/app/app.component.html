@@ -1,28 +1,9 @@
 <p-menubar>
     <ng-template pTemplate="start">
-        <img src="assets/logo_transp.png" height="110" class="center logo" (click)="redirectToHome()">
+        <img src="assets/logo.png" height="110" class="center logo" (click)="redirectToHome()">
     </ng-template>
     <ng-template pTemplate="end">
         <button pButton pRipple type="button" class="p-button-secondary mr-5" label="Ask a Question" (click)="askQuestion()"></button>
     </ng-template>
 </p-menubar>
 <router-outlet></router-outlet>
-<!--
-<p-button label="Run SQL" class="p-button-outlined" (onClick)="handleClick($event)"></p-button>
-
-<p-table [columns]="cols" [value]="results" responsiveLayout="scroll">
-  <ng-template pTemplate="header" let-columns>
-      <tr>
-          <th *ngFor="let col of columns">
-              {{col.header}}
-          </th>
-      </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-rowData let-columns="columns">
-      <tr>
-          <td *ngFor="let col of columns">
-              {{rowData[col.field]}}
-          </td>
-      </tr>
-  </ng-template>
-</p-table> -->

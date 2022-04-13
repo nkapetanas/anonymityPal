@@ -1,7 +1,11 @@
 <div class="p-5">
-    <p-steps [model]="items" [activeIndex]="stepIndex"></p-steps>
+    <app-overlay-panel-table [databasesOptions]="databasesOptions" (onSelectTable)="getSelectedTable($event)"></app-overlay-panel-table>
+    <app-create-query *ngIf="selectedTable" [completeCatalog]="selectedTable" [databasesOptions]="databasesOptions"></app-create-query>
+    <!-- <p-steps [model]="items" [activeIndex]="stepIndex"></p-steps>
     <container-element [ngSwitch]="stepIndex">
         <div class="p-5" *ngSwitchCase=wizardIndexes.STEP_1>
+            <div class="row">
+            </div>
             <div class="row">
                 <div class="col-12">
                     <p-dropdown [options]="databasesOptions" [(ngModel)]="database" placeholder="Select a database">
@@ -26,22 +30,7 @@
             </div>
         </div>
         <div class="p-5" *ngSwitchCase=wizardIndexes.STEP_4>
-            <div class="row mx-0 light-blue-background radius mb-2">
-                <div class="col-12">
-                    <label>Selected table: </label><span>{{completeCatalog}}</span>
-                </div>
-            </div>
-
-            <p-selectButton [options]="joinDataOption" [multiple]="true" [(ngModel)]="joinDataValue" optionLabel="name" optionValue="code"></p-selectButton>
-            
-            <div *ngIf="joinDataValue.includes(1)" class="py-4">
-                <app-join-data [selectedTable]="completeCatalog" [databaseOptions]="databasesOptions"></app-join-data>
-            </div>
-
-            <app-filter [selectedTable]="completeCatalog"></app-filter>
-
-            <!-- <button pButton pRipple type="button" (click)="visualizeData()" label="Visualize"
-                class="p-button-outlined p-button-success mt-3"></button> -->
+            <app-create-query [completeCatalog]="completeCatalog" [databasesOptions]="databasesOptions"></app-create-query>
         </div>
     </container-element>
     <div class="pt-3 d-flex justify-content-between">
@@ -50,9 +39,13 @@
                 label="Back" (click)="returnToPreviousStep()"></button>
         </span>
         <span>
-            <button *ngIf="stepIndex !== wizardIndexes.STEP_4" pButton pRipple type="button" class="p-button-secondary"
-                label="Next" (click)="goToNextStep()"></button>
+            <ng-container *ngIf="stepIndex !== wizardIndexes.STEP_4 else isStep4">
+                <button pButton pRipple type="button" class="p-button-secondary" [label]="'Next'" (click)="goToNextStep()"></button>
+            </ng-container>
+            <ng-template #isStep4>
+                <button pButton pRipple type="button" class="p-button-secondary" [label]="'Execute'" (click)="execute()"></button>
+            </ng-template>
         </span>
-    </div>
+    </div> -->
     <app-tabs-content *ngIf="results"></app-tabs-content>
 </div>

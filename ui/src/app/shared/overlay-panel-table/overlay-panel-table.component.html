@@ -1,0 +1,47 @@
+<div class="row mx-0 light-blue-background radius">
+    <div class="col-12">
+        <ng-container *ngIf="!table else hasSelectedTable">
+            <button pButton pRipple (click)="isOpen = !isOpen" type="button" class="p-button-secondary"
+                label="Select a table" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+            </button>
+            <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger" [cdkConnectedOverlayOpen]="isOpen">
+                <container-element [ngSwitch]="stepSelectionIndex">
+                    <ul *ngSwitchCase=stepSelections.DATABASE class="example-list">
+                        <label><strong>Select database</strong></label>
+                        <li *ngFor="let database of databasesOptions;" (click)="getAvailableDbSchemas(database.value)">
+                            <i class="pi pi-database pr-3"></i> {{database.value}}
+                        </li>
+                    </ul>
+                    <ul *ngSwitchCase=stepSelections.SCHEMA class="example-list">
+                        <div class="d-inline-block">
+                            <button pButton pRipple type="button" icon="pi pi-angle-left"
+                                class="p-button-rounded p-button-text" (click)="returnToDatabaseOptions()"></button>
+                            <label class="label-alignment"><strong>Select schema</strong></label>
+                        </div>
+                        <li *ngFor="let schema of schemasOptions;" (click)="getAvailableSchemaTables(schema.value)">
+                            <i class="pi pi-sitemap pr-3"></i>{{schema.value}}
+                        </li>
+                    </ul>
+                    <ul *ngSwitchCase=stepSelections.TABLE class="example-list">
+                        <button pButton pRipple type="button" icon="pi pi-angle-left"
+                            class="p-button-rounded p-button-text" (click)="returnToSchemaOptions()"></button>
+                        <label class="label-alignment"><strong>Select table</strong></label>
+                        <ng-container *ngIf="tablesOptions.length>0 else noData">
+                            <li *ngFor="let table of tablesOptions;" (click)="selectTable(table.value)">
+                                <i class="pi pi-table pr-3"></i>{{table.value}}
+                            </li>
+                        </ng-container>
+                        <ng-template #noData>
+                            <li>
+                                No tables found
+                            </li>
+                        </ng-template>
+                    </ul>
+                </container-element>
+            </ng-template>
+        </ng-container>
+        <ng-template #hasSelectedTable>
+            <p-chip class="pr-2" [label]="table" [removable]="true" (onRemove)="removeSelectedTable()"></p-chip>
+        </ng-template>
+    </div>
+</div>
