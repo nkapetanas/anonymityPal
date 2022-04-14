@@ -26,11 +26,10 @@ import { HomeComponent } from './features/home/home.component';
 import { NativeQueryComponent } from './features/native-query/native-query.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { FilterComponent } from './features/custom-query/create-query/filter/filter.component';
+import { FilterComponent } from './features/custom-query/filter/filter.component';
 import { DialogModule } from 'primeng/dialog';
 import { ChipModule } from 'primeng/chip';
-import { JoinDataComponent } from './features/custom-query/create-query/join-data/join-data.component';
-import { CreateQueryComponent } from './features/custom-query/create-query/create-query.component';
+import { JoinDataComponent } from './features/custom-query/join-data/join-data.component';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 
 
@@ -45,8 +44,7 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
         HomeComponent,
         NativeQueryComponent,
         FilterComponent,
-        JoinDataComponent,
-        CreateQueryComponent
+        JoinDataComponent
     ],
     imports: [
         BrowserModule,

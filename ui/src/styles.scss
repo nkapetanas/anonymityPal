@@ -14,3 +14,11 @@ body {
 .center-align {
     text-align: center;
 }
+
+.cdk-overlay-container .cdk-overlay-pane {
+    display: inline-block;
+}
+
+.label-alignment {
+    padding-bottom: 13px;
+}

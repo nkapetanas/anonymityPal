@@ -1,45 +1,52 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {Consts} from "../../../consts";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Consts } from "../../../consts";
+import { CustomQueryParams } from 'src/app/features/custom-query/model/CustomQueryParams';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class QueryPrestoService {
 
-  constructor(private http: HttpClient) {
-  }
+    constructor(private http: HttpClient) {
+    }
 
-  getResults(query: string): Observable<any> {
-    return this.http.get<any>(Consts.API_PATH + Consts.API_GET_QUERY_RESULTS, {
-      params: new HttpParams().set('query', query),
-    });
-  }
+    getResults(query: string): Observable<any> {
+        return this.http.get<any>(Consts.API_PATH + Consts.API_GET_QUERY_RESULTS, {
+            params: new HttpParams().set('query', query),
+        });
+    }
 
-  getAvailableDbs(): Observable<string> {
-    return this.http.get<any>(Consts.API_PATH + Consts.API_GET_AVAILABLE_DBS);
-  }
+    getCustomQueryResults(query: CustomQueryParams) {
+        return this.http.get<any>(Consts.API_PATH + Consts.API_GET_CUSTOM_QUERY_RESULTS, {
+            params: new HttpParams(query)
+        });
+    }
 
-  getAvailableDbSchemas(selectedDB: string): Observable<string> {
-    return this.http.get<any>(Consts.API_PATH + Consts.API_GET_AVAILABLE_DB_SCHEMAS, {
-      params: new HttpParams().set('selectedDB', selectedDB),
-    });
-  }
+    getAvailableDbs(): Observable<string> {
+        return this.http.get<any>(Consts.API_PATH + Consts.API_GET_AVAILABLE_DBS);
+    }
 
-  getAvailableSchemaTables(schema: string): Observable<string> {
-    return this.http.get<any>(Consts.API_PATH + Consts.API_GET_AVAILABLE_SCHEMA_TABLES, {
-      params: new HttpParams().set('schema', schema),
-    });
-  }
+    getAvailableDbSchemas(selectedDB: string): Observable<string> {
+        return this.http.get<any>(Consts.API_PATH + Consts.API_GET_AVAILABLE_DB_SCHEMAS, {
+            params: new HttpParams().set('selectedDB', selectedDB),
+        });
+    }
 
-  getColumnsFromTable(selectedTable: string): Observable<string> {
-    return this.http.get<any>(Consts.API_PATH + Consts.API_GET_COLUMNS_FROM_TABLE, {
-      params: new HttpParams().set('selectedTable', selectedTable),
-    });
-  }
+    getAvailableSchemaTables(schema: string): Observable<string> {
+        return this.http.get<any>(Consts.API_PATH + Consts.API_GET_AVAILABLE_SCHEMA_TABLES, {
+            params: new HttpParams().set('schema', schema),
+        });
+    }
 
-  getFilterOperationOptions(): Observable<string> {
-    return this.http.get<any>(Consts.API_PATH + Consts.API_FILTER_OPERATIONS);
-  }
+    getColumnsFromTable(selectedTable: string): Observable<string> {
+        return this.http.get<any>(Consts.API_PATH + Consts.API_GET_COLUMNS_FROM_TABLE, {
+            params: new HttpParams().set('selectedTable', selectedTable),
+        });
+    }
+
+    getFilterOperationOptions(): Observable<string> {
+        return this.http.get<any>(Consts.API_PATH + Consts.API_FILTER_OPERATIONS);
+    }
 }

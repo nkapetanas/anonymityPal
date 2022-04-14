@@ -1,51 +1,16 @@
 <div class="p-5">
     <app-overlay-panel-table [databasesOptions]="databasesOptions" (onSelectTable)="getSelectedTable($event)"></app-overlay-panel-table>
-    <app-create-query *ngIf="selectedTable" [completeCatalog]="selectedTable" [databasesOptions]="databasesOptions"></app-create-query>
-    <!-- <p-steps [model]="items" [activeIndex]="stepIndex"></p-steps>
-    <container-element [ngSwitch]="stepIndex">
-        <div class="p-5" *ngSwitchCase=wizardIndexes.STEP_1>
-            <div class="row">
+    <div *ngIf="selectedTable" class="row">
+        <div class="col-12">
+            <p-selectButton [options]="joinDataOption" [multiple]="true" [(ngModel)]="joinDataValue" optionLabel="label"
+                optionValue="value"></p-selectButton>
+            <div *ngIf="joinDataValue.includes(1)" class="py-4">
+                <app-join-data [selectedTable]="selectedTable" [databaseOptions]="databasesOptions"></app-join-data>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <p-dropdown [options]="databasesOptions" [(ngModel)]="database" placeholder="Select a database">
-                    </p-dropdown>
-                </div>
-            </div>
+            <app-filter [selectedTable]="selectedTable" (onChangeFilterQuery)="getFilterQuery($event)"></app-filter>
         </div>
-        <div class="p-5" *ngSwitchCase=wizardIndexes.STEP_2>
-            <div class="row">
-                <div class="col-12">
-                    <p-dropdown [options]="schemasOptions" [(ngModel)]="schema" placeholder="Select a schema">
-                    </p-dropdown>
-                </div>
-            </div>
-        </div>
-        <div class="p-5" *ngSwitchCase=wizardIndexes.STEP_3>
-            <div class="row">
-                <div class="col-12">
-                    <p-dropdown [options]="tablesOptions" [(ngModel)]="table" placeholder="Select a table">
-                    </p-dropdown>
-                </div>
-            </div>
-        </div>
-        <div class="p-5" *ngSwitchCase=wizardIndexes.STEP_4>
-            <app-create-query [completeCatalog]="completeCatalog" [databasesOptions]="databasesOptions"></app-create-query>
-        </div>
-    </container-element>
-    <div class="pt-3 d-flex justify-content-between">
-        <span>
-            <button *ngIf="stepIndex !== wizardIndexes.STEP_1" pButton pRipple type="button" class="p-button-secondary"
-                label="Back" (click)="returnToPreviousStep()"></button>
-        </span>
-        <span>
-            <ng-container *ngIf="stepIndex !== wizardIndexes.STEP_4 else isStep4">
-                <button pButton pRipple type="button" class="p-button-secondary" [label]="'Next'" (click)="goToNextStep()"></button>
-            </ng-container>
-            <ng-template #isStep4>
-                <button pButton pRipple type="button" class="p-button-secondary" [label]="'Execute'" (click)="execute()"></button>
-            </ng-template>
-        </span>
-    </div> -->
+    </div>
+    <button *ngIf="selectedTable" pButton pRipple type="button" class="p-button-secondary"
+        label="Execute" (click)="execute()"></button>
     <app-tabs-content *ngIf="results"></app-tabs-content>
 </div>

@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { createDropdownOptions } from "../../../../core/utils/dropdown-options.helper";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { createDropdownOptions } from "../../../core/utils/dropdown-options.helper";
 import { SelectItem } from "primeng/api";
-import { QueryPrestoService } from "../../../../core/services/queryPresto/query-presto-service.service";
-import { FilterOperation } from "../../model/FilterOperation";
+import { QueryPrestoService } from "../../../core/services/queryPresto/query-presto-service.service";
+import { FilterOperation, FilterOperationUI } from "../model/FilterOperation";
 
 @Component({
     selector: 'app-filter',
@@ -10,7 +10,9 @@ import { FilterOperation } from "../../model/FilterOperation";
     styleUrls: ['./filter.component.scss']
 })
 export class FilterComponent implements OnInit {
+
     @Input() selectedTable: string;
+    @Output() onChangeFilterQuery: EventEmitter<Array<FilterOperation>> = new EventEmitter<Array<FilterOperation>>();
 
     showFilterAdd: boolean = false;
     display: boolean = false;
@@ -20,18 +22,14 @@ export class FilterComponent implements OnInit {
     filterLabel: string = 'Add filters to narrow your answer';
     selectedColumn: string;
     selectedFilter: string;
-    inputColumnValue: string
-    filterOperationsList: Array<FilterOperation> = [];
+    inputColumnValue: string;
+    filterOperationsListChips: Array<FilterOperationUI> = [];
 
     secondSelectedColumn: string;
 
     filterOperationOptionsDropdown: Array<SelectItem> = [];
     availableTableColumnOptionsDropdown: Array<SelectItem> = [];
-
-
-    columns: Array<any> = [
-        'Name', 'Id', 'Age'
-    ]
+    finalFilterQuery: Array<FilterOperation> = [];
 
     constructor(private queryPrestoService: QueryPrestoService) {
     }
@@ -42,15 +40,17 @@ export class FilterComponent implements OnInit {
     }
 
     addFilter() {
-        let filterOperation: FilterOperation = {
+        let filterOperationChip: FilterOperationUI = {
             filterLabel: this.selectedColumn + ' is ' + this.selectedFilter + " " + this.inputColumnValue,
             columnName: this.selectedColumn, columnValues: this.inputColumnValue, filterOperator: this.selectedFilter
         };
-        this.filterOperationsList.push(filterOperation);
+        this.filterOperationsListChips.push(filterOperationChip);
         this.display = false;
 
         this.clearSelectedFilters();
-
+        const query: FilterOperation = {columnName: this.selectedColumn, columnValues: [ this.inputColumnValue ], filterOperator: this.selectedFilter }
+        this.finalFilterQuery.push(query)
+        this.onChangeFilterQuery.emit(this.finalFilterQuery);
     }
 
     clearSelectedFilters() {
@@ -64,7 +64,7 @@ export class FilterComponent implements OnInit {
         this.display = true;
     }
 
-    onClickChip(filterOperator: FilterOperation) {
+    onClickChip(filterOperator: FilterOperationUI) {
         this.selectedColumn = filterOperator.columnName;
         this.inputColumnValue = filterOperator.columnValues;
         this.selectedFilter = filterOperator.filterOperator;
@@ -96,6 +96,6 @@ export class FilterComponent implements OnInit {
     }
 
     removeFilterOperation(index: number) {
-        this.filterOperationsList.splice(index, 1);
+        this.filterOperationsListChips.splice(index, 1);
     }
 }

@@ -9,8 +9,7 @@
             <p-chip class="pr-2" [label]="selectedTableJoin" [removable]="true" (onRemove)="removeFinalTable()"></p-chip>
             <span class="pr-2">Where</span>
             <ng-container *ngIf="!selectedColumns else hasSelectedColumnsValue;">
-                <button pButton pRipple type="button" label="Match columns" class="p-button-rounded join-table-button"
-                    (click)="matchColumns()"></button>
+                <app-select-matching-columns class="d-inline-block" [columnOptions]="columnsOptions" [joinColumnOptions]="columnsJoinOptions"></app-select-matching-columns>
             </ng-container>
             <ng-template #hasSelectedColumnsValue>
                 <p-chip class="pr-2" [label]="selectedColumns" [removable]="true" (onRemove)="removeSelectedColumns()"></p-chip>
@@ -19,8 +18,8 @@
     </div>
 </div>
 
-<p-dialog header="Match columns" [(visible)]="showColumnsModal" [modal]="true"  [style]="{width: '50vw'}" (onHide)="closeColumnsModal()">
-    <!-- <div class="row">
+<!-- <p-dialog header="Match columns" [(visible)]="showColumnsModal" [modal]="true"  [style]="{width: '50vw'}" (onHide)="closeColumnsModal()">
+    <div class="row">
         <div class="col-12">
             <label>Selected table: </label><span>{{ selectedTable }}</span>
         </div>
@@ -41,10 +40,10 @@
                     appendTo="body" (onChange)="schemaValueChange($event)"></p-dropdown>
             </div>
         </div>
-    </div> -->
+    </div>
     <p-footer>
         <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
             <button type="button" pButton icon="fa-check" (click)="saveSelectedColumns()" label="Save"></button>
         </div>
     </p-footer>
-</p-dialog>
+</p-dialog> -->

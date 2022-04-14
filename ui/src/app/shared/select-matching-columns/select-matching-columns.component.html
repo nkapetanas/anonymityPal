@@ -1,0 +1,38 @@
+<div class="row mx-0 light-blue-background radius">
+    <div class="col-12">
+        <ng-container *ngIf="!selectedColumns else hasMatchingColumns">
+            <button pButton pRipple (click)="isOpen = !isOpen" type="button" class="p-button-secondary"
+                label="Select a table" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+            </button>
+            <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger" [cdkConnectedOverlayOpen]="isOpen">
+                    <ul class="example-list">
+                        <div class="d-inline-block">
+                            <button pButton pRipple type="button" [icon]="isDataColumnCollapsed ? 'pi pi-angle-up' : 'pi pi-angle-down'"
+                                class="p-button-rounded p-button-text" (click)="collapseColumns()"></button>
+                                <label class="label-alignment ml-1"><strong>Select column</strong></label>
+                        </div>
+                        <span *ngIf="isDataColumnCollapsed">
+                            <li *ngFor="let columnn of columnOptions;">
+                                {{columnn.value}}
+                            </li>
+                        </span>
+                    </ul>
+                    <ul class="example-list">
+                        <div class="d-inline-block">
+                            <button pButton pRipple type="button" [icon]="isDataJoinColumnCollapsed ? 'pi pi-angle-up' : 'pi pi-angle-down'"
+                                class="p-button-rounded p-button-text" (click)="collapseJoinColumns()"></button>
+                                <label class="label-alignment ml-1"><strong>Select column</strong></label>
+                        </div>
+                        <span *ngIf="isDataJoinColumnCollapsed">
+                            <li *ngFor="let joinColumn of joinColumnOptions;">
+                                {{joinColumn.value}}
+                            </li>
+                        </span>
+                    </ul>
+            </ng-template>
+        </ng-container>
+        <ng-template #hasMatchingColumns>
+            <p-chip class="pr-2" [label]="selectedColumns" [removable]="true" (onRemove)="removeSelectedColumns()"></p-chip>
+        </ng-template>
+    </div>
+</div>
