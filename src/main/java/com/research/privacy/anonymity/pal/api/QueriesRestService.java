@@ -66,7 +66,7 @@ public class QueriesRestService {
     }
 
 
-    @GetMapping("/getCustomQueryResults")
+    @PostMapping ("/getCustomQueryResults")
     @ResponseStatus()
     public ResponseEntity<QueryResultsResponseJson> getCustomQueryResults(@RequestBody CustomQueryParams customQueryParams) {
         if (Utils.isEmpty(customQueryParams)) {
