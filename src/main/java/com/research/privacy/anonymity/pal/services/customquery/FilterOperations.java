@@ -1,16 +1,18 @@
 package com.research.privacy.anonymity.pal.services.customquery;
 
-import com.research.privacy.anonymity.pal.common.enums.FilterOperators;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.List;
 
+@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class FilterOperations {
     private String columnName;
     private List<String> columnValues;
-    private FilterOperators filterOperator;
+    private String filterOperator;
 }

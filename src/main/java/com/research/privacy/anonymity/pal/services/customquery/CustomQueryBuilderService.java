@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.research.privacy.anonymity.pal.exceptions.AnonymityPalErrorCode.*;
+import static com.research.privacy.anonymity.pal.exceptions.AnonymityPalErrorCode.AP_E_0005;
+import static com.research.privacy.anonymity.pal.exceptions.AnonymityPalErrorCode.AP_E_0007;
 
 @Slf4j
 @Service
@@ -37,19 +38,13 @@ public class CustomQueryBuilderService {
 
         if (isJoinOperations) {
 
-            if (Utils.isEmpty(customQueryParams.getJoinOperation())) {
+            if (Utils.isEmpty(customQueryParams.getTableToJoinPathCatalog()) || Utils.isEmpty(customQueryParams.getJoinTableColumnValues())) {
                 throw new AnonymityPalException(AP_E_0005);
             }
 
-            final JoinOperation joinOperation = customQueryParams.getJoinOperation();
+            customQuery.append(String.format(LEFT_JOIN, customQueryParams.getTableToJoinPathCatalog()));
 
-            if (Utils.isEmpty(joinOperation.getTableToJoinPathCatalog())) {
-                throw new AnonymityPalException(AP_E_0006);
-            }
-
-            customQuery.append(String.format(LEFT_JOIN, joinOperation.getTableToJoinPathCatalog()));
-
-            final List<String> columnValues = joinOperation.getColumnValues();
+            final List<String> columnValues = customQueryParams.getJoinTableColumnValues();
             final String firstColumnInJoin = columnValues.get(0);
             final String secondColumnInJoin = columnValues.get(1);
 
@@ -73,8 +68,8 @@ public class CustomQueryBuilderService {
             customQuery.append(AND_OPERATION);
             customQuery.append(String.format(" %s", f.getColumnName()));
 
-            final FilterOperators filterOperator = f.getFilterOperator();
-            customQuery.append(filterOperator.getSqlOperation());
+            final FilterOperators filterOperator = FilterOperators.fromField(f.getFilterOperator());
+            customQuery.append(Utils.isNotEmpty(filterOperator) ? filterOperator.getSqlOperation() : null);
 
             final List<String> columnValues = f.getColumnValues();
 

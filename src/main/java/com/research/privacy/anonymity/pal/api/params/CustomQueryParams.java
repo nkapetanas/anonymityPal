@@ -1,7 +1,6 @@
 package com.research.privacy.anonymity.pal.api.params;
 
 import com.research.privacy.anonymity.pal.services.customquery.FilterOperations;
-import com.research.privacy.anonymity.pal.services.customquery.JoinOperation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +15,7 @@ import java.util.List;
 public class CustomQueryParams {
     private String completeTablePath;
     private boolean isJoin;
-    private JoinOperation joinOperation;
+    private String tableToJoinPathCatalog;
+    private List<String> joinTableColumnValues;
     private List<FilterOperations> filterOperationsList;
 }

@@ -10,7 +10,6 @@ import com.research.privacy.anonymity.pal.common.utils.Utils;
 import com.research.privacy.anonymity.pal.services.PrestoService;
 import com.research.privacy.anonymity.pal.services.customquery.CustomQueryBuilderService;
 import com.research.privacy.anonymity.pal.services.customquery.FilterOperations;
-import com.research.privacy.anonymity.pal.services.customquery.JoinOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -44,9 +43,9 @@ class ITCustomQueryRestService {
     void privacyService_getCustomQueryResults_Filter_OK() {
 
         List<FilterOperations> filterOperationsList = new ArrayList<>();
-        filterOperationsList.add(new FilterOperations("marital_status", Collections.singletonList("Single"), FilterOperators.EQUAL_TO));
+        filterOperationsList.add(new FilterOperations("marital_status", Collections.singletonList("Single"), FilterOperators.EQUAL_TO.getField()));
 
-        final ResponseEntity<QueryResultsResponseJson> restServiceResponse = queriesRestService.getCustomQueryResults(createCustomQuery(VALID_TABLE_1, false, null, filterOperationsList));
+        final ResponseEntity<QueryResultsResponseJson> restServiceResponse = queriesRestService.getCustomQueryResults(createCustomQuery(VALID_TABLE_1, false, null, null, filterOperationsList));
 
         Assertions.assertEquals(HttpStatus.OK, restServiceResponse.getStatusCode());
         final QueryResultsResponseJson queryResultsResponseJson = restServiceResponse.getBody();
@@ -63,11 +62,10 @@ class ITCustomQueryRestService {
     @Test
     void privacyService_getCustomQueryResults_Join_OK() {
         List<FilterOperations> filterOperationsList = new ArrayList<>();
-        filterOperationsList.add(new FilterOperations("nationality", Collections.singletonList("European"), FilterOperators.EQUAL_TO));
+        filterOperationsList.add(new FilterOperations("nationality", Collections.singletonList("European"), FilterOperators.EQUAL_TO.getField()));
 
-        JoinOperation joinOperation = new JoinOperation(VALID_TABLE_2, Utils.asList("zip", "zipcode"));
-
-        final ResponseEntity<QueryResultsResponseJson> restServiceResponse = queriesRestService.getCustomQueryResults(createCustomQuery(VALID_TABLE_1, true, joinOperation, filterOperationsList));
+        final ResponseEntity<QueryResultsResponseJson> restServiceResponse = queriesRestService
+                .getCustomQueryResults(createCustomQuery(VALID_TABLE_1, true, VALID_TABLE_2, Utils.asList("zip", "zipcode"), filterOperationsList));
 
         Assertions.assertEquals(HttpStatus.OK, restServiceResponse.getStatusCode());
         final QueryResultsResponseJson queryResultsResponseJson = restServiceResponse.getBody();
@@ -82,32 +80,27 @@ class ITCustomQueryRestService {
 
     @Test
     void privacyService_getCustomQueryResults_missing_table_NOK() {
-        final ResponseEntity<QueryResultsResponseJson> restServiceResponse = queriesRestService.getCustomQueryResults(createCustomQuery(VALID_TABLE_1, true, null, null));
+        final ResponseEntity<QueryResultsResponseJson> restServiceResponse = queriesRestService.getCustomQueryResults(createCustomQuery(VALID_TABLE_1, true, null, null, null));
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, restServiceResponse.getStatusCode());
     }
 
     @Test
     void privacyService_getCustomQueryResults_Join_missing_joinInfo_NOK() {
-        ResponseEntity<QueryResultsResponseJson> restServiceResponse = queriesRestService.getCustomQueryResults(createCustomQuery(VALID_TABLE_1, true, null, null));
+        ResponseEntity<QueryResultsResponseJson> restServiceResponse = queriesRestService
+                .getCustomQueryResults(createCustomQuery(VALID_TABLE_1, true, null, Utils.asList("zip", "zipcode"), null));
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, restServiceResponse.getStatusCode());
 
-        JoinOperation joinOperation = new JoinOperation(null, Utils.asList("zip", "zipcode"));
-
-        restServiceResponse = queriesRestService.getCustomQueryResults(createCustomQuery(VALID_TABLE_1, true, joinOperation, null));
-        Assertions.assertEquals(HttpStatus.BAD_REQUEST, restServiceResponse.getStatusCode());
-
-        joinOperation = new JoinOperation(VALID_TABLE_2, Utils.asList("", "zipcode"));
-
-        restServiceResponse = queriesRestService.getCustomQueryResults(createCustomQuery(VALID_TABLE_1, true, joinOperation, null));
+        restServiceResponse = queriesRestService.getCustomQueryResults(createCustomQuery(VALID_TABLE_1, true, VALID_TABLE_2, Utils.asList("", "zipcode"), null));
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, restServiceResponse.getStatusCode());
     }
 
-    private CustomQueryParams createCustomQuery(String completeTablePath, boolean isJoin, JoinOperation joinOperation, List<FilterOperations> filterOperationsList) {
+    private CustomQueryParams createCustomQuery(String completeTablePath, boolean isJoin, String tableToJoinPathCatalog, List<String> joinTableColumnValues, List<FilterOperations> filterOperationsList) {
         CustomQueryParams customQueryParams = new CustomQueryParams();
 
         customQueryParams.setCompleteTablePath(completeTablePath);
         customQueryParams.setJoin(isJoin);
-        customQueryParams.setJoinOperation(joinOperation);
+        customQueryParams.setJoinTableColumnValues(joinTableColumnValues);
+        customQueryParams.setTableToJoinPathCatalog(tableToJoinPathCatalog);
         customQueryParams.setFilterOperationsList(filterOperationsList);
         return customQueryParams;
     }
