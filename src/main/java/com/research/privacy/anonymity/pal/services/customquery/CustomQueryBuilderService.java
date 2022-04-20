@@ -68,7 +68,7 @@ public class CustomQueryBuilderService {
             customQuery.append(AND_OPERATION);
             customQuery.append(String.format(" %s", f.getColumnName()));
 
-            final FilterOperators filterOperator = FilterOperators.fromField(f.getFilterOperator());
+            final FilterOperators filterOperator = FilterOperators.from(f.getFilterOperator());
             customQuery.append(Utils.isNotEmpty(filterOperator) ? filterOperator.getSqlOperation() : null);
 
             final List<String> columnValues = f.getColumnValues();

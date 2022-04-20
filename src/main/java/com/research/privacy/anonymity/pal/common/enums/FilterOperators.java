@@ -36,7 +36,7 @@ public enum FilterOperators {
         return filterOperatorsList;
     }
 
-    public static FilterOperators fromField(String field){
-        return Utils.isEmpty(field) ? null : Arrays.stream(values()).filter((filterOperator -> filterOperator.getField().equals(field.trim()))).findFirst().orElse(null);
+    public static FilterOperators from(String filter){
+        return Utils.isEmpty(filter) ? null : Arrays.stream(values()).filter((filterOperator -> filterOperator.name().equals(filter.trim()))).findFirst().orElse(null);
     }
 }

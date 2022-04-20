@@ -43,7 +43,7 @@ class ITCustomQueryRestService {
     void privacyService_getCustomQueryResults_Filter_OK() {
 
         List<FilterOperations> filterOperationsList = new ArrayList<>();
-        filterOperationsList.add(new FilterOperations("marital_status", Collections.singletonList("Single"), FilterOperators.EQUAL_TO.getField()));
+        filterOperationsList.add(new FilterOperations("marital_status", Collections.singletonList("Single"), FilterOperators.EQUAL_TO.name()));
 
         final ResponseEntity<QueryResultsResponseJson> restServiceResponse = queriesRestService.getCustomQueryResults(createCustomQuery(VALID_TABLE_1, false, null, null, filterOperationsList));
 
@@ -62,7 +62,7 @@ class ITCustomQueryRestService {
     @Test
     void privacyService_getCustomQueryResults_Join_OK() {
         List<FilterOperations> filterOperationsList = new ArrayList<>();
-        filterOperationsList.add(new FilterOperations("nationality", Collections.singletonList("European"), FilterOperators.EQUAL_TO.getField()));
+        filterOperationsList.add(new FilterOperations("nationality", Collections.singletonList("European"), FilterOperators.EQUAL_TO.name()));
 
         final ResponseEntity<QueryResultsResponseJson> restServiceResponse = queriesRestService
                 .getCustomQueryResults(createCustomQuery(VALID_TABLE_1, true, VALID_TABLE_2, Utils.asList("zip", "zipcode"), filterOperationsList));
