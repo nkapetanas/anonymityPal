@@ -11,7 +11,7 @@ import { StepSelectionEnum } from 'src/app/features/custom-query/model/StepSelec
 })
 export class OverlayPanelTableComponent implements OnInit {
 
-    stepSelectionIndex: number = StepSelectionEnum.DATABASE;
+    stepSelectionIndex: number;
     stepSelections = StepSelectionEnum;
 
     isOpen: boolean = false;
@@ -31,6 +31,21 @@ export class OverlayPanelTableComponent implements OnInit {
     ngOnInit(): void {
     }
 
+    /**
+     * Open overlay panel and reset the panel on database selection
+     */
+    openOverLayPanel() {
+        this.stepSelectionIndex = StepSelectionEnum.DATABASE;
+        this.isOpen = true;
+    }
+
+    /**
+     * Close overlay panel
+     */
+    closeOverlayPanel() {
+        this.isOpen = false;
+    }
+
     getAvailableDbSchemas(selectedDatabase: string) {
         this.database = selectedDatabase;
         this.queryPrestoService.getAvailableDbSchemas(selectedDatabase).subscribe((response: string) => {
@@ -41,13 +56,13 @@ export class OverlayPanelTableComponent implements OnInit {
                 const schemas = [
                     'N/A Schema'
                 ];
-                this.schemasOptions = createDropdownOptions(schemas);
             });
     }
 
     getAvailableSchemaTables(selectedSchema: string) {
-        this.schema = this.database + "." + selectedSchema;
-        this.queryPrestoService.getAvailableSchemaTables(this.schema).subscribe((response: string) => {
+        const schemaPath: string = this.database + "." + selectedSchema;
+        this.schema = selectedSchema;
+        this.queryPrestoService.getAvailableSchemaTables(schemaPath).subscribe((response: string) => {
             this.tablesOptions = createDropdownOptions(response);
             this.stepSelectionIndex = StepSelectionEnum.TABLE;
         },
@@ -55,12 +70,11 @@ export class OverlayPanelTableComponent implements OnInit {
                 const tables = [
                     'vTable'
                 ];
-                this.tablesOptions = createDropdownOptions(tables);
             });
     }
 
     selectTable(selectedTable: string) {
-        this.table = this.schema + '.' + selectedTable;
+        this.table = this.database + '.' + this.schema + '.' + selectedTable;
         this.onSelectTable.emit(this.table);
         this.isOpen = false;
     }
@@ -78,5 +92,7 @@ export class OverlayPanelTableComponent implements OnInit {
     removeSelectedTable() {
         this.table = '';
     }
+
+
 
 }

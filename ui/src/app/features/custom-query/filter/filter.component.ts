@@ -21,7 +21,7 @@ export class FilterComponent implements OnInit {
 
     filterLabel: string = 'Add filters to narrow your answer';
     selectedColumn: string;
-    selectedFilter: string;
+    selectedFilter: { label: string, filterOperatorEnum: string };
     inputColumnValue: string;
     filterOperationsListChips: Array<FilterOperationUI> = [];
 
@@ -30,6 +30,8 @@ export class FilterComponent implements OnInit {
     filterOperationOptionsDropdown: Array<SelectItem> = [];
     availableTableColumnOptionsDropdown: Array<SelectItem> = [];
     finalFilterQuery: Array<FilterOperation> = [];
+
+    selectedIndex: number;
 
     constructor(private queryPrestoService: QueryPrestoService) {
     }
@@ -40,22 +42,27 @@ export class FilterComponent implements OnInit {
     }
 
     addFilter() {
+        debugger;
         let filterOperationChip: FilterOperationUI = {
-            filterLabel: this.selectedColumn + ' is ' + this.selectedFilter + " " + this.inputColumnValue,
-            columnName: this.selectedColumn, columnValues: this.inputColumnValue, filterOperator: this.selectedFilter
+            filterLabel: this.selectedColumn + ' is ' + this.selectedFilter.label + " " + this.inputColumnValue,
+            columnName: this.selectedColumn, columnValues: this.inputColumnValue, filterOperator: this.selectedFilter.label
         };
+        // if(this.selectedIndex) {
+            
+        // }
         this.filterOperationsListChips.push(filterOperationChip);
-        this.display = false;
-
-        this.clearSelectedFilters();
-        const query: FilterOperation = {columnName: this.selectedColumn, columnValues: [ this.inputColumnValue ], filterOperator: this.selectedFilter }
+        
+        const query: FilterOperation = {columnName: this.selectedColumn, columnValues: [ this.inputColumnValue ], filterOperator: 'EQUAL_TO' }
         this.finalFilterQuery.push(query)
         this.onChangeFilterQuery.emit(this.finalFilterQuery);
+        
+        this.display = false;
+        this.clearSelectedFilters();
     }
 
     clearSelectedFilters() {
         this.selectedColumn = "";
-        this.selectedFilter = "";
+        this.selectedFilter = { label: '', filterOperatorEnum: '' };
         this.inputColumnValue = "";
     }
 
@@ -64,16 +71,18 @@ export class FilterComponent implements OnInit {
         this.display = true;
     }
 
-    onClickChip(filterOperator: FilterOperationUI) {
+    onClickChip(filterOperator: FilterOperationUI, index: number) {
         this.selectedColumn = filterOperator.columnName;
         this.inputColumnValue = filterOperator.columnValues;
-        this.selectedFilter = filterOperator.filterOperator;
+        this.selectedFilter = { label: filterOperator.filterLabel, filterOperatorEnum: filterOperator.filterOperator };
+        this.selectedIndex = index;
         this.display = true;
     }
 
     setFilterOperationOptionsDropdown() {
         this.queryPrestoService.getFilterOperationOptions().subscribe((response: string) => {
-            this.filterOperationOptionsDropdown = createDropdownOptions(response);
+            this.filterOperationOptionsDropdown = createDropdownOptions(response, 'label');
+            console.log(this.filterOperationOptionsDropdown)
         },
             (error) => {
                 const tables = [

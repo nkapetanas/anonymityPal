@@ -1,16 +1,15 @@
 <div class="p-5">
-    <app-overlay-panel-table [databasesOptions]="databasesOptions" (onSelectTable)="getSelectedTable($event)"></app-overlay-panel-table>
-    <div *ngIf="selectedTable" class="row">
-        <div class="col-12">
-            <p-selectButton [options]="joinDataOption" [multiple]="true" [(ngModel)]="joinDataValue" optionLabel="label"
-                optionValue="value"></p-selectButton>
-            <div *ngIf="joinDataValue.includes(1)" class="py-4">
-                <app-join-data [selectedTable]="selectedTable" [databaseOptions]="databasesOptions"></app-join-data>
-            </div>
-            <app-filter [selectedTable]="selectedTable" (onChangeFilterQuery)="getFilterQuery($event)"></app-filter>
+    <app-overlay-panel-table [databasesOptions]="databasesOptions" (onSelectTable)="getSelectedTable($event)">
+    </app-overlay-panel-table>
+    <div *ngIf="selectedTable">
+        <p-selectButton [options]="joinDataOption" [multiple]="true" [(ngModel)]="joinDataValue" optionLabel="label"
+            optionValue="value"></p-selectButton>
+        <div *ngIf="joinDataValue.includes(1)" class="py-4">
+            <app-join-data [selectedTable]="selectedTable" [databaseOptions]="databasesOptions"></app-join-data>
         </div>
+        <app-filter [selectedTable]="selectedTable" (onChangeFilterQuery)="getFilterQuery($event)"></app-filter>
+        <button pButton pRipple type="button" class="p-button-secondary" label="Execute"
+            (click)="execute()"></button>
+        <app-tabs-content *ngIf="results"></app-tabs-content>
     </div>
-    <button *ngIf="selectedTable" pButton pRipple type="button" class="p-button-secondary"
-        label="Execute" (click)="execute()"></button>
-    <app-tabs-content *ngIf="results"></app-tabs-content>
 </div>

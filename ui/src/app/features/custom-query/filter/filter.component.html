@@ -3,7 +3,7 @@
     <div class="col-12">
         <p-chip *ngFor="let filterOperator of filterOperationsListChips; let index = index" class="pr-2"
             [label]="filterOperator.filterLabel" [removable]="true" (onRemove)="removeFilterOperation(index)"
-            (click)="onClickChip(filterOperator)"></p-chip>
+            (click)="onClickChip(filterOperator, index)"></p-chip>
         <button pButton pRipple type="button" icon="pi pi-plus" class="add-filter-button"
             (click)="showFilterDialog()"></button>
     </div>
@@ -21,15 +21,15 @@
 
     <div class="col-6">
         <p-dropdown [options]="filterOperationOptionsDropdown" [(ngModel)]="selectedFilter" placeholder="Select Filter"
-            appendTo="body" [style]="{'width':'100%'}"></p-dropdown>
+            appendTo="body" [style]="{'width':'100%'}" [showClear]="true"></p-dropdown>
     </div>
 
     <div class="col-4">
-        <input type="text" pInputText [(ngModel)]="inputColumnValue" />
+        <input type="text" pInputText [(ngModel)]="inputColumnValue"/>
     </div>
     <p-footer>
         <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-            <button type="button" pButton icon="fa-check" (click)="addFilter()" label="Add"></button>
+            <button type="button" pButton icon="fa fa-check" (click)="addFilter()" label="Save"></button>
         </div>
     </p-footer>
 </p-dialog>

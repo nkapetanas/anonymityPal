@@ -4,6 +4,7 @@ import { JoinOperation } from "./JoinOperation";
 export interface CustomQueryParams {
     completeTablePath: string;
     isJoin: boolean;
-    joinOperation: JoinOperation;
+    tableToJoinPathCatalog: string;
+    joinTableColumnValues: Array<string>;
     filterOperationsList: Array<FilterOperation>;
 }

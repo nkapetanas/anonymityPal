@@ -40,9 +40,11 @@ export class CustomQueryComponent implements OnInit {
         const query: CustomQueryParams = {
             completeTablePath: this.selectedTable,
             isJoin: false,
-            joinOperation: { tableToJoinPathCatalog: '', columnValues: [] },
+            tableToJoinPathCatalog: '',
+            joinTableColumnValues: [''],
             filterOperationsList: this.filterLists
         }
+
         this.queryPrestoService.getCustomQueryResults(query).subscribe(response=> {
             console.log(response)
         });

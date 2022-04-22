@@ -1,5 +1,6 @@
-export function createDropdownOptions(data: any) {
+export function createDropdownOptions(data: any, fieldLabel?: string) {
     return data.map((item: any)=> {
-        return { value: item, label: item };
+        const labelValue: string = (fieldLabel) ? item[fieldLabel] : item;
+        return { value: item, label: labelValue };
     });
 }

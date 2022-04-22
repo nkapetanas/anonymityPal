@@ -19,9 +19,7 @@ export class QueryPrestoService {
     }
 
     getCustomQueryResults(query: CustomQueryParams) {
-        return this.http.get<any>(Consts.API_PATH + Consts.API_GET_CUSTOM_QUERY_RESULTS, {
-            params: new HttpParams(query)
-        });
+        return this.http.post<any>(Consts.API_PATH + Consts.API_GET_CUSTOM_QUERY_RESULTS, query);
     }
 
     getAvailableDbs(): Observable<string> {
