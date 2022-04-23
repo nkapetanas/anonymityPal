@@ -19,7 +19,10 @@ public class CustomQueryBuilderService {
 
     private static final String SELECT_ALL_OPERATION = "SELECT * FROM %s t1 ";
     private static final String WHERE_OPERATION = "WHERE 1 = 1 ";
-    private static final String LEFT_JOIN = "LEFT JOIN %s t2 ON ";
+    private static final String LEFT_OUTER_JOIN = "LEFT OUTER JOIN %s t2 ON ";
+    private static final String RIGHT_OUTER_JOIN = "RIGHT OUTER JOIN %s t2 ON ";
+    private static final String INNER_JOIN = "INNER JOIN %s t2 ON ";
+    private static final String FULL_OUTER_JOIN = "FULL OUTER JOIN %s t2 ON ";
     private static final String JOIN_COLUMNS = "%s = %s ";
     private static final String AND_OPERATION = "AND";
 
@@ -42,7 +45,7 @@ public class CustomQueryBuilderService {
                 throw new AnonymityPalException(AP_E_0005);
             }
 
-            customQuery.append(String.format(LEFT_JOIN, customQueryParams.getTableToJoinPathCatalog()));
+            customQuery.append(String.format(LEFT_OUTER_JOIN, customQueryParams.getTableToJoinPathCatalog()));
 
             final List<String> columnValues = customQueryParams.getJoinTableColumnValues();
             final String firstColumnInJoin = columnValues.get(0);

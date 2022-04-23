@@ -4,7 +4,7 @@
         <p-chip *ngFor="let filterOperator of filterOperationsListChips; let index = index" class="pr-2"
             [label]="filterOperator.filterLabel" [removable]="true" (onRemove)="removeFilterOperation(index)"
             (click)="onClickChip(filterOperator, index)"></p-chip>
-        <button pButton pRipple type="button" icon="pi pi-plus" class="add-filter-button"
+        <button pButton pRipple type="button" label="Add filters to narrow your answer" icon="pi pi-plus" class="add-filter-button"
             (click)="showFilterDialog()"></button>
     </div>
     <div *ngIf="showFilterAdd">
