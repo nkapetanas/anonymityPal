@@ -1,8 +1,8 @@
 package com.research.privacy.anonymity.pal.restservices;
 
 import com.research.privacy.anonymity.pal.Application;
-import com.research.privacy.anonymity.pal.api.FilterOperationsRestService;
-import com.research.privacy.anonymity.pal.api.response.FilterOperatorsResponseJson;
+import com.research.privacy.anonymity.pal.api.SqlOperationsRestService;
+import com.research.privacy.anonymity.pal.api.response.SQLOperatorsResponseJson;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -18,13 +18,13 @@ import java.util.List;
 class ITFilterOperatorsRestService {
 
     @Autowired
-    FilterOperationsRestService filterOperationsRestService;
+    SqlOperationsRestService filterOperationsRestService;
 
     @Test
     void privacyService_getFilterOperations_OK() {
-        final ResponseEntity<List<FilterOperatorsResponseJson>> restServiceResponse = filterOperationsRestService.getFilterOperations();
+        final ResponseEntity<List<SQLOperatorsResponseJson>> restServiceResponse = filterOperationsRestService.getFilterOperations();
         Assertions.assertEquals(HttpStatus.OK, restServiceResponse.getStatusCode());
-        final List<FilterOperatorsResponseJson> filterOperations = restServiceResponse.getBody();
+        final List<SQLOperatorsResponseJson> filterOperations = restServiceResponse.getBody();
         Assertions.assertNotNull(filterOperations);
         Assertions.assertEquals(9, filterOperations.size());
     }

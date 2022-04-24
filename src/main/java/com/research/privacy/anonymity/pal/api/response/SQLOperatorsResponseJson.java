@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class FilterOperatorsResponseJson {
+public class SQLOperatorsResponseJson {
     private String label;
-    private String filterOperatorEnum;
+    private String sqlOperatorEnum;
 }

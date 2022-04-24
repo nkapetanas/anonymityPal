@@ -21,7 +21,7 @@ export class FilterComponent implements OnInit {
 
     filterLabel: string = 'Add filters to narrow your answer';
     selectedColumn: string;
-    selectedFilter: { label: string, filterOperatorEnum: string };
+    selectedFilter: { label: string, sqlOperatorEnum: string };
     inputColumnValue: string;
     filterOperationsListChips: Array<FilterOperationUI> = [];
 
@@ -48,21 +48,21 @@ export class FilterComponent implements OnInit {
             columnName: this.selectedColumn, columnValues: this.inputColumnValue, filterOperator: this.selectedFilter.label
         };
         // if(this.selectedIndex) {
-            
+
         // }
         this.filterOperationsListChips.push(filterOperationChip);
-        
+
         const query: FilterOperation = {columnName: this.selectedColumn, columnValues: [ this.inputColumnValue ], filterOperator: 'EQUAL_TO' }
         this.finalFilterQuery.push(query)
         this.onChangeFilterQuery.emit(this.finalFilterQuery);
-        
+
         this.display = false;
         this.clearSelectedFilters();
     }
 
     clearSelectedFilters() {
         this.selectedColumn = "";
-        this.selectedFilter = { label: '', filterOperatorEnum: '' };
+        this.selectedFilter = { label: '', sqlOperatorEnum: '' };
         this.inputColumnValue = "";
     }
 
@@ -74,7 +74,7 @@ export class FilterComponent implements OnInit {
     onClickChip(filterOperator: FilterOperationUI, index: number) {
         this.selectedColumn = filterOperator.columnName;
         this.inputColumnValue = filterOperator.columnValues;
-        this.selectedFilter = { label: filterOperator.filterLabel, filterOperatorEnum: filterOperator.filterOperator };
+        this.selectedFilter = { label: filterOperator.filterLabel, sqlOperatorEnum: filterOperator.filterOperator };
         this.selectedIndex = index;
         this.display = true;
     }

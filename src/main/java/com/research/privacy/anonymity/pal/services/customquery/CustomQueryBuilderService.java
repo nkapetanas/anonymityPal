@@ -2,6 +2,7 @@ package com.research.privacy.anonymity.pal.services.customquery;
 
 import com.research.privacy.anonymity.pal.api.params.CustomQueryParams;
 import com.research.privacy.anonymity.pal.common.enums.FilterOperators;
+import com.research.privacy.anonymity.pal.common.enums.JoinOperators;
 import com.research.privacy.anonymity.pal.common.utils.Utils;
 import com.research.privacy.anonymity.pal.exceptions.AnonymityPalErrorCode;
 import com.research.privacy.anonymity.pal.exceptions.AnonymityPalException;
@@ -19,10 +20,6 @@ public class CustomQueryBuilderService {
 
     private static final String SELECT_ALL_OPERATION = "SELECT * FROM %s t1 ";
     private static final String WHERE_OPERATION = "WHERE 1 = 1 ";
-    private static final String LEFT_OUTER_JOIN = "LEFT OUTER JOIN %s t2 ON ";
-    private static final String RIGHT_OUTER_JOIN = "RIGHT OUTER JOIN %s t2 ON ";
-    private static final String INNER_JOIN = "INNER JOIN %s t2 ON ";
-    private static final String FULL_OUTER_JOIN = "FULL OUTER JOIN %s t2 ON ";
     private static final String JOIN_COLUMNS = "%s = %s ";
     private static final String AND_OPERATION = "AND";
 
@@ -41,13 +38,22 @@ public class CustomQueryBuilderService {
 
         if (isJoinOperations) {
 
-            if (Utils.isEmpty(customQueryParams.getTableToJoinPathCatalog()) || Utils.isEmpty(customQueryParams.getJoinTableColumnValues())) {
+            String tableToJoinPathCatalog = customQueryParams.getTableToJoinPathCatalog();
+            List<String> joinTableColumnValues = customQueryParams.getJoinTableColumnValues();
+
+            if (Utils.isEmpty(tableToJoinPathCatalog) || Utils.isEmpty(joinTableColumnValues)) {
                 throw new AnonymityPalException(AP_E_0005);
             }
 
-            customQuery.append(String.format(LEFT_OUTER_JOIN, customQueryParams.getTableToJoinPathCatalog()));
+            JoinOperators joinOperator = JoinOperators.from(customQueryParams.getJoinOperator());
 
-            final List<String> columnValues = customQueryParams.getJoinTableColumnValues();
+            if (joinOperator == null) {
+                throw new AnonymityPalException(AP_E_0005);
+            }
+
+            customQuery.append(String.format(joinOperator.getSqlOperation(), tableToJoinPathCatalog));
+
+            final List<String> columnValues = joinTableColumnValues;
             final String firstColumnInJoin = columnValues.get(0);
             final String secondColumnInJoin = columnValues.get(1);
 

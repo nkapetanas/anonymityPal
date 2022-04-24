@@ -16,6 +16,7 @@ public class CustomQueryParams {
     private String completeTablePath;
     private boolean isJoin;
     private String tableToJoinPathCatalog;
+    private String joinOperator;
     private List<String> joinTableColumnValues;
     private List<FilterOperations> filterOperationsList;
 }

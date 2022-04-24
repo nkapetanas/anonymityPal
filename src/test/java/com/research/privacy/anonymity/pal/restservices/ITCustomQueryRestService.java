@@ -6,6 +6,7 @@ import com.research.privacy.anonymity.pal.api.params.CustomQueryParams;
 import com.research.privacy.anonymity.pal.api.response.DBRecordWrapper;
 import com.research.privacy.anonymity.pal.api.response.QueryResultsResponseJson;
 import com.research.privacy.anonymity.pal.common.enums.FilterOperators;
+import com.research.privacy.anonymity.pal.common.enums.JoinOperators;
 import com.research.privacy.anonymity.pal.common.utils.Utils;
 import com.research.privacy.anonymity.pal.services.PrestoService;
 import com.research.privacy.anonymity.pal.services.customquery.CustomQueryBuilderService;
@@ -45,7 +46,7 @@ class ITCustomQueryRestService {
         List<FilterOperations> filterOperationsList = new ArrayList<>();
         filterOperationsList.add(new FilterOperations("marital_status", Collections.singletonList("Single"), FilterOperators.EQUAL_TO.name()));
 
-        final ResponseEntity<QueryResultsResponseJson> restServiceResponse = queriesRestService.getCustomQueryResults(createCustomQuery(VALID_TABLE_1, false, null, null, filterOperationsList));
+        final ResponseEntity<QueryResultsResponseJson> restServiceResponse = queriesRestService.getCustomQueryResults(createCustomQuery(VALID_TABLE_1, false, null, null, null, filterOperationsList));
 
         Assertions.assertEquals(HttpStatus.OK, restServiceResponse.getStatusCode());
         final QueryResultsResponseJson queryResultsResponseJson = restServiceResponse.getBody();
@@ -64,8 +65,7 @@ class ITCustomQueryRestService {
         List<FilterOperations> filterOperationsList = new ArrayList<>();
         filterOperationsList.add(new FilterOperations("nationality", Collections.singletonList("European"), FilterOperators.EQUAL_TO.name()));
 
-        final ResponseEntity<QueryResultsResponseJson> restServiceResponse = queriesRestService
-                .getCustomQueryResults(createCustomQuery(VALID_TABLE_1, true, VALID_TABLE_2, Utils.asList("zip", "zipcode"), filterOperationsList));
+        final ResponseEntity<QueryResultsResponseJson> restServiceResponse = queriesRestService.getCustomQueryResults(createCustomQuery(VALID_TABLE_1, true, VALID_TABLE_2, JoinOperators.LEFT_OUTER_JOIN, Utils.asList("zip", "zipcode"), filterOperationsList));
 
         Assertions.assertEquals(HttpStatus.OK, restServiceResponse.getStatusCode());
         final QueryResultsResponseJson queryResultsResponseJson = restServiceResponse.getBody();
@@ -80,27 +80,27 @@ class ITCustomQueryRestService {
 
     @Test
     void privacyService_getCustomQueryResults_missing_table_NOK() {
-        final ResponseEntity<QueryResultsResponseJson> restServiceResponse = queriesRestService.getCustomQueryResults(createCustomQuery(VALID_TABLE_1, true, null, null, null));
+        final ResponseEntity<QueryResultsResponseJson> restServiceResponse = queriesRestService.getCustomQueryResults(createCustomQuery(VALID_TABLE_1, true, null, null, null, null));
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, restServiceResponse.getStatusCode());
     }
 
     @Test
     void privacyService_getCustomQueryResults_Join_missing_joinInfo_NOK() {
-        ResponseEntity<QueryResultsResponseJson> restServiceResponse = queriesRestService
-                .getCustomQueryResults(createCustomQuery(VALID_TABLE_1, true, null, Utils.asList("zip", "zipcode"), null));
+        ResponseEntity<QueryResultsResponseJson> restServiceResponse = queriesRestService.getCustomQueryResults(createCustomQuery(VALID_TABLE_1, true, null, JoinOperators.RIGHT_OUTER_JOIN, Utils.asList("zip", "zipcode"), null));
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, restServiceResponse.getStatusCode());
 
-        restServiceResponse = queriesRestService.getCustomQueryResults(createCustomQuery(VALID_TABLE_1, true, VALID_TABLE_2, Utils.asList("", "zipcode"), null));
+        restServiceResponse = queriesRestService.getCustomQueryResults(createCustomQuery(VALID_TABLE_1, true, VALID_TABLE_2, JoinOperators.RIGHT_OUTER_JOIN, Utils.asList("", "zipcode"), null));
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, restServiceResponse.getStatusCode());
     }
 
-    private CustomQueryParams createCustomQuery(String completeTablePath, boolean isJoin, String tableToJoinPathCatalog, List<String> joinTableColumnValues, List<FilterOperations> filterOperationsList) {
+    private CustomQueryParams createCustomQuery(String completeTablePath, boolean isJoin, String tableToJoinPathCatalog, JoinOperators joinOperator, List<String> joinTableColumnValues, List<FilterOperations> filterOperationsList) {
         CustomQueryParams customQueryParams = new CustomQueryParams();
 
         customQueryParams.setCompleteTablePath(completeTablePath);
         customQueryParams.setJoin(isJoin);
         customQueryParams.setJoinTableColumnValues(joinTableColumnValues);
         customQueryParams.setTableToJoinPathCatalog(tableToJoinPathCatalog);
+        customQueryParams.setJoinOperator(Utils.isNotEmpty(joinOperator) ? joinOperator.getField() : null);
         customQueryParams.setFilterOperationsList(filterOperationsList);
         return customQueryParams;
     }

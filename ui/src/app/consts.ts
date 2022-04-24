@@ -7,5 +7,6 @@ export class Consts{
   static readonly API_GET_AVAILABLE_SCHEMA_TABLES: string = 'presto/getAvailableSchemaTables';
   static readonly API_GET_COLUMNS_FROM_TABLE: string = 'presto/getColumnsFromTable';
   static readonly API_FILTER_OPERATIONS: string = 'presto/getFilterOperations';
+  static readonly API_JOIN_OPERATIONS: string = 'presto/getJoinOperations';
   static readonly API_GET_QUERY_PRIVACY_RESULTS: string = 'privacy/getQueryResultsPrivacyChecked';
 }
