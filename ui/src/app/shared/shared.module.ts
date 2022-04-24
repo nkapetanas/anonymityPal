@@ -7,9 +7,10 @@ import {OverlayModule} from '@angular/cdk/overlay';
 import { ButtonModule } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
 import { SelectMatchingColumnsComponent } from './select-matching-columns/select-matching-columns.component';
+import { SelectColumnComponent } from './select-matching-columns/select-column/select-column.component';
 
 @NgModule({
-    declarations: [CardComponent, OverlayPanelTableComponent, SelectMatchingColumnsComponent],
+    declarations: [CardComponent, OverlayPanelTableComponent, SelectMatchingColumnsComponent, SelectColumnComponent],
     imports: [CommonModule, CardModule, OverlayModule, ButtonModule, ChipModule],
     exports: [CardComponent, OverlayPanelTableComponent, SelectMatchingColumnsComponent],
     providers: []

@@ -91,8 +91,7 @@ export class OverlayPanelTableComponent implements OnInit {
 
     removeSelectedTable() {
         this.table = '';
+        this.onSelectTable.emit(this.table);
     }
-
-
 
 }

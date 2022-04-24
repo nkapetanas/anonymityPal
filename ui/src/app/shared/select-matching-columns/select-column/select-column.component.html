@@ -1,0 +1,11 @@
+<div class="d-block">
+    <label class="label-alignment mr-1"><strong>{{tableValue}}</strong></label>
+    <button pButton pRipple type="button" [icon]="isDataColumnCollapsed ? 'pi pi-angle-up' : 'pi pi-angle-down'"
+        class="p-button-rounded p-button-text" (click)="collapseColumns()"></button>
+</div>
+<span *ngIf="isDataColumnCollapsed">
+    <span><strong>Select column:</strong></span>
+    <li *ngFor="let joinColumn of columnOptions;">
+        {{joinColumn.value}}
+    </li>
+</span>

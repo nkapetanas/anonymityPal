@@ -8,13 +8,13 @@ import { SelectItem } from 'primeng/api';
 })
 export class SelectMatchingColumnsComponent implements OnInit {
 
+    @Input() selectedTableJoin: string;
+    @Input() selectedTable: string;
     @Input() joinColumnOptions: Array<SelectItem> = [];
     @Input() columnOptions: Array<SelectItem> = [];
 
     isOpen: boolean = false;
     selectedColumns: string = '';
-    isDataColumnCollapsed: boolean = false;
-    isDataJoinColumnCollapsed: boolean = false;
 
     constructor() { }
 
@@ -23,14 +23,6 @@ export class SelectMatchingColumnsComponent implements OnInit {
 
     removeSelectedColumns() {
         this.selectedColumns = '';
-    }
-
-    collapseColumns() {
-        this.isDataColumnCollapsed = !this.isDataColumnCollapsed;
-    }
-
-    collapseJoinColumns() {
-        this.isDataJoinColumnCollapsed = !this.isDataJoinColumnCollapsed;
     }
 
 }

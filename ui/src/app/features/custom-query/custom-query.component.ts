@@ -17,7 +17,7 @@ export class CustomQueryComponent implements OnInit {
   databasesOptions: Array<SelectItem> = [];
   results: Array<any>;
   joinDataOption: Array<SelectItem> = [];
-  joinDataValue: number[] = [];
+  joinDataValue: {id: number, icon: string };
   filterLists: Array<FilterOperation>;
 
   constructor(
@@ -28,9 +28,9 @@ export class CustomQueryComponent implements OnInit {
   ngOnInit(): void {
 
     this.joinDataOption = [
-      {icon: 'join-icons join-left-icon', label: 'Left outer join', value: 1},
-      {icon: 'join-icons join-right-icon', label: 'Right outer join', value: 1},
-      {icon: 'join-icons join-inner-icon', label: 'Inner join', value: 1},
+      {icon: 'join-icons join-left-icon', label: 'Left outer join', value: { id: 1, icon: 'join-icons join-left-icon' } },
+      {icon: 'join-icons join-right-icon', label: 'Right outer join', value: { id: 2, icon: 'join-icons join-right-icon' } },
+      {icon: 'join-icons join-inner-icon', label: 'Inner join', value: { id: 3, icon: 'join-icons join-inner-icon' } },
     ];
 
     this.route.data.subscribe(data => {

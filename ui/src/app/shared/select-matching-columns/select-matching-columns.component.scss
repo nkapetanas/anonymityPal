@@ -9,13 +9,15 @@
     margin: 0;
 }
 
-.example-list li {
-    list-style-type: none;
-    border-bottom: solid 1px #8b8b8b;
-    padding: 8px 0;
-    cursor: pointer;
-}
-
-.example-list li:last-child {
-    border-bottom: none;
+::ng-deep {
+    .example-list li {
+        list-style-type: none;
+        border-bottom: solid 1px #8b8b8b;
+        padding: 8px 0;
+        cursor: pointer;
+    }
+    
+    .example-list li:last-child {
+        border-bottom: none;
+    }
 }

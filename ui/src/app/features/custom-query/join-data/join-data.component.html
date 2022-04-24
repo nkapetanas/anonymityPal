@@ -1,49 +1,17 @@
 <div class="row mx-0 light-blue-background radius">
     <div class="col-12">
         <p-chip class="pr-2" [label]="selectedTable"></p-chip>
-        <span class="pr-2">Join</span>
-        <ng-container *ngIf="!selectedTableJoin else hasJoinedTableValue;">
-            <app-overlay-panel-table class="d-inline-block" [databasesOptions]="databaseOptions" (onSelectTable)="getSelectedTable($event)"></app-overlay-panel-table>
-        </ng-container>
-        <ng-template #hasJoinedTableValue>
-            <p-chip class="pr-2" [label]="selectedTableJoin" [removable]="true" (onRemove)="removeFinalTable()"></p-chip>
+        <p-chip [icon]="selectedJoinValue.icon"></p-chip>
+        <app-overlay-panel-table class="d-inline-block" [databasesOptions]="databaseOptions" (onSelectTable)="getSelectedTable($event)"></app-overlay-panel-table>
+        <div *ngIf="selectedTableJoin" class="d-inline-block">
             <span class="pr-2">Where</span>
             <ng-container *ngIf="!selectedColumns else hasSelectedColumnsValue;">
-                <app-select-matching-columns class="d-inline-block" [columnOptions]="columnsOptions" [joinColumnOptions]="columnsJoinOptions"></app-select-matching-columns>
+                <app-select-matching-columns class="d-inline-block" [columnOptions]="columnsOptions" 
+                    [joinColumnOptions]="columnsJoinOptions" [selectedTable]="selectedTable" [selectedTableJoin]="selectedTableJoin"></app-select-matching-columns>
             </ng-container>
             <ng-template #hasSelectedColumnsValue>
                 <p-chip class="pr-2" [label]="selectedColumns" [removable]="true" (onRemove)="removeSelectedColumns()"></p-chip>
             </ng-template>
-        </ng-template>
+        </div>
     </div>
 </div>
-
-<!-- <p-dialog header="Match columns" [(visible)]="showColumnsModal" [modal]="true"  [style]="{width: '50vw'}" (onHide)="closeColumnsModal()">
-    <div class="row">
-        <div class="col-12">
-            <label>Selected table: </label><span>{{ selectedTable }}</span>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <p-dropdown [options]="columnsOptions" [(ngModel)]="selectedColumn"
-                    placeholder="Select a column" appendTo="body" (onChange)="databaseValueChange($event)">
-                </p-dropdown>
-            </div>
-        </div>
-
-        <div class="col-12">
-            <label>Selected table: </label><span>{{ joinedTable }}</span>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <p-dropdown [options]="columnsJoinOptions" [(ngModel)]="selectedColumnJoin" placeholder="Select a column"
-                    appendTo="body" (onChange)="schemaValueChange($event)"></p-dropdown>
-            </div>
-        </div>
-    </div>
-    <p-footer>
-        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-            <button type="button" pButton icon="fa-check" (click)="saveSelectedColumns()" label="Save"></button>
-        </div>
-    </p-footer>
-</p-dialog> -->

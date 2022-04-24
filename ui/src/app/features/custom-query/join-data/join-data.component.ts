@@ -14,14 +14,10 @@ export class JoinDataComponent implements OnInit {
 
     @Input() selectedTable: string;
     @Input() databaseOptions: Array<SelectItem> = [];
+    @Input() selectedJoinValue: { id: number, icon: string };
     @Output() onGetJoinQuery: EventEmitter<JoinOperation> = new EventEmitter<JoinOperation>();
 
-    showColumnsModal: boolean = false;
     selectedTableJoin: string = '';
-    joinedTable: string = '';
-    selectedColumn: string = '';
-    selectedColumnJoin: string = '';
-    selectedJoinOperation: string = '';
     columnsOptions: Array<SelectItem> = [];
     columnsJoinOptions: Array<SelectItem> = [];
     selectedColumns: string = '';
@@ -30,27 +26,7 @@ export class JoinDataComponent implements OnInit {
         private queryPrestoService: QueryPrestoService
     ) { }
 
-    ngOnInit(): void {
-    }
-
-    removeFinalTable() {
-        this.joinedTable = '';
-        this.removeSelectedColumns();
-    }
-
-    matchColumns() {
-        this.showColumnsModal = true;
-    }
-
-    saveSelectedColumns() {
-        this.selectedColumns = this.selectedColumn + ' = ' + this.selectedColumnJoin;
-        this.showColumnsModal = false;
-    }
-
-    closeColumnsModal() {
-        this.selectedColumn = '';
-        this.selectedColumnJoin = '';
-    }
+    ngOnInit(): void { }
 
     removeSelectedColumns() {
         this.selectedColumns = '';
@@ -58,11 +34,14 @@ export class JoinDataComponent implements OnInit {
 
     getSelectedTable(value: string) {
         this.selectedTableJoin = value;
-        const getColumnsFromJoinTable = this.queryPrestoService.getColumnsFromTable(this.selectedTableJoin);
-        const getColumnsFromTable = this.queryPrestoService.getColumnsFromTable(this.selectedTable);
-        forkJoin({getColumnsFromJoinTable, getColumnsFromTable}).subscribe(response=> {
-            this.columnsOptions = createDropdownOptions(response.getColumnsFromTable);
-            this.columnsJoinOptions = createDropdownOptions(response.getColumnsFromJoinTable);
-        })
+        if (this.selectedTableJoin !== '') {
+            const getColumnsFromJoinTable = this.queryPrestoService.getColumnsFromTable(this.selectedTableJoin);
+            const getColumnsFromTable = this.queryPrestoService.getColumnsFromTable(this.selectedTable);
+            forkJoin({ getColumnsFromJoinTable, getColumnsFromTable }).subscribe(response => {
+                this.columnsOptions = createDropdownOptions(response.getColumnsFromTable);
+                this.columnsJoinOptions = createDropdownOptions(response.getColumnsFromJoinTable);
+            })
+        }
+
     }
 }

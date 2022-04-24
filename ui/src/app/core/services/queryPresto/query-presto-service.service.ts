@@ -19,6 +19,7 @@ export class QueryPrestoService {
     }
 
     getCustomQueryResults(query: CustomQueryParams) {
+        debugger;
         return this.http.post<any>(Consts.API_PATH + Consts.API_GET_CUSTOM_QUERY_RESULTS, query);
     }
 
