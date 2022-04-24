@@ -21,6 +21,7 @@ export class JoinDataComponent implements OnInit {
     joinedTable: string = '';
     selectedColumn: string = '';
     selectedColumnJoin: string = '';
+    selectedJoinOperation: string = '';
     columnsOptions: Array<SelectItem> = [];
     columnsJoinOptions: Array<SelectItem> = [];
     selectedColumns: string = '';
@@ -64,5 +65,4 @@ export class JoinDataComponent implements OnInit {
             this.columnsJoinOptions = createDropdownOptions(response.getColumnsFromJoinTable);
         })
     }
-
 }

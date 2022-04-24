@@ -47,4 +47,8 @@ export class QueryPrestoService {
     getFilterOperationOptions(): Observable<string> {
         return this.http.get<any>(Consts.API_PATH + Consts.API_FILTER_OPERATIONS);
     }
+
+  getJoinOperationOptions(): Observable<string> {
+    return this.http.get<any>(Consts.API_PATH + Consts.API_JOIN_OPERATIONS);
+  }
 }

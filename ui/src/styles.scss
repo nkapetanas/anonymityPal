@@ -1,10 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
-html, body { 
-    height: 100%; 
+html, body {
+    height: 100%;
 }
 
-body { 
-    margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; 
+body {
+    margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .logo {
@@ -17,6 +17,25 @@ body {
 
 .cdk-overlay-container .cdk-overlay-pane {
     display: inline-block;
+}
+
+:host ::ng-deep {
+  .join-icons {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .join-left-icon {
+    background-image: url("assets/join-left.png");
+  }
+
+  .join-right-icon {
+    background-image: url("assets/join-right.png");
+  }
+
+  .join-inner-icon {
+    background-image: url("assets/inner-join.png");
+  }
 }
 
 .label-alignment {

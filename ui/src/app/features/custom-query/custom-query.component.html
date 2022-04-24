@@ -2,8 +2,12 @@
     <app-overlay-panel-table [databasesOptions]="databasesOptions" (onSelectTable)="getSelectedTable($event)">
     </app-overlay-panel-table>
     <div *ngIf="selectedTable">
-        <p-selectButton [options]="joinDataOption" [multiple]="true" [(ngModel)]="joinDataValue" optionLabel="label"
-            optionValue="value"></p-selectButton>
+        <p-selectButton [options]="joinDataOption" [multiple]="true" [(ngModel)]="joinDataValue" optionLabel="icon"
+            optionValue="value">
+          <ng-template let-item>
+            <i [class]="item.icon"></i>
+          </ng-template>
+        </p-selectButton>
         <div *ngIf="joinDataValue.includes(1)" class="py-4">
             <app-join-data [selectedTable]="selectedTable" [databaseOptions]="databasesOptions"></app-join-data>
         </div>

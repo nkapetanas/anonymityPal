@@ -13,10 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 public enum JoinOperators {
 
-    LEFT_OUTER_JOIN ("Left Outer Join", "LEFT OUTER JOIN %s t2 ON "),
-    RIGHT_OUTER_JOIN ("Right Outer Join","RIGHT OUTER JOIN %s t2 ON "),
-    INNER_JOIN ("Inner Join","INNER JOIN %s t2 ON "),
-    FULL_OUTER_JOIN ("Full Outer Join","FULL OUTER JOIN %s t2 ON ");
+    LEFT_OUTER_JOIN("Left outer join", "LEFT OUTER JOIN %s t2 ON "),
+    RIGHT_OUTER_JOIN("Right outer join", "RIGHT OUTER JOIN %s t2 ON "),
+    INNER_JOIN("Inner join", "INNER JOIN %s t2 ON ");
 
     @Getter
     private final String field;
@@ -30,7 +29,7 @@ public enum JoinOperators {
         return joinOperators;
     }
 
-    public static JoinOperators from(String joinOperation){
+    public static JoinOperators from(String joinOperation) {
         return Utils.isEmpty(joinOperation) ? null : Arrays.stream(values()).filter((filterOperator -> filterOperator.getField().equals(joinOperation.trim()))).findFirst().orElse(null);
     }
 }

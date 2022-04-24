@@ -28,7 +28,9 @@ export class CustomQueryComponent implements OnInit {
   ngOnInit(): void {
 
     this.joinDataOption = [
-      {label: 'Join', value: 1}
+      {icon: 'join-icons join-left-icon', label: 'Left outer join', value: 1},
+      {icon: 'join-icons join-right-icon', label: 'Right outer join', value: 1},
+      {icon: 'join-icons join-inner-icon', label: 'Inner join', value: 1},
     ];
 
     this.route.data.subscribe(data => {
