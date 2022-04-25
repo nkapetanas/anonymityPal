@@ -4,7 +4,7 @@
         <p-chip [icon]="selectedJoinValue.icon"></p-chip>
         <app-overlay-panel-table class="d-inline-block" [databasesOptions]="databaseOptions" (onSelectTable)="getSelectedTable($event)"></app-overlay-panel-table>
         <div *ngIf="selectedTableJoin" class="d-inline-block">
-            <span class="pr-2">Where</span>
+            <p-chip label="Where"></p-chip>
             <ng-container *ngIf="!selectedColumns else hasSelectedColumnsValue;">
                 <app-select-matching-columns class="d-inline-block" [columnOptions]="columnsOptions" 
                     [joinColumnOptions]="columnsJoinOptions" [selectedTable]="selectedTable" [selectedTableJoin]="selectedTableJoin"></app-select-matching-columns>

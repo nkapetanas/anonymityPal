@@ -14,7 +14,9 @@ export class SelectMatchingColumnsComponent implements OnInit {
     @Input() columnOptions: Array<SelectItem> = [];
 
     isOpen: boolean = false;
-    selectedColumns: string = '';
+    isDisabled: boolean = true;
+    selectedColumns: { selectedColumn: string, selectedJoinColumn: string } = { selectedColumn: '', selectedJoinColumn: '' };
+    selectedColumnsValue: string = '';
 
     constructor() { }
 
@@ -22,7 +24,36 @@ export class SelectMatchingColumnsComponent implements OnInit {
     }
 
     removeSelectedColumns() {
-        this.selectedColumns = '';
+        this.selectedColumnsValue = '';
+    }
+
+    saveColumns() {
+        this.isOpen = false;
+        this.selectedColumnsValue = this.selectedColumns.selectedColumn + ' = ' + this.selectedColumns.selectedJoinColumn;
+    }
+
+    openOverLayPanel() {
+        this.isOpen = true;
+    }
+
+    closeOverlayPanel() {
+        this.isOpen = false;
+    }
+
+    getSelectedColumn(value: string) {
+        this.selectedColumns.selectedColumn = value;
+        this.handleDisableButton();
+    }
+
+    getSelectedJoinColumn(value: string) {
+        this.selectedColumns.selectedJoinColumn = value;
+        this.handleDisableButton();
+    }
+
+    handleDisableButton() {
+        if( this.selectedColumns.selectedColumn !== '' && this.selectedColumns.selectedJoinColumn !== '' ) {
+            this.isDisabled = false;
+        }
     }
 
 }

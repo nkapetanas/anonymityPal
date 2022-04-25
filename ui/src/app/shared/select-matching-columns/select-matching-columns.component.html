@@ -1,18 +1,29 @@
 <div class="row mx-0 light-blue-background radius">
     <div class="col-12">
-        <ng-container *ngIf="!selectedColumns else hasMatchingColumns">
-            <button pButton pRipple (click)="isOpen = !isOpen" type="button" class="p-button-secondary"
+        <ng-container *ngIf="!selectedColumnsValue else hasMatchingColumns">
+            <button pButton pRipple (click)="openOverLayPanel()" type="button" class="p-button-secondary"
                 label="Select columns" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
             </button>
             <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger" [cdkConnectedOverlayOpen]="isOpen">
                 <ul class="example-list">
-                    <app-select-column [columnOptions]="columnOptions" [label]="selectedTable"></app-select-column>
-                    <app-select-column [columnOptions]="joinColumnOptions" [label]="selectedTableJoin"></app-select-column>
+                    <label class="label-alignment"><strong>Select columns</strong></label>
+                    <button pButton pRipple type="button" icon="pi pi-times"
+                        class="p-button-rounded p-button-secondary p-button-sm p-button-text"
+                        (click)="closeOverlayPanel()"></button>
+                    <hr>
+                    <app-select-column [columnOptions]="columnOptions" [label]="selectedTable" (getSelectedColumn)="getSelectedColumn($event)"></app-select-column>
+                    <hr>
+                    <app-select-column [columnOptions]="joinColumnOptions" [label]="selectedTableJoin" (getSelectedColumn)="getSelectedJoinColumn($event)">
+                    </app-select-column>
+                    <hr>
+                    <button pButton pRipple type="button" class="p-button-secondary mr-5" label="Save" [disabled]="isDisabled"
+                        (click)="saveColumns()"></button>
                 </ul>
             </ng-template>
         </ng-container>
         <ng-template #hasMatchingColumns>
-            <p-chip class="pr-2" [label]="selectedColumns" [removable]="true" (onRemove)="removeSelectedColumns()"></p-chip>
+            <p-chip class="pr-2" [label]="selectedColumnsValue" [removable]="true" (onRemove)="removeSelectedColumns()">
+            </p-chip>
         </ng-template>
     </div>
 </div>

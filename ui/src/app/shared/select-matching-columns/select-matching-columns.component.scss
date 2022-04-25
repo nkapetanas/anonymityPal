@@ -1,5 +1,5 @@
 .example-list {
-    max-height: 250px;
+    max-height: 320px;
     overflow-y: auto;
     min-width: 142px;
     border: solid 1px #ccc;
@@ -12,8 +12,7 @@
 ::ng-deep {
     .example-list li {
         list-style-type: none;
-        border-bottom: solid 1px #8b8b8b;
-        padding: 8px 0;
+        padding: 8px 4px;
         cursor: pointer;
     }
     
