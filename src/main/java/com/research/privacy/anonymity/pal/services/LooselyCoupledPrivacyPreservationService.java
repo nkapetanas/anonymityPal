@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -84,9 +83,9 @@ public class LooselyCoupledPrivacyPreservationService {
             return false;
         }
 
-        for(Map.Entry<String, Integer> uniqueSensitiveAttributeValue : uniqueSensitiveAttributeValues.entrySet()) {
+        for (Map.Entry<String, Integer> uniqueSensitiveAttributeValue : uniqueSensitiveAttributeValues.entrySet()) {
             int numberOfRecordsWithSensitiveValue = uniqueSensitiveAttributeValue.getValue();
-            if(THRESHOLD_PROBABILITY <= calculateProbability(numberOfRecords, numberOfRecordsWithSensitiveValue)){
+            if (THRESHOLD_PROBABILITY <= calculateProbability(numberOfRecords, numberOfRecordsWithSensitiveValue)) {
                 return false;
             }
         }

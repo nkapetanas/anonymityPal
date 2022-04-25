@@ -14,7 +14,6 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QueryResultsJson {
-    private Set<String> quasiColumns;
     private List<DBRecord> dbRecordList;
     private Set<QuasiKeyPairValue> quasiColumnsToCheck;
     private boolean isPrivacyPreserved;

@@ -83,7 +83,7 @@ public class QueriesRestService {
         return ResponseEntity.ok().body(queryResults);
     }
 
-    @GetMapping("/checkPrivacyPreservation")
+    @PostMapping("/checkPrivacyPreservation")
     @ResponseStatus()
     public ResponseEntity<QueryResultsJson> checkPrivacyPreservation(@RequestBody QueryResultsJson queryResults) {
         if (Utils.isEmpty(queryResults)) {
