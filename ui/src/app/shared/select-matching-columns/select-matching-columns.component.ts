@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SelectItem } from 'primeng/api';
+import { JoinColumns } from 'src/app/features/custom-query/model/JoinOperation';
 
 @Component({
     selector: 'app-select-matching-columns',
@@ -12,10 +13,11 @@ export class SelectMatchingColumnsComponent implements OnInit {
     @Input() selectedTable: string;
     @Input() joinColumnOptions: Array<SelectItem> = [];
     @Input() columnOptions: Array<SelectItem> = [];
+    @Output() onChangeColumns: EventEmitter<JoinColumns> = new EventEmitter<JoinColumns>();
 
     isOpen: boolean = false;
     isDisabled: boolean = true;
-    selectedColumns: { selectedColumn: string, selectedJoinColumn: string } = { selectedColumn: '', selectedJoinColumn: '' };
+    selectedColumns: JoinColumns = { selectedColumn: '', selectedJoinColumn: '' };
     selectedColumnsValue: string = '';
 
     constructor() { }
@@ -30,6 +32,7 @@ export class SelectMatchingColumnsComponent implements OnInit {
     saveColumns() {
         this.isOpen = false;
         this.selectedColumnsValue = this.selectedColumns.selectedColumn + ' = ' + this.selectedColumns.selectedJoinColumn;
+        this.onChangeColumns.emit(this.selectedColumns);
     }
 
     openOverLayPanel() {
@@ -51,7 +54,7 @@ export class SelectMatchingColumnsComponent implements OnInit {
     }
 
     handleDisableButton() {
-        if( this.selectedColumns.selectedColumn !== '' && this.selectedColumns.selectedJoinColumn !== '' ) {
+        if (this.selectedColumns.selectedColumn !== '' && this.selectedColumns.selectedJoinColumn !== '') {
             this.isDisabled = false;
         }
     }

@@ -2,16 +2,14 @@
     <div class="col-12">
         <p-chip class="pr-2" [label]="selectedTable"></p-chip>
         <p-chip [icon]="selectedJoinValue.icon"></p-chip>
-        <app-overlay-panel-table class="d-inline-block" [databasesOptions]="databaseOptions" (onSelectTable)="getSelectedTable($event)"></app-overlay-panel-table>
+        <app-overlay-panel-table class="d-inline-block" [databasesOptions]="databaseOptions"
+            (onSelectTable)="getSelectedTable($event)"></app-overlay-panel-table>
         <div *ngIf="selectedTableJoin" class="d-inline-block">
             <p-chip label="Where"></p-chip>
-            <ng-container *ngIf="!selectedColumns else hasSelectedColumnsValue;">
-                <app-select-matching-columns class="d-inline-block" [columnOptions]="columnsOptions" 
-                    [joinColumnOptions]="columnsJoinOptions" [selectedTable]="selectedTable" [selectedTableJoin]="selectedTableJoin"></app-select-matching-columns>
-            </ng-container>
-            <ng-template #hasSelectedColumnsValue>
-                <p-chip class="pr-2" [label]="selectedColumns" [removable]="true" (onRemove)="removeSelectedColumns()"></p-chip>
-            </ng-template>
+            <app-select-matching-columns class="d-inline-block" [columnOptions]="columnsOptions"
+                [joinColumnOptions]="columnsJoinOptions" [selectedTable]="selectedTable"
+                [selectedTableJoin]="selectedTableJoin" (onChangeColumns)="getSelectedColumns($event)">
+            </app-select-matching-columns>
         </div>
     </div>
 </div>

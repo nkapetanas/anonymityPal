@@ -11,15 +11,15 @@
             </p-selectButton>
             <div *ngIf="joinDataValue" class="pt-3">
                 <app-join-data [selectedTable]="selectedTable" [databaseOptions]="databasesOptions"
-                    [selectedJoinValue]="joinDataValue"></app-join-data>
+                    [selectedJoinValue]="joinDataValue" (onChangeJoinQuery)="getJoinQuery($event)"></app-join-data>
             </div>
         </div>
         <div class="pt-3">
             <app-filter [selectedTable]="selectedTable" (onChangeFilterQuery)="getFilterQuery($event)"></app-filter>
         </div>
         <div class="pt-3">
-            <button pButton pRipple type="button" class="p-button-secondary" label="Execute" (click)="execute()"></button>
+            <button pButton pRipple type="button" class="p-button-secondary" label="Execute" [loading]="loading" (click)="execute()"></button>
         </div>
-        <app-tabs-content *ngIf="results"></app-tabs-content>
+        <app-tabs-content *ngIf="results" [data]="results"></app-tabs-content>
     </div>
 </div>

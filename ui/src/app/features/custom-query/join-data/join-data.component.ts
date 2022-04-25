@@ -3,7 +3,7 @@ import { SelectItem } from 'primeng/api';
 import { forkJoin } from 'rxjs';
 import { QueryPrestoService } from 'src/app/core/services/queryPresto/query-presto-service.service';
 import { createDropdownOptions } from 'src/app/core/utils/dropdown-options.helper';
-import { JoinOperation } from '../model/JoinOperation';
+import { JoinColumns } from '../model/JoinOperation';
 
 @Component({
     selector: 'app-join-data',
@@ -14,23 +14,18 @@ export class JoinDataComponent implements OnInit {
 
     @Input() selectedTable: string;
     @Input() databaseOptions: Array<SelectItem> = [];
-    @Input() selectedJoinValue: { id: number, icon: string };
-    @Output() onGetJoinQuery: EventEmitter<JoinOperation> = new EventEmitter<JoinOperation>();
+    @Input() selectedJoinValue: { joinValue: string, icon: string };
+    @Output() onChangeJoinQuery: EventEmitter<JoinColumns> = new EventEmitter<JoinColumns>();
 
     selectedTableJoin: string = '';
     columnsOptions: Array<SelectItem> = [];
     columnsJoinOptions: Array<SelectItem> = [];
-    selectedColumns: string = '';
 
     constructor(
         private queryPrestoService: QueryPrestoService
     ) { }
 
     ngOnInit(): void { }
-
-    removeSelectedColumns() {
-        this.selectedColumns = '';
-    }
 
     getSelectedTable(value: string) {
         this.selectedTableJoin = value;
@@ -42,6 +37,9 @@ export class JoinDataComponent implements OnInit {
                 this.columnsJoinOptions = createDropdownOptions(response.getColumnsFromJoinTable);
             })
         }
+    }
 
+    getSelectedColumns(value: JoinColumns) {
+        this.onChangeJoinQuery.emit(value);
     }
 }

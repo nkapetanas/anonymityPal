@@ -4,8 +4,7 @@ export interface DataTable {
     quasiColumns: Array<string>;
 }
 
-
-interface DBRecord {
+export interface DBRecord {
     dbRecordJsonList: Array<DBRecordJson>;
 }
 

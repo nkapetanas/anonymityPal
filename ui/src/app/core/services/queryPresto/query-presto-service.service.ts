@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Consts } from "../../../consts";
 import { CustomQueryParams } from 'src/app/features/custom-query/model/CustomQueryParams';
@@ -8,6 +8,12 @@ import { CustomQueryParams } from 'src/app/features/custom-query/model/CustomQue
     providedIn: 'root'
 })
 export class QueryPrestoService {
+
+    httpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json'
+        })
+    };
 
     constructor(private http: HttpClient) {
     }
@@ -20,7 +26,7 @@ export class QueryPrestoService {
 
     getCustomQueryResults(query: CustomQueryParams) {
         debugger;
-        return this.http.post<any>(Consts.API_PATH + Consts.API_GET_CUSTOM_QUERY_RESULTS, query);
+        return this.http.post<any>(Consts.API_PATH + Consts.API_GET_CUSTOM_QUERY_RESULTS, query, this.httpOptions);
     }
 
     getAvailableDbs(): Observable<string> {
@@ -49,7 +55,7 @@ export class QueryPrestoService {
         return this.http.get<any>(Consts.API_PATH + Consts.API_FILTER_OPERATIONS);
     }
 
-  getJoinOperationOptions(): Observable<string> {
-    return this.http.get<any>(Consts.API_PATH + Consts.API_JOIN_OPERATIONS);
-  }
+    getJoinOperationOptions(): Observable<string> {
+        return this.http.get<any>(Consts.API_PATH + Consts.API_JOIN_OPERATIONS);
+    }
 }

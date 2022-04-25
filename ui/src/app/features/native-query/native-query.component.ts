@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { QueryPrestoService } from 'src/app/core/services/queryPresto/query-presto-service.service';
+import { DataTable } from 'src/app/shared/tabs-content/data-table/DataTable.model';
 
 
 @Component({
@@ -11,10 +12,7 @@ import { QueryPrestoService } from 'src/app/core/services/queryPresto/query-pres
 export class NativeQueryComponent implements OnInit {
 
     query: string = '';
-    results: any;
-    quasiColumns: Array<any>;
-    columnNames: Array<any>;
-    dbRecordList: Array<any>;
+    results: DataTable;
     loading: boolean = false;
 
 
@@ -24,9 +22,7 @@ export class NativeQueryComponent implements OnInit {
     ) {
     }
 
-    ngOnInit(): void {
-
-    }
+    ngOnInit(): void { }
 
     returnBack() {
         this.router.navigate(['privacy-buddy/create-question'])
@@ -34,23 +30,12 @@ export class NativeQueryComponent implements OnInit {
 
     execute() {
         this.loading = true;
-        this.queryPrestoService.getResults(this.query).subscribe(res => {
+        this.queryPrestoService.getResults(this.query).subscribe((response: DataTable) => {
+            this.results = response;
             this.loading = false;
-            this.mapResults(res);
-            this.results = res;
         },
             (error) => {
                 // message for error
             })
-    }
-
-    private mapResults(response: any) {
-        if (response) {
-            this.quasiColumns = response.quasiColumns;
-            this.columnNames = response.columnNames;
-            this.results = {
-                columnNames: response.columnNames, dbRecordList: response.dbRecordList
-            }
-        }
     }
 }
