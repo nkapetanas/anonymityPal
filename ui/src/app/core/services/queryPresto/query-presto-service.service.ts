@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Consts } from "../../../consts";
 import { CustomQueryParams } from 'src/app/features/custom-query/model/CustomQueryParams';
+import { QueryResults } from 'src/app/shared/tabs-content/quashi-columns-selector/QueryResults.model';
 
 @Injectable({
     providedIn: 'root'
@@ -25,7 +26,6 @@ export class QueryPrestoService {
     }
 
     getCustomQueryResults(query: CustomQueryParams) {
-        debugger;
         return this.http.post<any>(Consts.API_PATH + Consts.API_GET_CUSTOM_QUERY_RESULTS, query, this.httpOptions);
     }
 
@@ -57,5 +57,9 @@ export class QueryPrestoService {
 
     getJoinOperationOptions(): Observable<string> {
         return this.http.get<any>(Consts.API_PATH + Consts.API_JOIN_OPERATIONS);
+    }
+
+    checkPrivacyPreservation(data: QueryResults): Observable<any> {
+        return this.http.post<any>(Consts.API_PATH + Consts.API_CHECK_PRIVACY_PRESENTATION, data, this.httpOptions);
     }
 }

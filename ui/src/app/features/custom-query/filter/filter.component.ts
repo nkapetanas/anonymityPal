@@ -42,7 +42,6 @@ export class FilterComponent implements OnInit {
     }
 
     addFilter() {
-        debugger;
         let filterOperationChip: FilterOperationUI = {
             filterLabel: this.selectedColumn + ' is ' + this.selectedFilter.label + " " + this.inputColumnValue,
             columnName: this.selectedColumn, columnValues: this.inputColumnValue, filterOperator: this.selectedFilter.label

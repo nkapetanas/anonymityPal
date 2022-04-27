@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, SimpleChanges, OnChanges } from '@angular/core';
-import { DataTable, DBRecordJson } from './DataTable.model';
+import { DataTable } from './DataTable.model';
 
 @Component({
     selector: 'app-data-table',

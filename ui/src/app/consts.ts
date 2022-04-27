@@ -9,4 +9,5 @@ export class Consts{
   static readonly API_FILTER_OPERATIONS: string = 'presto/getFilterOperations';
   static readonly API_JOIN_OPERATIONS: string = 'presto/getJoinOperations';
   static readonly API_GET_QUERY_PRIVACY_RESULTS: string = 'privacy/getQueryResultsPrivacyChecked';
+  static readonly API_CHECK_PRIVACY_PRESENTATION: string = 'privacy/checkPrivacyPreservation';
 }

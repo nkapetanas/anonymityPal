@@ -3,6 +3,6 @@
         <app-data-table [data] = 'data'></app-data-table>
     </mat-tab>
     <mat-tab label="Privacy check">
-        <app-quashi-columns-selector [data] = 'dataOptions'></app-quashi-columns-selector>
+        <app-quashi-columns-selector [dbRecordListData]="data.dbRecordList" [dataOptions]='dataOptions'></app-quashi-columns-selector>
     </mat-tab>
 </mat-tab-group>

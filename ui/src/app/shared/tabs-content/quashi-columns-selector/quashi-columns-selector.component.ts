@@ -1,29 +1,34 @@
-import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { SelectItem } from 'primeng/api';
-import { createDropdownOptions } from '../../../core/utils/dropdown-options.helper'
+import { QueryPrestoService } from 'src/app/core/services/queryPresto/query-presto-service.service';
+import { DBRecord } from '../data-table/DataTable.model';
+import { QueryResults } from './QueryResults.model';
 @Component({
     selector: 'app-quashi-columns-selector',
     templateUrl: './quashi-columns-selector.component.html',
     styleUrls: ['./quashi-columns-selector.component.scss']
 })
-export class QuashiColumnsSelectorComponent implements OnInit, OnChanges {
+export class QuashiColumnsSelectorComponent implements OnInit {
 
-    selectedColumns: any[] = [];
-    @Input() data:  Array<{ columnName: string, values: Array<SelectItem> }>;
-    selectedValue: Array<string> = [];
+    selectedColumns: Array<{ columnName: string, values: Array<SelectItem> }> = [];
+    @Input() dataOptions:  Array<{ columnName: string, values: Array<SelectItem> }>;
+    @Input() dbRecordListData:  Array<DBRecord>;
+    selectedValue: Array<{ quasiColumn: string, valueToCheck: string }> = [];
 
-    constructor() { }
+    constructor(
+        private queryPrestoService: QueryPrestoService
+    ) { }
 
     ngOnInit(): void { }
 
-    ngOnChanges(changes: SimpleChanges) {
-        if(changes['data'] && changes['data'].currentValue) {
-
-        }
-    }
-
     getPrivacyCheck() {
-
+        const query: QueryResults = {
+            dbRecordList: this.dbRecordListData,
+            quasiColumnsToCheck: this.selectedValue
+        }
+        this.queryPrestoService.checkPrivacyPreservation(query).subscribe(response=> {
+            console.log(response);
+        })
     }
 
 }

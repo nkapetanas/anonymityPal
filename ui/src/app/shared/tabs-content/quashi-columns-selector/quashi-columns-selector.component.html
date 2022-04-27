@@ -7,14 +7,14 @@
             </ng-template>
             <div class="row px-5">
                 <div class="col-12">
-                    <p-multiSelect [options]="data" [(ngModel)]="selectedColumns" defaultLabel="Select a column"
+                    <p-multiSelect [options]="dataOptions" [(ngModel)]="selectedColumns" defaultLabel="Select a column"
                         display="chip" styleClass="mt-4" optionLabel="columnName">
                     </p-multiSelect>
                 </div>
             </div>
 
             <p-table [value]="selectedColumns">
-                <ng-template pTemplate="body" let-item>
+                <ng-template pTemplate="body" let-item let-rowIndex="rowIndex";>
                     <tr>
                         <td>
                             <div class="row">
@@ -22,7 +22,7 @@
                                     {{item.columnName}}
                                 </div>
                                 <div class="col-4">
-                                    <p-dropdown [options]="item.values" [(ngModel)]="selectedValue"
+                                    <p-dropdown [options]="item.values" [(ngModel)]="selectedValue[rowIndex]"
                                         placeholder="Select value" [style]="{'width':'100%'}"></p-dropdown>
                                 </div>
                             </div>
