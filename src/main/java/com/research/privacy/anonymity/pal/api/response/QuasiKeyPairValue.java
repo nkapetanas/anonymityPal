@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class QuasiKeyPairValue {
-    private String quasiColumn;
-    private String valueToCheck;
+    private final String quasiColumn;
+    private final String valueToCheck;
 }

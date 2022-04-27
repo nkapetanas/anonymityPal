@@ -8,7 +8,7 @@
             <div class="row px-5">
                 <div class="col-12">
                     <p-multiSelect [options]="data" [(ngModel)]="selectedColumns" defaultLabel="Select a column"
-                        display="chip" styleClass="mt-4">
+                        display="chip" styleClass="mt-4" optionLabel="columnName">
                     </p-multiSelect>
                 </div>
             </div>
@@ -16,7 +16,17 @@
             <p-table [value]="selectedColumns">
                 <ng-template pTemplate="body" let-item>
                     <tr>
-                        <td>{{item}}</td>
+                        <td>
+                            <div class="row">
+                                <div class="col-4">
+                                    {{item.columnName}}
+                                </div>
+                                <div class="col-4">
+                                    <p-dropdown [options]="item.values" [(ngModel)]="selectedValue"
+                                        placeholder="Select value" [style]="{'width':'100%'}"></p-dropdown>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                 </ng-template>
             </p-table>
