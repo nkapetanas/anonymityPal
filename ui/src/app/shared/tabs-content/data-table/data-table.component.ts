@@ -9,6 +9,7 @@ import { DataTable } from './DataTable.model';
 export class DataTableComponent implements OnInit, OnChanges {
 
     @Input() data: DataTable;
+    @Input() isPrivacyPreserved?: boolean | null = null;
     orderedColumns: Array<{ label: string, order: number}> = [];
 
     constructor() { }

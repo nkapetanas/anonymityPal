@@ -12,6 +12,7 @@ export class TabsContentComponent implements OnInit, OnChanges {
 
     @Input() data: DataTable;
     dataOptions: Array<{ columnName: string, values: Array<SelectItem> }> = [];
+    isPrivacyPreserved: boolean;
     constructor() { }
 
     ngOnInit(): void {
@@ -35,6 +36,10 @@ export class TabsContentComponent implements OnInit, OnChanges {
                 }
             })
         });
+    }
+
+    getPrivacyPreserved(value: boolean) {
+        this.isPrivacyPreserved = value;
     }
 
 }

@@ -1,6 +1,10 @@
-// :host::ng-deep {
-//     .p-datatable .p-datatable-tbody > tr,
-//     .p-datatable .p-datatable-thead > tr > th {
-//         background: #aab4be;
-//     }
-// }
+:host::ng-deep {
+    .p-datatable .p-datatable-tbody > tr {
+        &.red-background {
+            background: red;
+        }
+        &.green-background {
+            background: green;
+        }
+    }
+}

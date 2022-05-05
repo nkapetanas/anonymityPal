@@ -9,7 +9,7 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-result>
-        <tr>
+        <tr [ngClass]="{'green-background': isPrivacyPreserved === true, 'red-background': isPrivacyPreserved === false }">
             <td *ngFor="let columnData of result.dbRecordJsonList; let columnIndex = index">
                 {{columnData.recordValue}}
             </td>
