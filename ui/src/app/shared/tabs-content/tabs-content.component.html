@@ -1,8 +1,10 @@
-<mat-tab-group dynamicHeight>
-    <mat-tab label="Table">
-        <app-data-table [data] = 'data'></app-data-table>
-    </mat-tab>
-    <mat-tab label="Privacy check">
-        <app-quashi-columns-selector [dbRecordListData]="data.dbRecordList" [dataOptions]='dataOptions'></app-quashi-columns-selector>
-    </mat-tab>
-</mat-tab-group>
+<div class="pt-3">
+    <p-accordion>
+        <p-accordionTab header="Privacy check">
+            <app-quashi-columns-selector [dbRecordListData]="data.dbRecordList" [dataOptions]='dataOptions'></app-quashi-columns-selector>
+        </p-accordionTab>
+    </p-accordion>
+    <app-data-table [data] = 'data'></app-data-table>
+    
+</div>
+

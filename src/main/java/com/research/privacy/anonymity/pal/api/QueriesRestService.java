@@ -85,17 +85,17 @@ public class QueriesRestService {
 
     @PostMapping("/checkPrivacyPreservation")
     @ResponseStatus()
-    public ResponseEntity<QueryResultsJson> checkPrivacyPreservation(@RequestBody QueryResultsJson queryResults) {
+    public ResponseEntity<Boolean> checkPrivacyPreservation(@RequestBody QueryResultsJson queryResults) {
         if (Utils.isEmpty(queryResults)) {
             ResponseEntity.ok(new ArrayList<>());
         }
 
-        QueryResultsJson checkedQueryResults;
+        Boolean privacyCheckResult;
         try {
-            checkedQueryResults = looselyCoupledPrivacyPreservationService.looselyCoupledPrivacyPreservationCheck(queryResults);
+          privacyCheckResult = looselyCoupledPrivacyPreservationService.looselyCoupledPrivacyPreservationCheck(queryResults);
         } catch (AnonymityPalException e) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok().body(checkedQueryResults);
+        return ResponseEntity.ok().body(privacyCheckResult);
     }
 }

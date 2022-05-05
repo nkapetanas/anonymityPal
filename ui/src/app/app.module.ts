@@ -32,7 +32,7 @@ import { ChipModule } from 'primeng/chip';
 import { JoinDataComponent } from './features/custom-query/join-data/join-data.component';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import { FilterModalComponent } from './features/custom-query/filter/filter-modal/filter-modal.component';
-
+import { AccordionModule } from 'primeng/accordion';
 
 @NgModule({
     declarations: [
@@ -70,7 +70,8 @@ import { FilterModalComponent } from './features/custom-query/filter/filter-moda
         SelectButtonModule,
         DialogModule,
         ChipModule,
-        OverlayPanelModule
+        OverlayPanelModule,
+        AccordionModule
     ],
     providers: [],
     bootstrap: [AppComponent]

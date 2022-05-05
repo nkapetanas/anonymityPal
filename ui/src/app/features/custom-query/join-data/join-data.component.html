@@ -5,7 +5,7 @@
         <app-overlay-panel-table class="d-inline-block" [databasesOptions]="databaseOptions"
             (onSelectTable)="getSelectedTable($event)"></app-overlay-panel-table>
         <div *ngIf="selectedTableJoin" class="d-inline-block">
-            <p-chip label="Where"></p-chip>
+            <p-chip label="ON"></p-chip>
             <app-select-matching-columns class="d-inline-block" [columnOptions]="columnsOptions"
                 [joinColumnOptions]="columnsJoinOptions" [selectedTable]="selectedTable"
                 [selectedTableJoin]="selectedTableJoin" (onChangeColumns)="getSelectedColumns($event)">

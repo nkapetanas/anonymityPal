@@ -19,18 +19,11 @@ public class LooselyCoupledPrivacyPreservationService {
 
     private static final double THRESHOLD_PROBABILITY = 0.5;
 
-    public QueryResultsJson looselyCoupledPrivacyPreservationCheck(QueryResultsJson queryResults) throws AnonymityPalException {
+    public Boolean looselyCoupledPrivacyPreservationCheck(QueryResultsJson queryResults) throws AnonymityPalException {
         final List<DBRecord> dbRecordList = queryResults.getDbRecordList();
         final Set<QuasiKeyPairValue> quasiColumnsToCheck = queryResults.getQuasiColumnsToCheck();
 
-        final boolean isPrivacyPreservedInSingleColumn = isPrivacyPreserved(quasiColumnsToCheck, dbRecordList);
-        if (isPrivacyPreservedInSingleColumn) {
-            queryResults.setPrivacyPreserved(true);
-            return queryResults;
-
-        }
-        queryResults.setPrivacyPreserved(false);
-        return queryResults;
+        return isPrivacyPreserved(quasiColumnsToCheck, dbRecordList);
     }
 
     private boolean isPrivacyPreserved(final Set<QuasiKeyPairValue> quasiKeyPairValues, final List<DBRecord> dbRecordList) throws AnonymityPalException {
