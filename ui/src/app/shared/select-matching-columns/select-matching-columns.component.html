@@ -1,8 +1,9 @@
 <div class="row mx-0 light-blue-background radius">
     <div class="col-12">
         <ng-container *ngIf="!selectedColumnsValue else hasMatchingColumns">
-            <button pButton pRipple (click)="openOverLayPanel()" type="button" class="p-button-secondary"
-                label="Select columns" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+            <button pButton pRipple (click)="openOverLayPanel()" type="button"
+                class="p-button-secondary vertical-align-middle" label="Select columns" cdkOverlayOrigin
+                #trigger="cdkOverlayOrigin">
             </button>
             <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger" [cdkConnectedOverlayOpen]="isOpen">
                 <ul class="example-list">
@@ -11,13 +12,15 @@
                         class="p-button-rounded p-button-secondary p-button-sm p-button-text"
                         (click)="closeOverlayPanel()"></button>
                     <hr>
-                    <app-select-column [columnOptions]="columnOptions" [label]="selectedTable" (getSelectedColumn)="getSelectedColumn($event)"></app-select-column>
+                    <app-select-column [columnOptions]="columnOptions" [label]="selectedTable"
+                        (getSelectedColumn)="getSelectedColumn($event)"></app-select-column>
                     <hr>
-                    <app-select-column [columnOptions]="joinColumnOptions" [label]="selectedTableJoin" (getSelectedColumn)="getSelectedJoinColumn($event)">
+                    <app-select-column [columnOptions]="joinColumnOptions" [label]="selectedTableJoin"
+                        (getSelectedColumn)="getSelectedJoinColumn($event)">
                     </app-select-column>
                     <hr>
-                    <button pButton pRipple type="button" class="p-button-secondary mr-5" label="Save" [disabled]="isDisabled"
-                        (click)="saveColumns()"></button>
+                    <button pButton pRipple type="button" class="p-button-secondary mr-5" label="Save"
+                        [disabled]="isDisabled" (click)="saveColumns()"></button>
                 </ul>
             </ng-template>
         </ng-container>

@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
     query: string = '';
 
     results: any[] = []; // TODO: type of results
-    columns: Array<{field: string, header: string}> = [];
+    columns: Array<{ field: string, header: string }> = [];
 
     constructor(private privacyService: PrivacyService,
         private queryPrestoService: QueryPrestoService,
@@ -42,7 +42,6 @@ export class AppComponent implements OnInit {
     }
 
     askQuestion() {
-
         this.router.navigate(['privacy-buddy/create-question']);
     }
 

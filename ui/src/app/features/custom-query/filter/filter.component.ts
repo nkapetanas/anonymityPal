@@ -51,7 +51,7 @@ export class FilterComponent implements OnInit {
         // }
         this.filterOperationsListChips.push(filterOperationChip);
 
-        const query: FilterOperation = {columnName: this.selectedColumn, columnValues: [ this.inputColumnValue ], filterOperator: 'EQUAL_TO' }
+        const query: FilterOperation = { columnName: this.selectedColumn, columnValues: [this.inputColumnValue], filterOperator: 'EQUAL_TO' }
         this.finalFilterQuery.push(query)
         this.onChangeFilterQuery.emit(this.finalFilterQuery);
 

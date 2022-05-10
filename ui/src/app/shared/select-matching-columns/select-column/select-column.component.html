@@ -4,7 +4,9 @@
     <label class="label-alignment mr-1"><strong>{{tableValue}}</strong></label>
 </div>
 <span *ngIf="isDataColumnCollapsed">
-    <li *ngFor="let column of columnOptions; let index = index;" [ngClass]="{'selected-column': isSelectedColumn && selectedIndex === index }" (click)="setSelectedColumn(index, column)">
+    <li *ngFor="let column of columnOptions; let index = index;"
+        [ngClass]="{'selected-column': isSelectedColumn && selectedIndex === index }"
+        (click)="setSelectedColumn(index, column)">
         <i class="pi pi-circle circle-icon"></i>{{column.value}}
     </li>
 </span>

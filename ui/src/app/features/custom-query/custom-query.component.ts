@@ -20,7 +20,7 @@ export class CustomQueryComponent implements OnInit {
     databasesOptions: Array<SelectItem> = [];
     results: DataTable;
     joinDataOption: Array<SelectItem> = [];
-    joinDataValue: { joinValue: string, icon: string };
+    joinDataValue: { joinValue: string, icon: string } = { joinValue: '', icon: '' };
     filterLists: Array<FilterOperation>;
     joinData: JoinColumns;
     loading: boolean = false;
@@ -74,5 +74,9 @@ export class CustomQueryComponent implements OnInit {
 
     getJoinQuery(value: JoinColumns) {
         this.joinData = value;
+    }
+
+    removeJoinPanel() {
+        this.joinDataValue = { joinValue: '', icon: '' };
     }
 }

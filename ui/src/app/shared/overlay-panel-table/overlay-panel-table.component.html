@@ -1,8 +1,9 @@
 <div class="row mx-0 light-blue-background radius">
     <div class="col-12">
         <ng-container *ngIf="!table else hasSelectedTable">
-            <button pButton pRipple (click)="openOverLayPanel()" type="button" class="p-button-secondary"
-                label="Select a table" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+            <button pButton pRipple (click)="openOverLayPanel()" type="button"
+                class="p-button-secondary vertical-align-middle" label="Select a table" cdkOverlayOrigin
+                #trigger="cdkOverlayOrigin">
             </button>
             <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger" [cdkConnectedOverlayOpen]="isOpen">
                 <container-element [ngSwitch]="stepSelectionIndex">

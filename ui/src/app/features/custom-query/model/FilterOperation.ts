@@ -1,6 +1,6 @@
 export interface FilterOperationUI {
     columnName: string,
-    columnValues:string;
+    columnValues: string;
     filterOperator: string;
     filterLabel: string;
 }

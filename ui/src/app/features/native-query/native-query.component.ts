@@ -15,7 +15,6 @@ export class NativeQueryComponent implements OnInit {
     results: DataTable;
     loading: boolean = false;
 
-
     constructor(
         private router: Router,
         private queryPrestoService: QueryPrestoService

@@ -4,11 +4,11 @@
             <div class="p-inputgroup">
                 <input type="text" pInputText placeholder="Please Enter a query and filter the results"
                     [(ngModel)]="query">
-                <button type="button" pButton pRipple styleClass="p-button-warn" label="Execute"
-                    [loading]="loading" (click)="execute()"></button>
+                <button type="button" pButton pRipple styleClass="p-button-warn" label="Execute" [loading]="loading"
+                    (click)="execute()">
+                </button>
             </div>
         </div>
     </div>
     <app-tabs-content *ngIf="results" [data]="results"></app-tabs-content>
 </div>
-

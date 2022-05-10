@@ -10,7 +10,7 @@ export class DataTableComponent implements OnInit, OnChanges {
 
     @Input() data: DataTable;
     @Input() isPrivacyPreserved?: boolean | null = null;
-    orderedColumns: Array<{ label: string, order: number}> = [];
+    orderedColumns: Array<{ label: string, order: number }> = [];
 
     constructor() { }
 
@@ -23,10 +23,10 @@ export class DataTableComponent implements OnInit, OnChanges {
                 return columnData;
             });
             changes['data'].currentValue.dbRecordList.map((dbRecord: any) => {
-                if(dbRecord.dbRecordJsonList.length > 0) {
+                if (dbRecord.dbRecordJsonList.length > 0) {
                     dbRecord.dbRecordJsonList.sort((dbRecordJsonPrevious: any, dbRecordJsonNext: any) => {
-                        const previousValue: any = this.orderedColumns.find((res: any)=> res.label === dbRecordJsonPrevious.columnName);
-                        const nextValue: any = this.orderedColumns.find((res: any)=> res.label === dbRecordJsonNext.columnName);
+                        const previousValue: any = this.orderedColumns.find((res: any) => res.label === dbRecordJsonPrevious.columnName);
+                        const nextValue: any = this.orderedColumns.find((res: any) => res.label === dbRecordJsonNext.columnName);
                         if (previousValue.order < nextValue.order) {
                             return -1;
                         } else if (previousValue > nextValue) {

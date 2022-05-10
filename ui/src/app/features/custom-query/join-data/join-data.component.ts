@@ -20,6 +20,7 @@ export class JoinDataComponent implements OnInit {
     selectedTableJoin: string = '';
     columnsOptions: Array<SelectItem> = [];
     columnsJoinOptions: Array<SelectItem> = [];
+    selectedColumns: JoinColumns;
 
     constructor(
         private queryPrestoService: QueryPrestoService
@@ -40,6 +41,14 @@ export class JoinDataComponent implements OnInit {
     }
 
     getSelectedColumns(value: JoinColumns) {
+        this.selectedColumns = value;
         this.onChangeJoinQuery.emit(value);
     }
+
+    removeJoinPanel() {
+        this.selectedJoinValue = { joinValue: '', icon: '' };
+        this.selectedTableJoin = '';
+        this.selectedColumns = { selectedColumn: '', selectedJoinColumn: '' };
+    }
+
 }

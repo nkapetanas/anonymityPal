@@ -9,16 +9,24 @@
                     <i [class]="item.icon"></i>
                 </ng-template>
             </p-selectButton>
-            <div *ngIf="joinDataValue" class="pt-3">
-                <app-join-data [selectedTable]="selectedTable" [databaseOptions]="databasesOptions"
-                    [selectedJoinValue]="joinDataValue" (onChangeJoinQuery)="getJoinQuery($event)"></app-join-data>
+            <div *ngIf="joinDataValue.joinValue" class="pt-3">
+                <div class="d-flex p-2 light-blue-background radius">
+                    <app-join-data [selectedTable]="selectedTable" [databaseOptions]="databasesOptions"
+                        [selectedJoinValue]="joinDataValue" (onChangeJoinQuery)="getJoinQuery($event)">
+                    </app-join-data>
+                    <button pButton pRipple type="button" icon="pi pi-times"
+                        class="p-button-rounded p-button-secondary p-button-sm p-button-text vertical-align-middle remove-join-button mt-2"
+                        (click)="removeJoinPanel()">
+                    </button>
+                </div>
             </div>
         </div>
         <div class="pt-3">
             <app-filter [selectedTable]="selectedTable" (onChangeFilterQuery)="getFilterQuery($event)"></app-filter>
         </div>
         <div class="pt-3">
-            <button pButton pRipple type="button" class="p-button-secondary" label="Execute" [loading]="loading" (click)="execute()"></button>
+            <button pButton pRipple type="button" class="p-button-secondary" label="Execute" [loading]="loading"
+                (click)="execute()"></button>
         </div>
         <app-tabs-content *ngIf="results" [data]="results"></app-tabs-content>
     </div>

@@ -18,10 +18,10 @@ export class QueryCardsSelectorsComponent implements OnInit {
     }
 
     createCustomQuestion() {
-        this.router.navigate(['custom-query'], {relativeTo: this.route})
+        this.router.navigate(['custom-query'], { relativeTo: this.route })
     }
 
     createNativeQuery() {
-        this.router.navigate(['native-query'], {relativeTo: this.route})
+        this.router.navigate(['native-query'], { relativeTo: this.route })
     }
 }

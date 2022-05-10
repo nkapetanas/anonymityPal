@@ -1,9 +1,11 @@
 $light-purple-color: #ebaaf1;
 $dark-purple-color: #ce78e3;
+
 :host::ng-deep {
 
     color: $light-purple-color;
-    .p-chip{
+
+    .p-chip {
         background-color: $dark-purple-color;
     }
 
@@ -14,6 +16,7 @@ $dark-purple-color: #ce78e3;
     .add-filter-button {
         background-color: $dark-purple-color;
         border: unset;
+
         &:hover {
             background-color: $dark-purple-color;
         }

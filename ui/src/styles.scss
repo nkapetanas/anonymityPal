@@ -1,10 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
-html, body {
+html,
+body {
     height: 100%;
 }
 
 body {
-    margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .logo {
@@ -20,25 +22,28 @@ body {
 }
 
 
-  .join-icons {
+.join-icons {
     width: 2rem;
     height: 2rem;
     background-repeat: no-repeat;
-  }
+}
 
-  .join-left-icon {
+.join-left-icon {
     background-image: url("assets/join-left.png");
-  }
+}
 
-  .join-right-icon {
+.join-right-icon {
     background-image: url("assets/join-right.png");
-  }
+}
 
-  .join-inner-icon {
+.join-inner-icon {
     background-image: url("assets/inner-join.png");
-  }
-
+}
 
 .label-alignment {
     padding-bottom: 13px;
+}
+
+.vertical-align-middle {
+    vertical-align: middle !important;
 }

@@ -27,11 +27,11 @@ export class TabsContentComponent implements OnInit, OnChanges {
     handleQuashiOptions(data: DataTable) {
         data.dbRecordList.map(dbRecord => {
             dbRecord.dbRecordJsonList.map(dbRecordJson => {
-                if(this.dataOptions.length !== dbRecord.dbRecordJsonList.length) {
+                if (this.dataOptions.length !== dbRecord.dbRecordJsonList.length) {
                     this.dataOptions.push({ columnName: dbRecordJson.columnName, values: [] });
                 } else {
-                    const index: number = _.findIndex(this.dataOptions, function(o) { return o.columnName === dbRecordJson.columnName; });
-                    this.dataOptions[index].values.push({label: dbRecordJson.recordValue, value: { quasiColumn: dbRecordJson.columnName, valueToCheck: dbRecordJson.recordValue }});
+                    const index: number = _.findIndex(this.dataOptions, function (o) { return o.columnName === dbRecordJson.columnName; });
+                    this.dataOptions[index].values.push({ label: dbRecordJson.recordValue, value: { quasiColumn: dbRecordJson.columnName, valueToCheck: dbRecordJson.recordValue } });
                     this.dataOptions[index].values = _.uniqWith(this.dataOptions[index].values, _.isEqual);
                 }
             })

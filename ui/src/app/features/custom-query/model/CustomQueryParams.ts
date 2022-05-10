@@ -1,5 +1,4 @@
-import {FilterOperation} from "./FilterOperation";
-import {JoinOperation} from "./JoinOperation";
+import { FilterOperation } from "./FilterOperation";
 
 export interface CustomQueryParams {
   completeTablePath: string;

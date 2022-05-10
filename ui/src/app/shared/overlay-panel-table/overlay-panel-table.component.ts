@@ -23,7 +23,7 @@ export class OverlayPanelTableComponent implements OnInit {
     database: string = '';
     schema: string = '';
     table: string = '';
-    
+
     constructor(
         private queryPrestoService: QueryPrestoService
     ) { }
