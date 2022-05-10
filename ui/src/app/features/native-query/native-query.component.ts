@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { QueryPrestoService } from 'src/app/core/services/queryPresto/query-presto-service.service';
+import { PrivacyService } from 'src/app/core/services/privacy/privacy-service.service';
 import { DataTable } from 'src/app/shared/tabs-content/data-table/DataTable.model';
 
 
@@ -17,7 +17,7 @@ export class NativeQueryComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private queryPrestoService: QueryPrestoService
+        private privacyService: PrivacyService
     ) {
     }
 
@@ -29,7 +29,7 @@ export class NativeQueryComponent implements OnInit {
 
     execute() {
         this.loading = true;
-        this.queryPrestoService.getResults(this.query).subscribe((response: DataTable) => {
+        this.privacyService.getResults(this.query).subscribe((response: DataTable) => {
             this.results = response;
             this.loading = false;
         },

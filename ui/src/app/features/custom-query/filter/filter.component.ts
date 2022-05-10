@@ -46,9 +46,6 @@ export class FilterComponent implements OnInit {
             filterLabel: this.selectedColumn + ' is ' + this.selectedFilter.label + " " + this.inputColumnValue,
             columnName: this.selectedColumn, columnValues: this.inputColumnValue, filterOperator: this.selectedFilter.label
         };
-        // if(this.selectedIndex) {
-
-        // }
         this.filterOperationsListChips.push(filterOperationChip);
 
         const query: FilterOperation = { columnName: this.selectedColumn, columnValues: [this.inputColumnValue], filterOperator: 'EQUAL_TO' }

@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SelectItem } from 'primeng/api';
-import { QueryPrestoService } from 'src/app/core/services/queryPresto/query-presto-service.service';
+import { PrivacyService } from 'src/app/core/services/privacy/privacy-service.service';
 import { DBRecord } from '../data-table/DataTable.model';
 import { QueryResults } from './QueryResults.model';
+
 @Component({
     selector: 'app-quashi-columns-selector',
     templateUrl: './quashi-columns-selector.component.html',
@@ -17,7 +18,7 @@ export class QuashiColumnsSelectorComponent implements OnInit {
     selectedValue: Array<{ quasiColumn: string, valueToCheck: string }> = [];
 
     constructor(
-        private queryPrestoService: QueryPrestoService
+        private privacyService: PrivacyService
     ) { }
 
     ngOnInit(): void { }
@@ -27,7 +28,7 @@ export class QuashiColumnsSelectorComponent implements OnInit {
             dbRecordList: this.dbRecordListData,
             quasiColumnsToCheck: this.selectedValue
         }
-        this.queryPrestoService.checkPrivacyPreservation(query).subscribe(response => {
+        this.privacyService.checkPrivacyPreservation(query).subscribe(response => {
             this.isPrivacyPreserved.emit(response);
         })
     }

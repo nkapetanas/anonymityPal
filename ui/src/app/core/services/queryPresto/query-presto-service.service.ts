@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Consts } from "../../../consts";
-import { CustomQueryParams } from 'src/app/features/custom-query/model/CustomQueryParams';
-import { QueryResults } from 'src/app/shared/tabs-content/quashi-columns-selector/QueryResults.model';
 
 @Injectable({
     providedIn: 'root'
@@ -17,16 +15,6 @@ export class QueryPrestoService {
     };
 
     constructor(private http: HttpClient) {
-    }
-
-    getResults(query: string): Observable<any> {
-        return this.http.get<any>(Consts.API_PATH + Consts.API_GET_QUERY_RESULTS, {
-            params: new HttpParams().set('query', query),
-        });
-    }
-
-    getCustomQueryResults(query: CustomQueryParams) {
-        return this.http.post<any>(Consts.API_PATH + Consts.API_GET_CUSTOM_QUERY_RESULTS, query, this.httpOptions);
     }
 
     getAvailableDbs(): Observable<string> {
@@ -59,7 +47,4 @@ export class QueryPrestoService {
         return this.http.get<any>(Consts.API_PATH + Consts.API_JOIN_OPERATIONS);
     }
 
-    checkPrivacyPreservation(data: QueryResults): Observable<any> {
-        return this.http.post<any>(Consts.API_PATH + Consts.API_CHECK_PRIVACY_PRESENTATION, data, this.httpOptions);
-    }
 }

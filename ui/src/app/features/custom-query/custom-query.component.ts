@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SelectItem } from 'primeng/api';
-import { QueryPrestoService } from 'src/app/core/services/queryPresto/query-presto-service.service';
+import { PrivacyService } from 'src/app/core/services/privacy/privacy-service.service';
 import { DataTable } from 'src/app/shared/tabs-content/data-table/DataTable.model';
 import { createDropdownOptions } from '../../core/utils/dropdown-options.helper'
 import { CustomQueryParams } from './model/CustomQueryParams';
@@ -27,7 +27,7 @@ export class CustomQueryComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private queryPrestoService: QueryPrestoService) {
+        private privacyService: PrivacyService) {
     }
 
     ngOnInit(): void {
@@ -54,7 +54,7 @@ export class CustomQueryComponent implements OnInit {
         }
 
         this.loading = true;
-        this.queryPrestoService.getCustomQueryResults(query).subscribe(response => {
+        this.privacyService.getCustomQueryResults(query).subscribe(response => {
             this.results = response;
             this.loading = false;
         });

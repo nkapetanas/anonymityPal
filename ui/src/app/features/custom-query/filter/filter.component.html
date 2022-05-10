@@ -7,9 +7,6 @@
         <button pButton pRipple type="button" label="Add filters to narrow your answer" icon="pi pi-plus"
             class="add-filter-button" (click)="showFilterDialog()"></button>
     </div>
-    <div *ngIf="showFilterAdd">
-
-    </div>
 </div>
 
 <p-dialog header="Please choose the column, the value and filter to apply" [(visible)]="display" [modal]="true"

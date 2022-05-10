@@ -22,8 +22,7 @@ export class SelectMatchingColumnsComponent implements OnInit {
 
     constructor() { }
 
-    ngOnInit(): void {
-    }
+    ngOnInit(): void { }
 
     removeSelectedColumns() {
         this.selectedColumnsValue = '';

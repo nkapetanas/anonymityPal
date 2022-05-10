@@ -1,7 +1,8 @@
 :host::ng-deep p-card .p-card {
     min-height: 160px;
     cursor: pointer;
-    & .p-card-header  img {
+
+    & .p-card-header img {
         width: 300px;
         height: 250px;
     }
