@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { PrivacyService } from 'src/app/core/services/privacy/privacy-service.service';
 import { DataTable } from 'src/app/shared/tabs-content/data-table/DataTable.model';
-
 
 @Component({
     selector: 'app-native-query',
     templateUrl: './native-query.component.html',
-    styleUrls: ['./native-query.component.scss']
+    styleUrls: ['./native-query.component.scss'],
+    providers: [ MessageService ]
 })
 export class NativeQueryComponent implements OnInit {
 
@@ -17,7 +18,8 @@ export class NativeQueryComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private privacyService: PrivacyService
+        private privacyService: PrivacyService,
+        private messageService: MessageService
     ) {
     }
 
@@ -35,6 +37,8 @@ export class NativeQueryComponent implements OnInit {
         },
             (error) => {
                 // message for error
+                this.messageService.add({severity:'error', summary:'Something went wrong'});
+                this.loading = false;
             })
     }
 }

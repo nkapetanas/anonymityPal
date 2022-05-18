@@ -32,7 +32,8 @@ import { ChipModule } from 'primeng/chip';
 import { JoinDataComponent } from './features/custom-query/join-data/join-data.component';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { AccordionModule } from 'primeng/accordion';
-
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
 @NgModule({
     declarations: [
         AppComponent,
@@ -69,7 +70,9 @@ import { AccordionModule } from 'primeng/accordion';
         DialogModule,
         ChipModule,
         OverlayPanelModule,
-        AccordionModule
+        AccordionModule,
+        MessagesModule,
+        MessageModule
     ],
     providers: [],
     bootstrap: [AppComponent]

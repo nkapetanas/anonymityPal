@@ -42,13 +42,14 @@ export class JoinDataComponent implements OnInit {
 
     getSelectedColumns(value: JoinColumns) {
         this.selectedColumns = value;
-        this.onChangeJoinQuery.emit(value);
+        this.onChangeJoinQuery.emit(this.selectedColumns);
     }
 
     removeJoinPanel() {
         this.selectedJoinValue = { joinValue: '', icon: '' };
         this.selectedTableJoin = '';
         this.selectedColumns = { selectedColumn: '', selectedJoinColumn: '' };
+        this.onChangeJoinQuery.emit(this.selectedColumns);
     }
 
 }

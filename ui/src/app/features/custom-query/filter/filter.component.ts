@@ -102,5 +102,7 @@ export class FilterComponent implements OnInit {
 
     removeFilterOperation(index: number) {
         this.filterOperationsListChips.splice(index, 1);
+        this.finalFilterQuery.splice(index, 1);
+        this.onChangeFilterQuery.emit(this.finalFilterQuery);
     }
 }
