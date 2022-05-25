@@ -1,5 +1,7 @@
 package com.research.privacy.anonymity.pal.utils;
 
+import com.research.privacy.anonymity.pal.api.response.DBRecordKeyValue;
+import com.research.privacy.anonymity.pal.api.response.DBRecordWrapper;
 import com.research.privacy.anonymity.pal.common.utils.Utils;
 import com.research.privacy.anonymity.pal.dataset.DBRecord;
 import com.research.privacy.anonymity.pal.dataset.attributes.TextAttribute;
@@ -51,6 +53,32 @@ public class AnonymizedHealthSampleDataGenerator {
     private static final String HEALTH_CONDITION_4 = "Broken Arm";
     private static final String HEALTH_CONDITION_5 = "Broken Leg";
 
+
+    public static List<DBRecordWrapper> generateDBRecordWrapperData(int kAnonymityAttribute, int numberOfRecords) {
+        List<DBRecordWrapper> dbRecordList = new ArrayList<>();
+
+        for (int i = 0; i < numberOfRecords / kAnonymityAttribute; i++) {
+            final String nationality = getStringFromList(i, getNationalitiesList());
+            final String maritalStatus = getStringFromList(i, getMaritalStatusList());
+            final String age = getStringFromList(i, getAgeList());
+            final String bloodType = getStringFromList(i, getBloodTypeList());
+            final String zipCode = getStringFromList(i, getZipCodeList());
+            final String gender = getStringFromList(i, getGenderList());
+
+            for (int kpairs = 0; kpairs < kAnonymityAttribute; kpairs++) {
+                dbRecordList.add(new DBRecordWrapper(Utils.asList(
+                        new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, nationality),
+                        new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, maritalStatus),
+                        new DBRecordKeyValue(COLUMN_NAME_AGE, age),
+                        new DBRecordKeyValue(COLUMN_NAME_GENDER, gender),
+                        new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, bloodType),
+                        new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, zipCode),
+                        new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, getStringFromList(kpairs, getHealthConditionList()))
+                )));
+            }
+        }
+        return dbRecordList;
+    }
 
     public static List<DBRecord> generateData(int kAnonymityAttribute, int numberOfRecords) {
         List<DBRecord> dbRecordList = new ArrayList<>();

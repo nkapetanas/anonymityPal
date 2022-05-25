@@ -1,12 +1,11 @@
 package com.research.privacy.anonymity.pal.privacy;
 
 import com.research.privacy.anonymity.pal.Application;
+import com.research.privacy.anonymity.pal.api.response.DBRecordKeyValue;
+import com.research.privacy.anonymity.pal.api.response.DBRecordWrapper;
 import com.research.privacy.anonymity.pal.api.response.QuasiKeyPairValue;
 import com.research.privacy.anonymity.pal.api.response.QueryResultsJson;
 import com.research.privacy.anonymity.pal.common.utils.Utils;
-import com.research.privacy.anonymity.pal.dataset.DBRecord;
-import com.research.privacy.anonymity.pal.dataset.attributes.TextAttribute;
-import com.research.privacy.anonymity.pal.dataset.attributes.enums.IdentifierEnumType;
 import com.research.privacy.anonymity.pal.exceptions.AnonymityPalException;
 import com.research.privacy.anonymity.pal.services.LooselyCoupledPrivacyPreservationService;
 import com.research.privacy.anonymity.pal.services.PrivacyService;
@@ -67,47 +66,45 @@ class ITLooselyCoupledPrivacyPreservationCriteria {
 
     @Test
     void looselyCoupledPrivacyPreservationService_OK() throws AnonymityPalException {
-        final DBRecord dbRecord1 = new DBRecord(Utils.asList(
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_MARITAL_STATUS, SINGLE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_GENDER, MALE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
-                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_1)
+        final DBRecordWrapper dbRecord1 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, SINGLE),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_1)
         ));
 
-        final DBRecord dbRecord2 = new DBRecord(Utils.asList(
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_MARITAL_STATUS, SINGLE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_GENDER, MALE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
-                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_2)
+        final DBRecordWrapper dbRecord2 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, SINGLE),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_2)
         ));
 
-        final DBRecord dbRecord3 = new DBRecord(Utils.asList(
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_MARITAL_STATUS, MARRIED),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_GENDER, MALE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
-                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_1)
+        final DBRecordWrapper dbRecord3 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, MARRIED),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_1)
         ));
-
-        List<DBRecord> dbRecordList = Utils.asList(dbRecord1, dbRecord2, dbRecord3);
-        Assertions.assertFalse(privacyService.isPrivacyModelFulfilled(dbRecordList));
 
         Set<QuasiKeyPairValue> quasiColumnsToCheck = new HashSet<>(Collections.singletonList(new QuasiKeyPairValue(COLUMN_NAME_MARITAL_STATUS, MARRIED)));
 
-        QueryResultsJson resultsJson = new QueryResultsJson(dbRecordList, quasiColumnsToCheck, false);
+        List<DBRecordWrapper> dbRecordWrapperList = Utils.asList(dbRecord1, dbRecord2, dbRecord3);
+        QueryResultsJson resultsJson = new QueryResultsJson(dbRecordWrapperList, quasiColumnsToCheck, false);
         Assertions.assertFalse(looselyCoupledPrivacyPreservationService.looselyCoupledPrivacyPreservationCheck(resultsJson));
 
         quasiColumnsToCheck = new HashSet<>(Collections.singletonList(new QuasiKeyPairValue(COLUMN_NAME_MARITAL_STATUS, SINGLE)));
 
-        resultsJson = new QueryResultsJson(dbRecordList, quasiColumnsToCheck, false);
+        resultsJson = new QueryResultsJson(dbRecordWrapperList, quasiColumnsToCheck, false);
         Assertions.assertFalse(looselyCoupledPrivacyPreservationService.looselyCoupledPrivacyPreservationCheck(resultsJson));
     }
 
@@ -115,169 +112,169 @@ class ITLooselyCoupledPrivacyPreservationCriteria {
     void looselyCoupledPrivacyPreservationService_NOK() throws AnonymityPalException {
 
         // Diabetes records
-        final DBRecord dbRecord1 = new DBRecord(Utils.asList(
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_MARITAL_STATUS, SINGLE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_GENDER, MALE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
-                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_1)
+        final DBRecordWrapper dbRecord1 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, SINGLE),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_1)
         ));
 
-        final DBRecord dbRecord2 = new DBRecord(Utils.asList(
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_MARITAL_STATUS, SINGLE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_GENDER, FEMALE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_AB),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_2),
-                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_1)
+        final DBRecordWrapper dbRecord2 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, SINGLE),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, FEMALE),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_AB),
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_2),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_1)
         ));
 
-        final DBRecord dbRecord3 = new DBRecord(Utils.asList(
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_MARITAL_STATUS, MARRIED),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_GENDER, MALE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
-                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_1)
+        final DBRecordWrapper dbRecord3 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, MARRIED),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_1)
         ));
 
-        final DBRecord dbRecord4 = new DBRecord(Utils.asList(
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_MARITAL_STATUS, MARRIED),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_GENDER, FEMALE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_AB),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_2),
-                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_1)
+        final DBRecordWrapper dbRecord4 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, MARRIED),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, FEMALE),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_AB),
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_2),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_1)
         ));
 
         // Heart Disease
-        final DBRecord dbRecord5 = new DBRecord(Utils.asList(
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_MARITAL_STATUS, MARRIED),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_GENDER, MALE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
-                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_2)
+        final DBRecordWrapper dbRecord5 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, MARRIED),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_2)
         ));
 
-        final DBRecord dbRecord6 = new DBRecord(Utils.asList(
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_MARITAL_STATUS, SINGLE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_GENDER, FEMALE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_3),
-                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_2)
+        final DBRecordWrapper dbRecord6 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, SINGLE),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, FEMALE),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_3),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_2)
         ));
 
-        final DBRecord dbRecord7 = new DBRecord(Utils.asList(
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_MARITAL_STATUS, SINGLE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_GENDER, FEMALE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_O),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_3),
-                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_2)
+        final DBRecordWrapper dbRecord7 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, SINGLE),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, FEMALE),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_O),
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_3),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_2)
         ));
 
-        final DBRecord dbRecord8 = new DBRecord(Utils.asList(
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_MARITAL_STATUS, MARRIED),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, SUPPRESSED_AGE_2),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_GENDER, MALE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
-                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_2)
+        final DBRecordWrapper dbRecord8 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, MARRIED),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_2),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_2)
         ));
 
-        final DBRecord dbRecord9 = new DBRecord(Utils.asList(
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_MARITAL_STATUS, MARRIED),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, SUPPRESSED_AGE_2),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_GENDER, MALE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_3),
-                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_2)
+        final DBRecordWrapper dbRecord9 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, MARRIED),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_2),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_3),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_2)
         ));
 
-        final DBRecord dbRecord10 = new DBRecord(Utils.asList(
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_MARITAL_STATUS, MARRIED),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, SUPPRESSED_AGE_2),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_GENDER, FEMALE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_O),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_3),
-                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_2)
+        final DBRecordWrapper dbRecord10 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, MARRIED),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_2),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, FEMALE),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_O),
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_3),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_2)
         ));
 
         // HIV Disease
-        final DBRecord dbRecord11 = new DBRecord(Utils.asList(
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_MARITAL_STATUS, MARRIED),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_GENDER, FEMALE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_O),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_3),
-                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_3)
+        final DBRecordWrapper dbRecord11 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, MARRIED),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, FEMALE),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_O),
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_3),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_3)
         ));
 
-        final DBRecord dbRecord12 = new DBRecord(Utils.asList(
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_MARITAL_STATUS, MARRIED),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_GENDER, MALE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_B),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_2),
-                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_3)
+        final DBRecordWrapper dbRecord12 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, MARRIED),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_B),
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_2),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_3)
         ));
 
         // Broken Arm
-        final DBRecord dbRecord13 = new DBRecord(Utils.asList(
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_MARITAL_STATUS, MARRIED),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, SUPPRESSED_AGE_2),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_GENDER, MALE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_B),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_2),
-                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_4)
+        final DBRecordWrapper dbRecord13 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, MARRIED),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_2),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_B),
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_2),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_4)
         ));
 
-        final DBRecord dbRecord14 = new DBRecord(Utils.asList(
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_MARITAL_STATUS, MARRIED),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, SUPPRESSED_AGE_3),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_GENDER, MALE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_B),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_2),
-                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_4)
+        final DBRecordWrapper dbRecord14 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, MARRIED),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_3),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_B),
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_2),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_4)
         ));
-        final DBRecord dbRecord15 = new DBRecord(Utils.asList(
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_MARITAL_STATUS, MARRIED),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, SUPPRESSED_AGE_2),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_GENDER, FEMALE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_3),
-                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_4)
-        ));
-
-        final DBRecord dbRecord16 = new DBRecord(Utils.asList(
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_NATIONALITY, NATIONALITY_1),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_MARITAL_STATUS, MARRIED),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_AGE, SUPPRESSED_AGE_3),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_GENDER, FEMALE),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
-                new TextAttribute(IdentifierEnumType.QUASI_IDENTIFIER, COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_3),
-                new TextAttribute(IdentifierEnumType.SENSITIVE, COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_4)
+        final DBRecordWrapper dbRecord15 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, MARRIED),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_2),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, FEMALE),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_3),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_4)
         ));
 
-        List<DBRecord> dbRecordList = Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4, dbRecord5, dbRecord6,
+        final DBRecordWrapper dbRecord16 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, MARRIED),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_3),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, FEMALE),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_3),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_4)
+        ));
+
+        List<DBRecordWrapper> dbRecordList = Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4, dbRecord5, dbRecord6,
                 dbRecord7, dbRecord8, dbRecord9, dbRecord10, dbRecord11, dbRecord12, dbRecord13, dbRecord14, dbRecord15, dbRecord16);
 
         Set<QuasiKeyPairValue> quasiColumnsToCheck = new HashSet<>(Collections.singletonList(new QuasiKeyPairValue(COLUMN_NAME_MARITAL_STATUS, SINGLE)));
@@ -294,7 +291,7 @@ class ITLooselyCoupledPrivacyPreservationCriteria {
 
     @Test
     void looselyCoupledPrivacyPreservationService_many_results_OK() throws AnonymityPalException {
-        final List<DBRecord> dbRecords = AnonymizedHealthSampleDataGenerator.generateData(3, 100);
+        final List<DBRecordWrapper> dbRecords = AnonymizedHealthSampleDataGenerator.generateDBRecordWrapperData(3, 100);
         Set<QuasiKeyPairValue> quasiColumnsToCheck = new HashSet<>(Collections.singletonList(new QuasiKeyPairValue(COLUMN_NAME_MARITAL_STATUS, MARRIED)));
 
         QueryResultsJson resultsJson = new QueryResultsJson(dbRecords, quasiColumnsToCheck, false);

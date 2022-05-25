@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import static com.research.privacy.anonymity.pal.dataset.attributes.Attribute.getResolvedAttribute;
+
 @Slf4j
 @Service
 public class PrestoService {
@@ -110,21 +112,5 @@ public class PrestoService {
 
     public List<String> getColumnsFromTable(final String table) {
         return prestoDbRepository.getColumnsFromTable(table);
-    }
-
-    private Attribute getResolvedAttribute(final String key, final Object value) {
-        final AttributeEnumType attributeEnumType = Attribute.resolveAttributeEnumType(value);
-        final IdentifierEnumType identifierEnumType = Attribute.resolveIdentifierEnumType(key);
-
-        if (AttributeEnumType.TEXT.equals(attributeEnumType)) {
-            return new TextAttribute(attributeEnumType, identifierEnumType, key, value);
-
-        } else if (AttributeEnumType.NUMERIC.equals(attributeEnumType)) {
-            return new NumericAttribute(attributeEnumType, identifierEnumType, key, value);
-
-        } else if (AttributeEnumType.DATE.equals(attributeEnumType)) {
-            return new DateAttribute(attributeEnumType, identifierEnumType, key, value);
-        }
-        return null;
     }
 }

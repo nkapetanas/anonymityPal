@@ -1,5 +1,7 @@
 package com.research.privacy.anonymity.pal.services;
 
+import com.research.privacy.anonymity.pal.api.response.DBRecordKeyValue;
+import com.research.privacy.anonymity.pal.api.response.DBRecordWrapper;
 import com.research.privacy.anonymity.pal.api.response.QuasiKeyPairValue;
 import com.research.privacy.anonymity.pal.api.response.QueryResultsJson;
 import com.research.privacy.anonymity.pal.common.utils.Utils;
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.research.privacy.anonymity.pal.dataset.attributes.Attribute.getResolvedAttribute;
+
 @Slf4j
 @Service
 public class LooselyCoupledPrivacyPreservationService {
@@ -20,10 +24,35 @@ public class LooselyCoupledPrivacyPreservationService {
     private static final double THRESHOLD_PROBABILITY = 0.5;
 
     public Boolean looselyCoupledPrivacyPreservationCheck(QueryResultsJson queryResults) throws AnonymityPalException {
-        final List<DBRecord> dbRecordList = queryResults.getDbRecordList();
+        final List<DBRecordWrapper> dbRecordJsonList = queryResults.getDbRecordList();
+        final List<DBRecord> dbRecordList = transformToDBRecords(dbRecordJsonList);
         final Set<QuasiKeyPairValue> quasiColumnsToCheck = queryResults.getQuasiColumnsToCheck();
 
         return isPrivacyPreserved(quasiColumnsToCheck, dbRecordList);
+    }
+
+    private List<DBRecord> transformToDBRecords(List<DBRecordWrapper> dbRecordJsonList) {
+        List<DBRecord> dbRecords = new ArrayList<>();
+
+        if (Utils.isEmpty(dbRecordJsonList)) {
+            return new ArrayList<>();
+        }
+
+        dbRecordJsonList.forEach(dbRecordWrapper -> {
+            final List<DBRecordKeyValue> keyValues = dbRecordWrapper.getDbRecordJsonList();
+            List<Attribute> attributeList = new ArrayList<>();
+
+            keyValues.forEach(dbRecordKeyValue -> {
+
+                final String columnName = dbRecordKeyValue.getColumnName();
+                final String value = dbRecordKeyValue.getRecordValue();
+
+                Attribute attribute = getResolvedAttribute(columnName, value);
+                attributeList.add(attribute);
+            });
+            dbRecords.add(new DBRecord(attributeList, false));
+        });
+        return dbRecords;
     }
 
     private boolean isPrivacyPreserved(final Set<QuasiKeyPairValue> quasiKeyPairValues, final List<DBRecord> dbRecordList) throws AnonymityPalException {

@@ -1,6 +1,10 @@
 package com.research.privacy.anonymity.pal.dataset;
 
 import com.research.privacy.anonymity.pal.dataset.attributes.Attribute;
+import com.research.privacy.anonymity.pal.dataset.attributes.DateAttribute;
+import com.research.privacy.anonymity.pal.dataset.attributes.NumericAttribute;
+import com.research.privacy.anonymity.pal.dataset.attributes.TextAttribute;
+import com.research.privacy.anonymity.pal.dataset.attributes.enums.AttributeEnumType;
 import com.research.privacy.anonymity.pal.dataset.attributes.enums.IdentifierEnumType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class DBRecord {

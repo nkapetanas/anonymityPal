@@ -1,6 +1,5 @@
 package com.research.privacy.anonymity.pal.api.response;
 
-import com.research.privacy.anonymity.pal.dataset.DBRecord;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QueryResultsJson {
-    private List<DBRecord> dbRecordList;
+    private List<DBRecordWrapper> dbRecordList;
     private Set<QuasiKeyPairValue> quasiColumnsToCheck;
     private boolean isPrivacyPreserved;
 }

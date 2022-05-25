@@ -22,9 +22,7 @@ public class SqlOperationsRestService {
     public ResponseEntity<List<SQLOperatorsResponseJson>> getFilterOperations() {
 
         List<SQLOperatorsResponseJson> filterOperatorsResponseJsons = new ArrayList<>();
-        Arrays.stream(FilterOperators.values()).forEach(f -> {
-            filterOperatorsResponseJsons.add(new SQLOperatorsResponseJson(f.getField(), f.name()));
-        });
+        Arrays.stream(FilterOperators.values()).forEach(f -> filterOperatorsResponseJsons.add(new SQLOperatorsResponseJson(f.getField(), f.name())));
         return ResponseEntity.ok().body(filterOperatorsResponseJsons);
     }
 
