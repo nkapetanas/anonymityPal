@@ -93,7 +93,35 @@ class ITCustomQueryRestService {
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, restServiceResponse.getStatusCode());
     }
 
-    private CustomQueryParams createCustomQuery(String completeTablePath, boolean isJoin, String tableToJoinPathCatalog, JoinOperators joinOperator, List<String> joinTableColumnValues, List<FilterOperations> filterOperationsList) {
+    @Test
+    void privacyService_getCustomQueryResults_Limit_OK() {
+        List<FilterOperations> filterOperationsList = new ArrayList<>();
+        filterOperationsList.add(new FilterOperations("nationality", Collections.singletonList("European"), FilterOperators.EQUAL_TO.name()));
+
+        final ResponseEntity<QueryResultsResponseJson> restServiceResponse = queriesRestService.getCustomQueryResults(createCustomQuery(VALID_TABLE_1, true,
+                VALID_TABLE_2, JoinOperators.LEFT_OUTER_JOIN, Utils.asList("zip", "zipcode"), filterOperationsList, 30, null));
+
+        Assertions.assertEquals(HttpStatus.OK, restServiceResponse.getStatusCode());
+        final QueryResultsResponseJson queryResultsResponseJson = restServiceResponse.getBody();
+        Assertions.assertNotNull(queryResultsResponseJson);
+
+        final Set<String> quasiColumns = queryResultsResponseJson.getQuasiColumns();
+        final List<DBRecordWrapper> dbRecordList = queryResultsResponseJson.getDbRecordList();
+        Assertions.assertTrue(Utils.isNotEmpty(quasiColumns));
+        Assertions.assertTrue(Utils.isNotEmpty(dbRecordList));
+        Assertions.assertEquals(30, dbRecordList.size());
+    }
+
+
+    private CustomQueryParams createCustomQuery(String completeTablePath, boolean isJoin, String tableToJoinPathCatalog,
+                                                JoinOperators joinOperator, List<String> joinTableColumnValues, List<FilterOperations> filterOperationsList) {
+        return createCustomQuery(completeTablePath, isJoin, tableToJoinPathCatalog,
+                joinOperator, joinTableColumnValues, filterOperationsList, null, null);
+    }
+
+    private CustomQueryParams createCustomQuery(String completeTablePath, boolean isJoin, String tableToJoinPathCatalog,
+                                                JoinOperators joinOperator, List<String> joinTableColumnValues, List<FilterOperations> filterOperationsList, Integer rowLimit,
+                                                String orderBy) {
         CustomQueryParams customQueryParams = new CustomQueryParams();
 
         customQueryParams.setCompleteTablePath(completeTablePath);
@@ -102,6 +130,8 @@ class ITCustomQueryRestService {
         customQueryParams.setTableToJoinPathCatalog(tableToJoinPathCatalog);
         customQueryParams.setJoinOperator(Utils.isNotEmpty(joinOperator) ? joinOperator.getField() : null);
         customQueryParams.setFilterOperationsList(filterOperationsList);
+        customQueryParams.setRowLimit(rowLimit);
+        customQueryParams.setSortBy(orderBy);
         return customQueryParams;
     }
 }

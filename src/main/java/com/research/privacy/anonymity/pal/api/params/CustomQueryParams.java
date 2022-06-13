@@ -17,6 +17,8 @@ public class CustomQueryParams {
     private boolean isJoin;
     private String tableToJoinPathCatalog;
     private String joinOperator;
+    private String sortBy;
+    private Integer rowLimit;
     private List<String> joinTableColumnValues;
     private List<FilterOperations> filterOperationsList;
 }

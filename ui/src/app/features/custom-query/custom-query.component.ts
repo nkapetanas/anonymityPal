@@ -56,7 +56,7 @@ export class CustomQueryComponent implements OnInit {
     execute() {
         const query: CustomQueryParams = {
             completeTablePath: this.selectedTable,
-            isJoin: this.joinDataValue.joinValue ? true : false,
+            isJoin: !!this.joinDataValue.joinValue,
             tableToJoinPathCatalog: '',
             joinOperator: this.joinDataValue.joinValue,
             joinTableColumnValues: this.joinData ? [this.joinData.selectedColumn, this.joinData.selectedJoinColumn] : [],

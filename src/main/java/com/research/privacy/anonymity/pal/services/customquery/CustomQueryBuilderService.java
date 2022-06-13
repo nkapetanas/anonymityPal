@@ -22,6 +22,8 @@ public class CustomQueryBuilderService {
     private static final String WHERE_OPERATION = "WHERE 1 = 1 ";
     private static final String JOIN_COLUMNS = "%s = %s ";
     private static final String AND_OPERATION = "AND";
+    private static final String ORDER_BY = " ORDER BY %s ";
+    private static final String ROW_LIMIT = " LIMIT %s ";
 
     public String buildQuery(final CustomQueryParams customQueryParams) throws AnonymityPalException {
 
@@ -65,6 +67,17 @@ public class CustomQueryBuilderService {
 
         if (Utils.isNotEmpty(filterOperationsList)) {
             addFilters(filterOperationsList, customQuery);
+        }
+
+        final Integer rowLimit = customQueryParams.getRowLimit();
+        final String sortBy = customQueryParams.getSortBy();
+
+        if (Utils.isNotEmpty(sortBy)) {
+            customQuery.append(String.format(ORDER_BY, sortBy));
+        }
+
+        if (rowLimit != null) {
+            customQuery.append(String.format(ROW_LIMIT, rowLimit));
         }
 
         return customQuery.toString();
