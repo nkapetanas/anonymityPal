@@ -3,7 +3,7 @@ import { SelectItem } from 'primeng/api';
 import { forkJoin } from 'rxjs';
 import { QueryPrestoService } from 'src/app/core/services/queryPresto/query-presto-service.service';
 import { createDropdownOptions } from 'src/app/core/utils/dropdown-options.helper';
-import { JoinColumns } from '../model/JoinOperation';
+import { JoinColumns } from '../../model/JoinOperation';
 
 @Component({
     selector: 'app-join-data',

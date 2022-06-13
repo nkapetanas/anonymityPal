@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SelectItem } from 'primeng/api';
 import { PrivacyService } from 'src/app/core/services/privacy/privacy-service.service';
+import { QueryPrestoService } from 'src/app/core/services/queryPresto/query-presto-service.service';
 import { DataTable } from 'src/app/shared/tabs-content/data-table/DataTable.model';
 import { createDropdownOptions } from '../../core/utils/dropdown-options.helper'
 import { CustomQueryParams } from './model/CustomQueryParams';
@@ -20,14 +21,18 @@ export class CustomQueryComponent implements OnInit {
     databasesOptions: Array<SelectItem> = [];
     results: DataTable;
     joinDataOption: Array<SelectItem> = [];
+    moreOptions: Array<SelectItem> = [];
     joinDataValue: { joinValue: string, icon: string } = { joinValue: '', icon: '' };
+    optionValue: Array<number> = [];
     filterLists: Array<FilterOperation>;
     joinData: JoinColumns;
     loading: boolean = false;
+    columns: any[] = [];
 
     constructor(
         private route: ActivatedRoute,
-        private privacyService: PrivacyService) {
+        private privacyService: PrivacyService,
+        private queryPrestoService: QueryPrestoService) {
     }
 
     ngOnInit(): void {
@@ -37,6 +42,11 @@ export class CustomQueryComponent implements OnInit {
             { icon: 'join-icons join-right-icon', label: 'Right outer join', value: { joinValue: JoinOperatorsEnum.RIGHT_OUTER_JOIN, icon: 'join-icons join-right-icon' } },
             { icon: 'join-icons join-inner-icon', label: 'Inner join', value: { joinValue: JoinOperatorsEnum.INNER_JOIN, icon: 'join-icons join-inner-icon' } },
         ];
+
+        this.moreOptions = [
+            { icon: 'pi pi-sort-alt', label: 'Sort', value: 0 },
+            { icon: 'pi pi-list', label: 'List', value: 1 },
+        ]
 
         this.route.data.subscribe(data => {
             this.onRouteDataChange(data);
@@ -66,6 +76,16 @@ export class CustomQueryComponent implements OnInit {
 
     getSelectedTable(value: string) {
         this.selectedTable = value;
+        this.setAvailableTableColumn();
+    }
+
+    setAvailableTableColumn() {
+        this.queryPrestoService.getColumnsFromTable(this.selectedTable).subscribe((response: any) => {
+            this.columns =  response;
+        },
+            () => {
+                this.columns =  [];
+            });
     }
 
     getFilterQuery(value: Array<FilterOperation>) {
@@ -78,5 +98,9 @@ export class CustomQueryComponent implements OnInit {
 
     removeJoinPanel() {
         this.joinDataValue = { joinValue: '', icon: '' };
+    }
+
+    getRowLimit(rowLimit: number | null) {
+        console.log(rowLimit);
     }
 }

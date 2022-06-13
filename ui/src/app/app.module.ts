@@ -26,14 +26,18 @@ import { HomeComponent } from './features/home/home.component';
 import { NativeQueryComponent } from './features/native-query/native-query.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { FilterComponent } from './features/custom-query/filter/filter.component';
 import { DialogModule } from 'primeng/dialog';
 import { ChipModule } from 'primeng/chip';
-import { JoinDataComponent } from './features/custom-query/join-data/join-data.component';
+import { JoinDataComponent } from './features/custom-query/components/join-data/join-data.component';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { AccordionModule } from 'primeng/accordion';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
+import { SortingComponent } from './features/custom-query/components/sorting/sorting.component';
+import { RowLimitComponent } from './features/custom-query/components/row-limit/row-limit.component';
+import {InputNumberModule} from 'primeng/inputnumber';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { FilterComponent } from './features/custom-query/components/filter/filter.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -44,8 +48,10 @@ import { MessageModule } from 'primeng/message';
         TabsContentComponent,
         HomeComponent,
         NativeQueryComponent,
-        FilterComponent,
-        JoinDataComponent
+        JoinDataComponent,
+        SortingComponent,
+        RowLimitComponent,
+        FilterComponent
     ],
     imports: [
         BrowserModule,
@@ -72,7 +78,9 @@ import { MessageModule } from 'primeng/message';
         OverlayPanelModule,
         AccordionModule,
         MessagesModule,
-        MessageModule
+        MessageModule,
+        InputNumberModule,
+        OverlayModule
     ],
     providers: [],
     bootstrap: [AppComponent]

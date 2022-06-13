@@ -1,0 +1,26 @@
+<h3 class="m-0"><strong>Sort</strong></h3>
+<div class="row mx-0 light-grey-background radius">
+    <div class="col-12">
+        <ng-container *ngIf="!selectedColumn else hasSelectedColumn">
+            <button pButton pRipple type="button" class="vertical-align-middle p-button-secondary" icon="pi pi-plus"
+                (click)="openOverLayPanel()" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+            </button>
+            <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger" [cdkConnectedOverlayOpen]="isOpen">
+                <ul class="example-list">
+                    <div class="d-inline-block">
+                        <label class="label-alignment"><strong>Select database</strong></label>
+                        <button pButton pRipple type="button" icon="pi pi-times"
+                            class="p-button-rounded p-button-secondary p-button-sm p-button-text"
+                            (click)="closeOverlayPanel()"></button>
+                    </div>
+                    <li *ngFor="let column of columnOptionsDropdown;" (click)="getSelectedColumn(column.value)">
+                        <i class="pi pi-database pr-3"></i> {{column.value}}
+                    </li>
+                </ul>
+            </ng-template>
+        </ng-container>
+        <ng-template #hasSelectedColumn>
+            <p-chip class="pr-2" [label]="selectedColumn" [removable]="true" (onRemove)="removeSelectedColumn()"></p-chip>
+        </ng-template>
+    </div>
+</div>

@@ -25,6 +25,20 @@
             <app-filter [selectedTable]="selectedTable" (onChangeFilterQuery)="getFilterQuery($event)"></app-filter>
         </div>
         <div class="pt-3">
+            <p-selectButton [options]="moreOptions" [(ngModel)]="optionValue" optionLabel="icon" [multiple]="true"
+                optionValue="value">
+                <ng-template let-item>
+                    <i [class]="item.icon"></i>
+                </ng-template>
+            </p-selectButton>
+        </div>
+        <div *ngIf="optionValue.includes(0)" class="pt-3">
+            <app-sorting [columns]="columns"></app-sorting>
+        </div>
+        <div *ngIf="optionValue.includes(1)" class="pt-3">
+            <app-row-limit (onChange)="getRowLimit($event)"></app-row-limit>
+        </div>
+        <div class="pt-3">
             <button pButton pRipple type="button" class="p-button-secondary" label="Execute" [loading]="loading"
                 (click)="execute()"></button>
         </div>

@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { createDropdownOptions } from "../../../core/utils/dropdown-options.helper";
 import { SelectItem } from "primeng/api";
-import { QueryPrestoService } from "../../../core/services/queryPresto/query-presto-service.service";
-import { FilterOperation, FilterOperationUI } from "../model/FilterOperation";
+import { QueryPrestoService } from 'src/app/core/services/queryPresto/query-presto-service.service';
+import { createDropdownOptions } from 'src/app/core/utils/dropdown-options.helper';
+import { FilterOperation, FilterOperationUI } from '../../model/FilterOperation';
+import { ModalOperation } from './ModalOperation';
 
 @Component({
     selector: 'app-filter',
@@ -32,6 +33,7 @@ export class FilterComponent implements OnInit {
     finalFilterQuery: Array<FilterOperation> = [];
 
     selectedIndex: number;
+    action: number;
 
     constructor(private queryPrestoService: QueryPrestoService) {
     }
@@ -41,18 +43,48 @@ export class FilterComponent implements OnInit {
         this.setAvailableTableColumnOptionsDropdown();
     }
 
+    handleFilter() {
+        switch (this.action) {
+            case ModalOperation.ADD:
+                this.addFilter();
+                break;
+            case ModalOperation.UPDATE:
+                this.updateFilter();
+                break;
+        }
+    }
+    
     addFilter() {
         let filterOperationChip: FilterOperationUI = {
             filterLabel: this.selectedColumn + ' is ' + this.selectedFilter.label + " " + this.inputColumnValue,
-            columnName: this.selectedColumn, columnValues: this.inputColumnValue, filterOperator: this.selectedFilter.label
+            columnName: this.selectedColumn, columnValues: this.inputColumnValue, filterOperator: this.selectedFilter.sqlOperatorEnum, filterOperatorValue: this.selectedFilter.label
         };
         this.filterOperationsListChips.push(filterOperationChip);
 
-        const query: FilterOperation = { columnName: this.selectedColumn, columnValues: [this.inputColumnValue], filterOperator: 'EQUAL_TO' }
+        const query: FilterOperation = { columnName: this.selectedColumn, columnValues: [this.inputColumnValue], filterOperator: this.selectedFilter.label }
         this.finalFilterQuery.push(query)
         this.onChangeFilterQuery.emit(this.finalFilterQuery);
 
         this.display = false;
+        this.clearSelectedFilters();
+    }
+
+    updateFilter() {
+        let filterOperationChip: FilterOperationUI = {
+            filterLabel: this.selectedColumn + ' is ' + this.selectedFilter.label + " " + this.inputColumnValue,
+            columnName: this.selectedColumn, columnValues: this.inputColumnValue, filterOperator: this.selectedFilter.sqlOperatorEnum, filterOperatorValue: this.selectedFilter.label
+        };
+        this.filterOperationsListChips[this.selectedIndex] = filterOperationChip;
+
+        const query: FilterOperation = { columnName: this.selectedColumn, columnValues: [this.inputColumnValue], filterOperator: this.selectedFilter.label }
+        this.finalFilterQuery[this.selectedIndex] = query;
+        this.onChangeFilterQuery.emit(this.finalFilterQuery);
+
+        this.display = false;
+        this.clearSelectedFilters();
+    }
+
+    closeModal() {
         this.clearSelectedFilters();
     }
 
@@ -64,14 +96,17 @@ export class FilterComponent implements OnInit {
 
     showFilterDialog() {
         this.showFilterAdd = true;
+        this.action = ModalOperation.ADD;
         this.display = true;
     }
 
     onClickChip(filterOperator: FilterOperationUI, index: number) {
+        debugger;
         this.selectedColumn = filterOperator.columnName;
         this.inputColumnValue = filterOperator.columnValues;
-        this.selectedFilter = { label: filterOperator.filterLabel, sqlOperatorEnum: filterOperator.filterOperator };
+        this.selectedFilter = { label: filterOperator.filterOperatorValue, sqlOperatorEnum: filterOperator.filterOperator };
         this.selectedIndex = index;
+        this.action = ModalOperation.UPDATE;
         this.display = true;
     }
 

@@ -1,0 +1,8 @@
+<h3 class="m-0"><strong>Row limit</strong></h3>
+<div class="row mx-0 light-grey-background radius">
+    <div class="col-4">
+        <p-inputNumber [(ngModel)]="value" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="1" 
+            decrementButtonClass="p-button-secondary" incrementButtonClass="p-button-secondary" (onInput)="changeValue($event)">
+        </p-inputNumber>
+    </div>
+</div>
