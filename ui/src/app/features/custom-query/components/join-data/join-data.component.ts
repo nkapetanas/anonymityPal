@@ -3,7 +3,7 @@ import { SelectItem } from 'primeng/api';
 import { forkJoin } from 'rxjs';
 import { QueryPrestoService } from 'src/app/core/services/queryPresto/query-presto-service.service';
 import { createDropdownOptions } from 'src/app/core/utils/dropdown-options.helper';
-import { JoinColumns } from '../../model/JoinOperation';
+import { JoinColumns, JoinOperation } from '../../model/JoinOperation';
 
 @Component({
     selector: 'app-join-data',
@@ -15,13 +15,12 @@ export class JoinDataComponent implements OnInit {
     @Input() selectedTable: string;
     @Input() databaseOptions: Array<SelectItem> = [];
     @Input() selectedJoinValue: { joinValue: string, icon: string };
-    @Output() onChangeJoinQuery: EventEmitter<JoinColumns> = new EventEmitter<JoinColumns>();
+    @Output() onChangeJoinQuery: EventEmitter<JoinOperation> = new EventEmitter<JoinOperation>();
 
     selectedTableJoin: string = '';
     columnsOptions: Array<SelectItem> = [];
     columnsJoinOptions: Array<SelectItem> = [];
-    selectedColumns: JoinColumns;
-
+    joinOperation: JoinOperation;
     constructor(
         private queryPrestoService: QueryPrestoService
     ) { }
@@ -41,15 +40,15 @@ export class JoinDataComponent implements OnInit {
     }
 
     getSelectedColumns(value: JoinColumns) {
-        this.selectedColumns = value;
-        this.onChangeJoinQuery.emit(this.selectedColumns);
+        this.joinOperation = { tableToJoinPathCatalog: this.selectedTableJoin, columnValues: [ value.selectedColumn, value.selectedJoinColumn ]};
+        this.onChangeJoinQuery.emit(this.joinOperation);
     }
 
     removeJoinPanel() {
+        this.joinOperation = { tableToJoinPathCatalog: '', columnValues: []};
         this.selectedJoinValue = { joinValue: '', icon: '' };
         this.selectedTableJoin = '';
-        this.selectedColumns = { selectedColumn: '', selectedJoinColumn: '' };
-        this.onChangeJoinQuery.emit(this.selectedColumns);
+        this.onChangeJoinQuery.emit(this.joinOperation);
     }
 
 }

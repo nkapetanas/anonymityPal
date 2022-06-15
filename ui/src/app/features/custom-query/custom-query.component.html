@@ -33,7 +33,7 @@
             </p-selectButton>
         </div>
         <div *ngIf="optionValue.includes(0)" class="pt-3">
-            <app-sorting [columns]="columns"></app-sorting>
+            <app-sorting [columns]="columns" (onChange)="getSortBy($event)"></app-sorting>
         </div>
         <div *ngIf="optionValue.includes(1)" class="pt-3">
             <app-row-limit (onChange)="getRowLimit($event)"></app-row-limit>
@@ -41,7 +41,9 @@
         <div class="pt-3">
             <button pButton pRipple type="button" class="p-button-secondary" label="Execute" [loading]="loading"
                 (click)="execute()"></button>
+            <button pButton pRipple type="button" class="p-button-secondary float-right" label="Reset" [loading]="loading"
+                (click)="reset()"></button>
         </div>
-        <app-tabs-content *ngIf="results" [data]="results"></app-tabs-content>
+        <app-tabs-content *ngIf="results && results.dbRecordList.length > 0" [data]="results"></app-tabs-content>
     </div>
 </div>

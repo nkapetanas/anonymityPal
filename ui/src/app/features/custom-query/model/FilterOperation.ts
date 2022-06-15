@@ -1,8 +1,8 @@
 export interface FilterOperationUI {
     columnName: string,
-    columnValues: string;
-    filterOperator: string; // EQUAL_TO
-    filterOperatorValue: string; // Equal to
+    columnValues: Array<string>;
+    filterOperator: string;
+    filterOperatorValue: string;
     filterLabel: string;
 }
 

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import { createDropdownOptions } from 'src/app/core/utils/dropdown-options.helper';
 
@@ -10,6 +10,7 @@ import { createDropdownOptions } from 'src/app/core/utils/dropdown-options.helpe
 export class SortingComponent implements OnInit {
 
     @Input() columns: any[] = [];
+    @Output() onChange: EventEmitter<string> = new EventEmitter<string>();
     selectedColumn: string;
     columnOptionsDropdown: SelectItem[] = [];
     isOpen: boolean = false;
@@ -35,10 +36,12 @@ export class SortingComponent implements OnInit {
 
     getSelectedColumn(value: string) {
         this.selectedColumn = value;
+        this.onChange.emit(this.selectedColumn);
         this.closeOverlayPanel();
     }
 
     removeSelectedColumn() {
         this.selectedColumn = '';
+        this.onChange.emit(this.selectedColumn);
     }
 }

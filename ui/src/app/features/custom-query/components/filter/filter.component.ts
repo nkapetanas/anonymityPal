@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import * as _ from 'lodash';
 import { SelectItem } from "primeng/api";
 import { QueryPrestoService } from 'src/app/core/services/queryPresto/query-presto-service.service';
 import { createDropdownOptions } from 'src/app/core/utils/dropdown-options.helper';
 import { FilterOperation, FilterOperationUI } from '../../model/FilterOperation';
+import { FilterEnum } from './FilterEnum';
 import { ModalOperation } from './ModalOperation';
 
 @Component({
@@ -24,6 +26,7 @@ export class FilterComponent implements OnInit {
     selectedColumn: string;
     selectedFilter: { label: string, sqlOperatorEnum: string };
     inputColumnValue: string;
+    inputSecColumnValue: string;
     filterOperationsListChips: Array<FilterOperationUI> = [];
 
     secondSelectedColumn: string;
@@ -34,6 +37,7 @@ export class FilterComponent implements OnInit {
 
     selectedIndex: number;
     action: number;
+    filterEnum = FilterEnum;
 
     constructor(private queryPrestoService: QueryPrestoService) {
     }
@@ -55,13 +59,15 @@ export class FilterComponent implements OnInit {
     }
     
     addFilter() {
+        const columnValues: Array<string> = [this.inputColumnValue];
+        if(!_.isNil(this.inputSecColumnValue)) columnValues.push(this.inputSecColumnValue);
         let filterOperationChip: FilterOperationUI = {
-            filterLabel: this.selectedColumn + ' is ' + this.selectedFilter.label + " " + this.inputColumnValue,
-            columnName: this.selectedColumn, columnValues: this.inputColumnValue, filterOperator: this.selectedFilter.sqlOperatorEnum, filterOperatorValue: this.selectedFilter.label
+            filterLabel: this.selectedColumn + ' is ' + this.selectedFilter.label + " " + this.inputColumnValue + (this.inputSecColumnValue ? ' and ' + this.inputSecColumnValue : ''),
+            columnName: this.selectedColumn, columnValues: columnValues, filterOperator: this.selectedFilter.sqlOperatorEnum, filterOperatorValue: this.selectedFilter.label
         };
         this.filterOperationsListChips.push(filterOperationChip);
 
-        const query: FilterOperation = { columnName: this.selectedColumn, columnValues: [this.inputColumnValue], filterOperator: this.selectedFilter.label }
+        const query: FilterOperation = { columnName: this.selectedColumn, columnValues: columnValues, filterOperator: this.selectedFilter.sqlOperatorEnum }
         this.finalFilterQuery.push(query)
         this.onChangeFilterQuery.emit(this.finalFilterQuery);
 
@@ -70,13 +76,15 @@ export class FilterComponent implements OnInit {
     }
 
     updateFilter() {
+        const columnValues: Array<string> = [this.inputColumnValue];
+        if(!_.isNil(this.inputSecColumnValue)) columnValues.push(this.inputSecColumnValue);
         let filterOperationChip: FilterOperationUI = {
-            filterLabel: this.selectedColumn + ' is ' + this.selectedFilter.label + " " + this.inputColumnValue,
-            columnName: this.selectedColumn, columnValues: this.inputColumnValue, filterOperator: this.selectedFilter.sqlOperatorEnum, filterOperatorValue: this.selectedFilter.label
+            filterLabel: this.selectedColumn + ' is ' + this.selectedFilter.label + " " + this.inputColumnValue + (this.inputSecColumnValue ? ' and ' + this.inputSecColumnValue : ''),
+            columnName: this.selectedColumn, columnValues: columnValues, filterOperator: this.selectedFilter.sqlOperatorEnum, filterOperatorValue: this.selectedFilter.label
         };
         this.filterOperationsListChips[this.selectedIndex] = filterOperationChip;
 
-        const query: FilterOperation = { columnName: this.selectedColumn, columnValues: [this.inputColumnValue], filterOperator: this.selectedFilter.label }
+        const query: FilterOperation = { columnName: this.selectedColumn, columnValues: columnValues, filterOperator: this.selectedFilter.sqlOperatorEnum }
         this.finalFilterQuery[this.selectedIndex] = query;
         this.onChangeFilterQuery.emit(this.finalFilterQuery);
 
@@ -101,9 +109,9 @@ export class FilterComponent implements OnInit {
     }
 
     onClickChip(filterOperator: FilterOperationUI, index: number) {
-        debugger;
         this.selectedColumn = filterOperator.columnName;
-        this.inputColumnValue = filterOperator.columnValues;
+        this.inputColumnValue = filterOperator.columnValues.length > 0 ? filterOperator?.columnValues[0] : '';
+        this.inputSecColumnValue = filterOperator.columnValues.length > 0 ? filterOperator?.columnValues[1] : '';
         this.selectedFilter = { label: filterOperator.filterOperatorValue, sqlOperatorEnum: filterOperator.filterOperator };
         this.selectedIndex = index;
         this.action = ModalOperation.UPDATE;
@@ -113,9 +121,8 @@ export class FilterComponent implements OnInit {
     setFilterOperationOptionsDropdown() {
         this.queryPrestoService.getFilterOperationOptions().subscribe((response: string) => {
             this.filterOperationOptionsDropdown = createDropdownOptions(response, 'label');
-            console.log(this.filterOperationOptionsDropdown)
         },
-            (error) => {
+            () => {
                 const tables = [
                     'N/A'
                 ];
@@ -127,7 +134,7 @@ export class FilterComponent implements OnInit {
         this.queryPrestoService.getColumnsFromTable(this.selectedTable).subscribe((response: string) => {
             this.availableTableColumnOptionsDropdown = createDropdownOptions(response);
         },
-            (error) => {
+            () => {
                 const tables = [
                     'N/A'
                 ];

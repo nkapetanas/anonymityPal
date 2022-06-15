@@ -7,7 +7,7 @@ import { DataTable } from 'src/app/shared/tabs-content/data-table/DataTable.mode
 import { createDropdownOptions } from '../../core/utils/dropdown-options.helper'
 import { CustomQueryParams } from './model/CustomQueryParams';
 import { FilterOperation } from './model/FilterOperation';
-import { JoinColumns } from './model/JoinOperation';
+import { JoinColumns, JoinOperation } from './model/JoinOperation';
 import { JoinOperatorsEnum } from './model/JoinOperatorsEnum';
 
 @Component({
@@ -25,9 +25,11 @@ export class CustomQueryComponent implements OnInit {
     joinDataValue: { joinValue: string, icon: string } = { joinValue: '', icon: '' };
     optionValue: Array<number> = [];
     filterLists: Array<FilterOperation>;
-    joinData: JoinColumns;
+    joinData: JoinOperation;
     loading: boolean = false;
     columns: any[] = [];
+    sortBy: string;
+    rowLimit: string;
 
     constructor(
         private route: ActivatedRoute,
@@ -57,9 +59,11 @@ export class CustomQueryComponent implements OnInit {
         const query: CustomQueryParams = {
             completeTablePath: this.selectedTable,
             isJoin: !!this.joinDataValue.joinValue,
-            tableToJoinPathCatalog: '',
+            tableToJoinPathCatalog: this.joinData ? this.joinData.tableToJoinPathCatalog : '',
             joinOperator: this.joinDataValue.joinValue,
-            joinTableColumnValues: this.joinData ? [this.joinData.selectedColumn, this.joinData.selectedJoinColumn] : [],
+            sortBy: this.sortBy,
+            rowLimit: this.rowLimit,
+            joinTableColumnValues: this.joinData ? this.joinData.columnValues : [],
             filterOperationsList: this.filterLists
         }
 
@@ -68,6 +72,19 @@ export class CustomQueryComponent implements OnInit {
             this.results = response;
             this.loading = false;
         });
+    }
+
+    reset() {
+        // this.selectedTable = '';
+        this.joinDataValue = { joinValue: '', icon: '' };
+        this.joinData = { tableToJoinPathCatalog: '', columnValues: [] };
+        this.filterLists = [];
+        this.optionValue = [];
+        this.results = {
+            columnNames: [],
+            dbRecordList: [],
+            quasiColumns: []
+        };
     }
 
     private onRouteDataChange(data: any) {
@@ -92,7 +109,7 @@ export class CustomQueryComponent implements OnInit {
         this.filterLists = value;
     }
 
-    getJoinQuery(value: JoinColumns) {
+    getJoinQuery(value: JoinOperation) {
         this.joinData = value;
     }
 
@@ -100,7 +117,11 @@ export class CustomQueryComponent implements OnInit {
         this.joinDataValue = { joinValue: '', icon: '' };
     }
 
-    getRowLimit(rowLimit: number | null) {
-        console.log(rowLimit);
+    getRowLimit(value: string) {
+        this.rowLimit = value;
+    }
+
+    getSortBy(value: string) {
+        this.sortBy = value;
     }
 }

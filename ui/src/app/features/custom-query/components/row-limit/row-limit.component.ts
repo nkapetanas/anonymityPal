@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-row-limit',
@@ -7,7 +8,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class RowLimitComponent implements OnInit {
 
-    @Output() onChange: EventEmitter<number | null> = new EventEmitter<number | null>();
+    @Output() onChange: EventEmitter<string> = new EventEmitter<string>();
     value: number;
     
     constructor() { }
@@ -15,8 +16,9 @@ export class RowLimitComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    changeValue(event: { originalEvent: KeyboardEvent, value: number | null }): void {
-        this.onChange.emit(event.value);
+    changeValue(event: { originalEvent: KeyboardEvent, value: number }): void {
+        const rowLimit: string = !_.isNil(event.value) ? event.value.toString() : '';
+        this.onChange.emit(rowLimit);
     }
 
 }
