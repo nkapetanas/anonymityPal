@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SelectItem } from 'primeng/api';
+import { Message, SelectItem } from 'primeng/api';
 import { PrivacyService } from 'src/app/core/services/privacy/privacy-service.service';
 import { QueryPrestoService } from 'src/app/core/services/queryPresto/query-presto-service.service';
+import { MessagesService } from 'src/app/shared/services/messages.service';
 import { DataTable } from 'src/app/shared/tabs-content/data-table/DataTable.model';
 import { createDropdownOptions } from '../../core/utils/dropdown-options.helper'
 import { CustomQueryParams } from './model/CustomQueryParams';
@@ -13,7 +14,8 @@ import { JoinOperatorsEnum } from './model/JoinOperatorsEnum';
 @Component({
     selector: 'app-custom-query',
     templateUrl: './custom-query.component.html',
-    styleUrls: ['./custom-query.component.scss']
+    styleUrls: ['./custom-query.component.scss'],
+    providers: [MessagesService]
 })
 export class CustomQueryComponent implements OnInit {
 
@@ -34,15 +36,16 @@ export class CustomQueryComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private privacyService: PrivacyService,
-        private queryPrestoService: QueryPrestoService) {
+        private queryPrestoService: QueryPrestoService,
+        private messagesService: MessagesService) {
     }
 
     ngOnInit(): void {
 
         this.joinDataOption = [
-            { icon: 'join-icons join-left-icon', label: 'Left outer join', value: { joinValue: JoinOperatorsEnum.LEFT_OUTER_JOIN, icon: 'join-icons join-left-icon' } },
-            { icon: 'join-icons join-right-icon', label: 'Right outer join', value: { joinValue: JoinOperatorsEnum.RIGHT_OUTER_JOIN, icon: 'join-icons join-right-icon' } },
-            { icon: 'join-icons join-inner-icon', label: 'Inner join', value: { joinValue: JoinOperatorsEnum.INNER_JOIN, icon: 'join-icons join-inner-icon' } },
+            { icon: 'join-icons join-left-icon', label: 'Left outer join', value: { joinValue: JoinOperatorsEnum.LEFT_OUTER_JOIN, icon: 'join-icons join-left-icon', tooltip: 'Left join' } },
+            { icon: 'join-icons join-right-icon', label: 'Right outer join', value: { joinValue: JoinOperatorsEnum.RIGHT_OUTER_JOIN, icon: 'join-icons join-right-icon', tooltip: 'Right join' } },
+            { icon: 'join-icons join-inner-icon', label: 'Inner join', value: { joinValue: JoinOperatorsEnum.INNER_JOIN, icon: 'join-icons join-inner-icon', tooltip: 'Inner join' } },
         ];
 
         this.moreOptions = [
@@ -70,6 +73,11 @@ export class CustomQueryComponent implements OnInit {
         this.loading = true;
         this.privacyService.getCustomQueryResults(query).subscribe(response => {
             this.results = response;
+            this.loading = false;
+        },
+        (error) => {
+            const message: Message = { severity: 'error', summary: 'The query does not fulfill the criteria.'};
+            this.messagesService.showMessage(message);
             this.loading = false;
         });
     }

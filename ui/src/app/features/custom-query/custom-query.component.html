@@ -1,4 +1,5 @@
 <div class="p-5">
+    <p-messages></p-messages>
     <app-overlay-panel-table [databasesOptions]="databasesOptions" (onSelectTable)="getSelectedTable($event)">
     </app-overlay-panel-table>
     <div *ngIf="selectedTable">
@@ -6,7 +7,7 @@
             <p-selectButton [options]="joinDataOption" [(ngModel)]="joinDataValue" optionLabel="icon"
                 optionValue="value">
                 <ng-template let-item>
-                    <i [class]="item.icon"></i>
+                    <i [class]="item.icon" [pTooltip]="item.value.tooltip" tooltipPosition="top"></i>
                 </ng-template>
             </p-selectButton>
             <div *ngIf="joinDataValue.joinValue" class="pt-3">

@@ -1,7 +1,8 @@
-<div class="row">
+<div class="row px-5">
     <div class="col-12">
-        <div class="row px-5">
-            <div class="col-12">
+        <div class="row">
+            <div class="col-6 field">
+                <label><strong>Select the Quasi-Identifier that might be related to your subject</strong></label>
                 <p-multiSelect [options]="dataOptions" [(ngModel)]="selectedColumns" defaultLabel="Select a column"
                     display="chip" styleClass="mt-4" optionLabel="columnName">
                 </p-multiSelect>

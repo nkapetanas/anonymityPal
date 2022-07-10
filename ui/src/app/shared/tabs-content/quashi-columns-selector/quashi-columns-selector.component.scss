@@ -12,4 +12,8 @@
         left: 90%;
         margin-top: 20px;
     }
+
+    p-multiselect > .p-multiselect {
+        margin-top: unset !important;
+    }
 }

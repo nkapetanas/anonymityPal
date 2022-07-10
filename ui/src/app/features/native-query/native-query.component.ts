@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { Message } from 'primeng/api';
 import { PrivacyService } from 'src/app/core/services/privacy/privacy-service.service';
+import { MessagesService } from 'src/app/shared/services/messages.service';
 import { DataTable } from 'src/app/shared/tabs-content/data-table/DataTable.model';
 
 @Component({
     selector: 'app-native-query',
     templateUrl: './native-query.component.html',
     styleUrls: ['./native-query.component.scss'],
-    providers: [ MessageService ]
+    providers: [ MessagesService ]
 })
 export class NativeQueryComponent implements OnInit {
 
@@ -19,7 +20,7 @@ export class NativeQueryComponent implements OnInit {
     constructor(
         private router: Router,
         private privacyService: PrivacyService,
-        private messageService: MessageService
+        private messagesService: MessagesService
     ) {
     }
 
@@ -35,10 +36,10 @@ export class NativeQueryComponent implements OnInit {
             this.results = response;
             this.loading = false;
         },
-            (error) => {
-                // message for error
-                this.messageService.add({severity:'error', summary:'Something went wrong'});
-                this.loading = false;
-            })
+        (error) => {
+            const message: Message = { severity: 'error', summary: 'The query does not fulfill the criteria.'};
+            this.messagesService.showMessage(message);
+            this.loading = false;
+        });
     }
 }

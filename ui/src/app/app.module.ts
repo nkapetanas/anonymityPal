@@ -31,13 +31,14 @@ import { ChipModule } from 'primeng/chip';
 import { JoinDataComponent } from './features/custom-query/components/join-data/join-data.component';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { AccordionModule } from 'primeng/accordion';
-import { MessagesModule } from 'primeng/messages';
-import { MessageModule } from 'primeng/message';
 import { SortingComponent } from './features/custom-query/components/sorting/sorting.component';
 import { RowLimitComponent } from './features/custom-query/components/row-limit/row-limit.component';
 import {InputNumberModule} from 'primeng/inputnumber';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { FilterComponent } from './features/custom-query/components/filter/filter.component';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
+
 @NgModule({
     declarations: [
         AppComponent,

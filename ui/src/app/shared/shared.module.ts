@@ -8,11 +8,36 @@ import { ButtonModule } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
 import { SelectMatchingColumnsComponent } from './select-matching-columns/select-matching-columns.component';
 import { SelectColumnComponent } from './select-matching-columns/select-column/select-column.component';
+import { PrivacyCheckComponent } from './tabs-content/privacy-check/privacy-check.component';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { FormsModule } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
-    declarations: [CardComponent, OverlayPanelTableComponent, SelectMatchingColumnsComponent, SelectColumnComponent],
-    imports: [CommonModule, CardModule, OverlayModule, ButtonModule, ChipModule],
-    exports: [CardComponent, OverlayPanelTableComponent, SelectMatchingColumnsComponent],
-    providers: []
+    declarations: [
+        CardComponent, 
+        OverlayPanelTableComponent, 
+        SelectMatchingColumnsComponent, 
+        SelectColumnComponent, 
+        PrivacyCheckComponent
+    ],
+    imports: [
+        CommonModule, 
+        CardModule, 
+        OverlayModule, 
+        ButtonModule, 
+        ChipModule, 
+        InputNumberModule, 
+        FormsModule,
+    ],
+    exports: [
+        CardComponent, 
+        OverlayPanelTableComponent, 
+        SelectMatchingColumnsComponent, 
+        PrivacyCheckComponent
+    ],
+    providers: [
+        MessageService
+    ]
 })
 export class SharedModule { }

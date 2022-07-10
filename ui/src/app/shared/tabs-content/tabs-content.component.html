@@ -5,5 +5,10 @@
                 (isPrivacyPreserved)="getPrivacyPreserved($event)"></app-quashi-columns-selector>
         </p-accordionTab>
     </p-accordion>
+    <p-accordion>
+        <p-accordionTab header="Privacy check">
+            <app-privacy-check></app-privacy-check>
+        </p-accordionTab>
+    </p-accordion>
     <app-data-table [data]='data' [isPrivacyPreserved]="isPrivacyPreserved"></app-data-table>
 </div>
