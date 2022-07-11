@@ -1,5 +1,6 @@
 package com.research.privacy.anonymity.pal.privacycriteria;
 
+import com.research.privacy.anonymity.pal.common.utils.Utils;
 import com.research.privacy.anonymity.pal.dataset.DBRecord;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,12 @@ public class KAnonymity {
     @Setter
     private Integer desiredK = 2; // default value
 
-    public boolean isKAnonymous(final List<DBRecord> dbRecords) {
+    public boolean isKAnonymous(final List<DBRecord> dbRecords, Integer kAnonymityParam) {
+
+        if (Utils.isNotEmpty(kAnonymityParam)) {
+            this.desiredK = kAnonymityParam;
+        }
+
         // Returns true if k is equal to 1. All data sets have a k of 1.
         if (desiredK == 1) {
             return true;

@@ -45,6 +45,7 @@ class ITKAnonymityCriteria {
     private static final String HEALTH_CONDITION_2 = "Broken Arm";
     private static final String HEALTH_CONDITION_3 = "Diabetes";
     private static final String HEALTH_CONDITION_4 = "Broken Neck";
+    private static final int K_ANONYMITY_PARAM = 2;
 
     @Autowired
     KAnonymity kAnonymity;
@@ -85,7 +86,7 @@ class ITKAnonymityCriteria {
 
         final List<DBRecord> dbRecords = Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4);
 
-        Assertions.assertTrue(kAnonymity.isKAnonymous(dbRecords));
+        Assertions.assertTrue(kAnonymity.isKAnonymous(dbRecords, K_ANONYMITY_PARAM));
     }
 
     @Test
@@ -123,9 +124,7 @@ class ITKAnonymityCriteria {
         ));
 
         final List<DBRecord> dbRecords = Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4);
-
-        kAnonymity.setDesiredK(3);
-        Assertions.assertFalse(kAnonymity.isKAnonymous(dbRecords));
+        Assertions.assertFalse(kAnonymity.isKAnonymous(dbRecords, 3));
     }
 
     @Test
@@ -163,7 +162,7 @@ class ITKAnonymityCriteria {
         ));
 
         final List<DBRecord> dbRecords = Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4);
-        Assertions.assertFalse(kAnonymity.isKAnonymous(dbRecords));
+        Assertions.assertFalse(kAnonymity.isKAnonymous(dbRecords, K_ANONYMITY_PARAM));
     }
 
     @Test
@@ -201,12 +200,12 @@ class ITKAnonymityCriteria {
         ));
 
         final List<DBRecord> dbRecords = Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4);
-        Assertions.assertFalse(kAnonymity.isKAnonymous(dbRecords));
+        Assertions.assertFalse(kAnonymity.isKAnonymous(dbRecords, K_ANONYMITY_PARAM));
     }
 
     @Test
     void kAnonymity_data_generator_OK() {
         final List<DBRecord> dbRecords = AnonymizedHealthSampleDataGenerator.generateData(3, 100);
-        Assertions.assertTrue(kAnonymity.isKAnonymous(dbRecords));
+        Assertions.assertTrue(kAnonymity.isKAnonymous(dbRecords, K_ANONYMITY_PARAM));
     }
 }

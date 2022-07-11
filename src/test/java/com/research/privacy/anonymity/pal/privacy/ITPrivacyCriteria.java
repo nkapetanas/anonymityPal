@@ -6,9 +6,6 @@ import com.research.privacy.anonymity.pal.dataset.DBRecord;
 import com.research.privacy.anonymity.pal.dataset.attributes.NumericAttribute;
 import com.research.privacy.anonymity.pal.dataset.attributes.TextAttribute;
 import com.research.privacy.anonymity.pal.dataset.attributes.enums.IdentifierEnumType;
-import com.research.privacy.anonymity.pal.exceptions.AnonymityPalException;
-import com.research.privacy.anonymity.pal.infrastructure.repository.PrestoDbRepository;
-import com.research.privacy.anonymity.pal.privacycriteria.KAnonymity;
 import com.research.privacy.anonymity.pal.services.PrivacyService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
@@ -17,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @SpringBootTest(classes = Application.class)
@@ -48,6 +44,9 @@ class ITPrivacyCriteria {
     private static final String HEALTH_CONDITION_2 = "Broken Arm";
     private static final String HEALTH_CONDITION_3 = "Diabetes";
     private static final String HEALTH_CONDITION_4 = "Broken Neck";
+
+    private static final int K_ANONYMITY_PARAM = 2;
+    private static final int L_DIVERSITY_PARAM = 2;
 
     @Autowired
     PrivacyService privacyService;
@@ -88,7 +87,7 @@ class ITPrivacyCriteria {
 
             final List<DBRecord> dbRecords = Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4);
 
-            Assertions.assertTrue(privacyService.isPrivacyModelFulfilled(dbRecords));
+            Assertions.assertTrue(privacyService.isPrivacyModelFulfilled(dbRecords, K_ANONYMITY_PARAM, L_DIVERSITY_PARAM));
         }
 
         @Test
@@ -127,7 +126,7 @@ class ITPrivacyCriteria {
 
             final List<DBRecord> dbRecords = Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4);
 
-            Assertions.assertTrue(privacyService.isPrivacyModelFulfilled(dbRecords));
+            Assertions.assertTrue(privacyService.isPrivacyModelFulfilled(dbRecords, K_ANONYMITY_PARAM, L_DIVERSITY_PARAM));
         }
 
         @Test
@@ -165,7 +164,7 @@ class ITPrivacyCriteria {
             ));
 
             final List<DBRecord> dbRecords = Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4);
-            Assertions.assertFalse(privacyService.isPrivacyModelFulfilled(dbRecords));
+            Assertions.assertFalse(privacyService.isPrivacyModelFulfilled(dbRecords, K_ANONYMITY_PARAM, L_DIVERSITY_PARAM));
         }
 
     @Test
@@ -203,6 +202,6 @@ class ITPrivacyCriteria {
         ));
 
         final List<DBRecord> dbRecords = Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4);
-        Assertions.assertFalse(privacyService.isPrivacyModelFulfilled(dbRecords));
+        Assertions.assertFalse(privacyService.isPrivacyModelFulfilled(dbRecords, K_ANONYMITY_PARAM, L_DIVERSITY_PARAM));
     }
 }

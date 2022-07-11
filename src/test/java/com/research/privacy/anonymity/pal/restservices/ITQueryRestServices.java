@@ -1,12 +1,13 @@
 package com.research.privacy.anonymity.pal.restservices;
 
 import com.research.privacy.anonymity.pal.Application;
+import com.research.privacy.anonymity.pal.api.params.PrivacyCheckParams;
+import com.research.privacy.anonymity.pal.api.response.DBRecordKeyValue;
 import com.research.privacy.anonymity.pal.api.response.DBRecordWrapper;
-import com.research.privacy.anonymity.pal.api.response.QueryResultsResponseJson;
 import com.research.privacy.anonymity.pal.common.utils.Utils;
-import com.research.privacy.anonymity.pal.dataset.DBRecord;
 import com.research.privacy.anonymity.pal.exceptions.AnonymityPalException;
 import com.research.privacy.anonymity.pal.services.PrestoService;
+import com.research.privacy.anonymity.pal.services.PrivacyService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @SpringBootTest(classes = Application.class)
@@ -34,16 +34,49 @@ class ITQueryRestServices {
 
     private static final String UNKNOWN_TABLE = "mongodb.health_data_db_1.unknown";
     private static final String VALID_TABLE = "mongodb.health_data_db_1.health_data_collection_1";
-    private static final String VALID_QUERY = "SELECT * FROM mongodb.health_data_db_1.health_data_collection_1";
-    private static final String VALID_QUERY_2 = "SELECT * FROM postgresql.public.health_data_collection_2";
-    private static final String VALID_JOIN_QUERY = "SELECT * FROM mongodb.health_data_db_1.health_data_collection_1 t1 LEFT OUTER JOIN postgresql.public.health_data_collection_2 t2 ON " +
-            "t1.zip = t2.zipcode WHERE t2.nationality = 'European'";
+
 
     private static final String MONGO_DB_HEALTH_DATA_DB_1 = "health_data_db_1";
     private static final String SHOULD_NOT_FAIL = "Should not fail";
+    private static final int K_ANONYMITY_PARAM = 2;
+    private static final int L_DIVERSITY_PARAM = 2;
+
+    private static final String COLUMN_NAME_ZIPCODE = "zipcode";
+    private static final String COLUMN_NAME_AGE = "age";
+    private static final String COLUMN_NAME_GENDER = "gender";
+    private static final String COLUMN_NAME_NATIONALITY = "nationality";
+    private static final String COLUMN_NAME_MARITAL_STATUS = "marital_status";
+    private static final String COLUMN_NAME_BLOOD_TYPE = "blood_type";
+    private static final String COLUMN_NAME_HEALTH_CONDITION = "health_condition";
+
+    private static final String SUPPRESSED_ZIP_CODE_1 = "130**";
+    private static final String SUPPRESSED_ZIP_CODE_2 = "150**";
+    private static final String SUPPRESSED_ZIP_CODE_3 = "160**";
+
+    private static final String MALE = "M";
+    private static final String FEMALE = "F";
+    private static final String SINGLE = "Single";
+    private static final String MARRIED = "Married";
+
+    private static final String SUPPRESSED_AGE_1 = "20-30";
+    private static final String SUPPRESSED_AGE_2 = "50-60";
+    private static final String SUPPRESSED_AGE_3 = "60-70";
+
+    private static final String BLOOD_TYPE_A = "A";
+    private static final String BLOOD_TYPE_B = "B";
+    private static final String BLOOD_TYPE_O = "O";
+    private static final String BLOOD_TYPE_AB = "AB";
+
+    private static final String NATIONALITY_1 = "European";
+
+    private static final String HEALTH_CONDITION_1 = "Diabetes";
+    private static final String HEALTH_CONDITION_2 = "Cardiovascular";
 
     @Autowired
     PrestoService prestoService;
+
+    @Autowired
+    PrivacyService privacyService;
 
     @Test
     void privacyService_getAvailableCatalogs_OK() {
@@ -110,52 +143,98 @@ class ITQueryRestServices {
 
     @Test
     void privacyService_getQueryResultsPrivacyChecked_OK() {
-        QueryResultsResponseJson queryResults = null;
+        final DBRecordWrapper dbRecord1 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, SINGLE),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_1)
+        ));
+
+        final DBRecordWrapper dbRecord2 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, SINGLE),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_2)
+        ));
+
+        final DBRecordWrapper dbRecord3 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, MARRIED),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_B),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_1)
+        ));
+
+        final DBRecordWrapper dbRecord4 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, MARRIED),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_B),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_2)
+        ));
+
+        PrivacyCheckParams privacyCheckParams = new PrivacyCheckParams();
+        privacyCheckParams.setKAnonymityParam(K_ANONYMITY_PARAM);
+        privacyCheckParams.setLDiversityParam(L_DIVERSITY_PARAM);
+        privacyCheckParams.setDbRecordList(Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4));
+
         try {
-            queryResults = prestoService.getQueryResultsPrivacyChecked(VALID_QUERY);
+            Assertions.assertTrue(privacyService.getQueryResultsPrivacyChecked(privacyCheckParams));
         } catch (AnonymityPalException e) {
             Assertions.fail(SHOULD_NOT_FAIL);
         }
-
-        Assertions.assertNotNull(queryResults);
-        final Set<String> quasiColumns = queryResults.getQuasiColumns();
-        final List<DBRecordWrapper> dbRecordList = queryResults.getDbRecordList();
-        Assertions.assertTrue(Utils.isNotEmpty(quasiColumns));
-        Assertions.assertTrue(Utils.isNotEmpty(dbRecordList));
-        Assertions.assertEquals(99, dbRecordList.size());
-
-        Assertions.assertTrue(quasiColumns.stream().anyMatch(QUASI_COLUMN_1::equals));
-        Assertions.assertTrue(quasiColumns.stream().anyMatch(QUASI_COLUMN_2::equals));
-        Assertions.assertTrue(quasiColumns.stream().anyMatch(QUASI_COLUMN_3::equals));
     }
 
     @Test
-    void privacyService_getQueryResultsPrivacyChecked_Join_OK() {
-        QueryResultsResponseJson queryResults = null;
-        try {
-            queryResults = prestoService.getQueryResultsPrivacyChecked(VALID_JOIN_QUERY);
-        } catch (AnonymityPalException e) {
-            Assertions.fail(SHOULD_NOT_FAIL);
-        }
+    void privacyService_getQueryResultsPrivacyChecked_NOK() {
+        final DBRecordWrapper dbRecord1 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, SINGLE),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_1)
+        ));
 
-        Assertions.assertNotNull(queryResults);
-        final Set<String> quasiColumns = queryResults.getQuasiColumns();
-        final List<DBRecordWrapper> dbRecordList = queryResults.getDbRecordList();
-        Assertions.assertTrue(Utils.isNotEmpty(quasiColumns));
-        Assertions.assertTrue(Utils.isNotEmpty(dbRecordList));
-        Assertions.assertEquals(441, dbRecordList.size());
-    }
+        final DBRecordWrapper dbRecord2 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, SINGLE),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_2)
+        ));
 
-    @Test
-    void privacyService_getQueryResultsPrivacyChecked_OK_2() {
-        try {
-            prestoService.getQueryResultsPrivacyChecked(VALID_QUERY);
-        } catch (AnonymityPalException e) {
-            Assertions.fail(SHOULD_NOT_FAIL);
-        }
+        final DBRecordWrapper dbRecord3 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, MARRIED),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_B),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_1)
+        ));
+
+
+        PrivacyCheckParams privacyCheckParams = new PrivacyCheckParams();
+        privacyCheckParams.setKAnonymityParam(K_ANONYMITY_PARAM);
+        privacyCheckParams.setLDiversityParam(L_DIVERSITY_PARAM);
+        privacyCheckParams.setDbRecordList(Utils.asList(dbRecord1, dbRecord2, dbRecord3));
 
         try {
-            prestoService.getQueryResultsPrivacyChecked(VALID_QUERY_2);
+            Assertions.assertFalse(privacyService.getQueryResultsPrivacyChecked(privacyCheckParams));
         } catch (AnonymityPalException e) {
             Assertions.fail(SHOULD_NOT_FAIL);
         }

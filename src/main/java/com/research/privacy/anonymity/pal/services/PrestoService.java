@@ -6,12 +6,6 @@ import com.research.privacy.anonymity.pal.api.response.QueryResultsResponseJson;
 import com.research.privacy.anonymity.pal.common.utils.Utils;
 import com.research.privacy.anonymity.pal.dataset.DBRecord;
 import com.research.privacy.anonymity.pal.dataset.attributes.Attribute;
-import com.research.privacy.anonymity.pal.dataset.attributes.DateAttribute;
-import com.research.privacy.anonymity.pal.dataset.attributes.NumericAttribute;
-import com.research.privacy.anonymity.pal.dataset.attributes.TextAttribute;
-import com.research.privacy.anonymity.pal.dataset.attributes.enums.AttributeEnumType;
-import com.research.privacy.anonymity.pal.dataset.attributes.enums.IdentifierEnumType;
-import com.research.privacy.anonymity.pal.exceptions.AnonymityPalErrorCode;
 import com.research.privacy.anonymity.pal.exceptions.AnonymityPalException;
 import com.research.privacy.anonymity.pal.infrastructure.repository.PrestoDbRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -26,24 +20,9 @@ import static com.research.privacy.anonymity.pal.dataset.attributes.Attribute.ge
 public class PrestoService {
 
     private final PrestoDbRepository prestoDbRepository;
-    private final PrivacyService privacyService;
 
-
-    public PrestoService(PrestoDbRepository prestoDbRepository, PrivacyService privacyService) {
+    public PrestoService(PrestoDbRepository prestoDbRepository) {
         this.prestoDbRepository = prestoDbRepository;
-        this.privacyService = privacyService;
-    }
-
-    public QueryResultsResponseJson getQueryResultsPrivacyChecked(final String query) throws AnonymityPalException {
-        final List<Map<String, Object>> resultList = prestoDbRepository.findResultList(query);
-
-        List<DBRecord> dbRecords = convertResultList(resultList);
-
-        if (Utils.isNotEmpty(resultList) && !privacyService.isPrivacyModelFulfilled(dbRecords)) {
-            throw new AnonymityPalException(AnonymityPalErrorCode.AP_E_0002);
-        }
-
-        return convertDBResultsToJson(dbRecords);
     }
 
     public QueryResultsResponseJson getQueryResultsSimple(final String query) throws AnonymityPalException {
@@ -95,6 +74,30 @@ public class PrestoService {
             }
             dbRecords.add(new DBRecord(attributeList, false));
         }
+        return dbRecords;
+    }
+
+    public static List<DBRecord> transformToDBRecords(List<DBRecordWrapper> dbRecordJsonList) {
+        List<DBRecord> dbRecords = new ArrayList<>();
+
+        if (Utils.isEmpty(dbRecordJsonList)) {
+            return new ArrayList<>();
+        }
+
+        dbRecordJsonList.forEach(dbRecordWrapper -> {
+            final List<DBRecordKeyValue> keyValues = dbRecordWrapper.getDbRecordJsonList();
+            List<Attribute> attributeList = new ArrayList<>();
+
+            keyValues.forEach(dbRecordKeyValue -> {
+
+                final String columnName = dbRecordKeyValue.getColumnName();
+                final String value = dbRecordKeyValue.getRecordValue();
+
+                Attribute attribute = getResolvedAttribute(columnName, value);
+                attributeList.add(attribute);
+            });
+            dbRecords.add(new DBRecord(attributeList, false));
+        });
         return dbRecords;
     }
 

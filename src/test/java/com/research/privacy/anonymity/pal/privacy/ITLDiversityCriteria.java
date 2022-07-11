@@ -50,6 +50,8 @@ class ITLDiversityCriteria {
     private static final String HEALTH_CONDITION_3 = "Diabetes";
     private static final String HEALTH_CONDITION_4 = "Broken Neck";
 
+    private static final int L_DIVERSITY_PARAM = 2;
+
     @Autowired
     LDiversity lDiversity;
 
@@ -89,7 +91,7 @@ class ITLDiversityCriteria {
 
         final List<DBRecord> dbRecords = Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4);
         lDiversity.setDesiredL(2);
-        Assertions.assertTrue(lDiversity.isLDiverse(dbRecords));
+        Assertions.assertTrue(lDiversity.isLDiverse(dbRecords, L_DIVERSITY_PARAM));
     }
 
     @Test
@@ -129,7 +131,7 @@ class ITLDiversityCriteria {
         final List<DBRecord> dbRecords = Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4);
         lDiversity.setDesiredL(2);
         // TODO define if correct
-        Assertions.assertTrue(lDiversity.isLDiverse(dbRecords));
+        Assertions.assertTrue(lDiversity.isLDiverse(dbRecords, L_DIVERSITY_PARAM));
     }
 
     @Test
@@ -167,9 +169,7 @@ class ITLDiversityCriteria {
         ));
 
         final List<DBRecord> dbRecords = Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4);
-
-        lDiversity.setDesiredL(3);
-        Assertions.assertFalse(lDiversity.isLDiverse(dbRecords));
+        Assertions.assertFalse(lDiversity.isLDiverse(dbRecords, 3));
     }
 
     @Test
@@ -207,7 +207,7 @@ class ITLDiversityCriteria {
         ));
 
         final List<DBRecord> dbRecords = Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4);
-        Assertions.assertFalse(lDiversity.isLDiverse(dbRecords));
+        Assertions.assertFalse(lDiversity.isLDiverse(dbRecords, L_DIVERSITY_PARAM));
     }
 
     @Test
@@ -277,11 +277,9 @@ class ITLDiversityCriteria {
         ));
 
         final List<DBRecord> dbRecords = Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4, dbRecord5, dbRecord6, dbRecord7, dbRecord8);
-        lDiversity.setDesiredL(2);
-        Assertions.assertTrue(lDiversity.isLDiverse(dbRecords));
 
-        lDiversity.setDesiredL(3);
-        Assertions.assertFalse(lDiversity.isLDiverse(dbRecords));
+        Assertions.assertTrue(lDiversity.isLDiverse(dbRecords, L_DIVERSITY_PARAM));
+        Assertions.assertFalse(lDiversity.isLDiverse(dbRecords, 3));
     }
 
     @Test
@@ -383,16 +381,13 @@ class ITLDiversityCriteria {
         ));
 
         final List<DBRecord> dbRecords = Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4, dbRecord5, dbRecord6, dbRecord7, dbRecord8, dbRecord9, dbRecord10, dbRecord11, dbRecord12);
-        lDiversity.setDesiredL(2);
-        Assertions.assertTrue(lDiversity.isLDiverse(dbRecords));
-
-        lDiversity.setDesiredL(3);
-        Assertions.assertFalse(lDiversity.isLDiverse(dbRecords));
+        Assertions.assertTrue(lDiversity.isLDiverse(dbRecords, L_DIVERSITY_PARAM));
+        Assertions.assertFalse(lDiversity.isLDiverse(dbRecords, 3));
     }
 
     @Test
     void privacyService_isLDiverse_data_generator_OK() {
         final List<DBRecord> dbRecords = AnonymizedHealthSampleDataGenerator.generateData(3, 100);
-        Assertions.assertTrue(lDiversity.isLDiverse(dbRecords));
+        Assertions.assertTrue(lDiversity.isLDiverse(dbRecords, L_DIVERSITY_PARAM));
     }
 }
