@@ -39,7 +39,8 @@ class ITQueryRestServices {
     private static final String MONGO_DB_HEALTH_DATA_DB_1 = "health_data_db_1";
     private static final String SHOULD_NOT_FAIL = "Should not fail";
     private static final int K_ANONYMITY_PARAM = 2;
-    private static final int L_DIVERSITY_PARAM = 2;
+    private static final int L_DIVERSITY_PARAM_2 = 2;
+    private static final int L_DIVERSITY_PARAM_3 = 3;
 
     private static final String COLUMN_NAME_ZIPCODE = "zipcode";
     private static final String COLUMN_NAME_AGE = "age";
@@ -71,6 +72,8 @@ class ITQueryRestServices {
 
     private static final String HEALTH_CONDITION_1 = "Diabetes";
     private static final String HEALTH_CONDITION_2 = "Cardiovascular";
+    private static final String HEALTH_CONDITION_3 = "HIV";
+    private static final String HEALTH_CONDITION_4 = "Broken_Arm";
 
     @Autowired
     PrestoService prestoService;
@@ -185,7 +188,7 @@ class ITQueryRestServices {
 
         PrivacyCheckParams privacyCheckParams = new PrivacyCheckParams();
         privacyCheckParams.setKAnonymityParam(K_ANONYMITY_PARAM);
-        privacyCheckParams.setLDiversityParam(L_DIVERSITY_PARAM);
+        privacyCheckParams.setLDiversityParam(L_DIVERSITY_PARAM_2);
         privacyCheckParams.setDbRecordList(Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4));
 
         try {
@@ -230,11 +233,93 @@ class ITQueryRestServices {
 
         PrivacyCheckParams privacyCheckParams = new PrivacyCheckParams();
         privacyCheckParams.setKAnonymityParam(K_ANONYMITY_PARAM);
-        privacyCheckParams.setLDiversityParam(L_DIVERSITY_PARAM);
+        privacyCheckParams.setLDiversityParam(L_DIVERSITY_PARAM_2);
         privacyCheckParams.setDbRecordList(Utils.asList(dbRecord1, dbRecord2, dbRecord3));
 
         try {
             Assertions.assertFalse(privacyService.getQueryResultsPrivacyChecked(privacyCheckParams));
+        } catch (AnonymityPalException e) {
+            Assertions.fail(SHOULD_NOT_FAIL);
+        }
+    }
+
+    @Test
+    void privacyService_getQueryResultsPrivacyChecked_OK_2() {
+        final DBRecordWrapper dbRecord1 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, SINGLE),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_1)
+        ));
+
+        final DBRecordWrapper dbRecord2 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, SINGLE),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_2)
+        ));
+
+        final DBRecordWrapper dbRecord3 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_1),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, SINGLE),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_1),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_A),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_3)
+        ));
+
+        final DBRecordWrapper dbRecord4 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_2),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, MARRIED),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_2),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_AB),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_3)
+        ));
+
+        final DBRecordWrapper dbRecord5 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_2),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, MARRIED),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_2),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_AB),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_4)
+        ));
+
+        PrivacyCheckParams privacyCheckParams = new PrivacyCheckParams();
+        privacyCheckParams.setKAnonymityParam(K_ANONYMITY_PARAM);
+        privacyCheckParams.setLDiversityParam(L_DIVERSITY_PARAM_3);
+        privacyCheckParams.setDbRecordList(Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4, dbRecord5));
+
+        try {
+            Assertions.assertFalse(privacyService.getQueryResultsPrivacyChecked(privacyCheckParams));
+        } catch (AnonymityPalException e) {
+            Assertions.fail(SHOULD_NOT_FAIL);
+        }
+
+        final DBRecordWrapper dbRecord6 = new DBRecordWrapper(Utils.asList(
+                new DBRecordKeyValue(COLUMN_NAME_ZIPCODE, SUPPRESSED_ZIP_CODE_2),
+                new DBRecordKeyValue(COLUMN_NAME_MARITAL_STATUS, MARRIED),
+                new DBRecordKeyValue(COLUMN_NAME_AGE, SUPPRESSED_AGE_2),
+                new DBRecordKeyValue(COLUMN_NAME_GENDER, MALE),
+                new DBRecordKeyValue(COLUMN_NAME_NATIONALITY, NATIONALITY_1),
+                new DBRecordKeyValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_AB),
+                new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_2)
+        ));
+
+        privacyCheckParams.setDbRecordList(Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4, dbRecord5, dbRecord6));
+
+        try {
+            Assertions.assertTrue(privacyService.getQueryResultsPrivacyChecked(privacyCheckParams));
         } catch (AnonymityPalException e) {
             Assertions.fail(SHOULD_NOT_FAIL);
         }
