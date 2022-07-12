@@ -16,6 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.research.privacy.anonymity.pal.dataset.attributes.Attribute.getResolvedAttribute;
+import static com.research.privacy.anonymity.pal.services.PrestoService.transformToDBRecords;
 
 @Slf4j
 @Service
@@ -29,30 +30,6 @@ public class LooselyCoupledPrivacyPreservationService {
         final Set<QuasiKeyPairValue> quasiColumnsToCheck = queryResults.getQuasiColumnsToCheck();
 
         return isPrivacyPreserved(quasiColumnsToCheck, dbRecordList);
-    }
-
-    private List<DBRecord> transformToDBRecords(List<DBRecordWrapper> dbRecordJsonList) {
-        List<DBRecord> dbRecords = new ArrayList<>();
-
-        if (Utils.isEmpty(dbRecordJsonList)) {
-            return new ArrayList<>();
-        }
-
-        dbRecordJsonList.forEach(dbRecordWrapper -> {
-            final List<DBRecordKeyValue> keyValues = dbRecordWrapper.getDbRecordJsonList();
-            List<Attribute> attributeList = new ArrayList<>();
-
-            keyValues.forEach(dbRecordKeyValue -> {
-
-                final String columnName = dbRecordKeyValue.getColumnName();
-                final String value = dbRecordKeyValue.getRecordValue();
-
-                Attribute attribute = getResolvedAttribute(columnName, value);
-                attributeList.add(attribute);
-            });
-            dbRecords.add(new DBRecord(attributeList, false));
-        });
-        return dbRecords;
     }
 
     private boolean isPrivacyPreserved(final Set<QuasiKeyPairValue> quasiKeyPairValues, final List<DBRecord> dbRecordList) throws AnonymityPalException {

@@ -22,7 +22,12 @@ public class LDiversity {
     @Setter
     private Integer desiredL = 2; // default value
 
-    public boolean isLDiverse(final List<DBRecord> dbRecords) {
+    public boolean isLDiverse(final List<DBRecord> dbRecords, final Integer lDiversityParam) {
+
+        if (Utils.isNotEmpty(lDiversityParam)) {
+            this.desiredL = lDiversityParam;
+        }
+
         HashMap<String, List<String>> equivalentClasses = getEquivalentClasses(dbRecords);
 
         // Check each list inside the HashMap has > desiredL
