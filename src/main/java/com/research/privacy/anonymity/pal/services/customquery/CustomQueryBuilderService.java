@@ -55,9 +55,8 @@ public class CustomQueryBuilderService {
 
             customQuery.append(String.format(joinOperator.getSqlOperation(), tableToJoinPathCatalog));
 
-            final List<String> columnValues = joinTableColumnValues;
-            final String firstColumnInJoin = columnValues.get(0);
-            final String secondColumnInJoin = columnValues.get(1);
+            final String firstColumnInJoin = joinTableColumnValues.get(0);
+            final String secondColumnInJoin = joinTableColumnValues.get(1);
 
             if (Utils.isEmpty(firstColumnInJoin) || Utils.isEmpty(secondColumnInJoin)) {
                 throw new AnonymityPalException(AP_E_0007);
