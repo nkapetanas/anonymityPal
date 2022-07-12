@@ -1,7 +1,7 @@
 package com.research.privacy.anonymity.pal.restservices;
 
 import com.research.privacy.anonymity.pal.Application;
-import com.research.privacy.anonymity.pal.api.PrivacyRestService;
+import com.research.privacy.anonymity.pal.api.QueriesRestService;
 import com.research.privacy.anonymity.pal.api.params.CustomQueryParams;
 import com.research.privacy.anonymity.pal.api.response.DBRecordWrapper;
 import com.research.privacy.anonymity.pal.api.response.QueryResultsResponseJson;
@@ -38,7 +38,7 @@ class ITCustomQueryRestService {
     PrestoService prestoService;
 
     @Autowired
-    PrivacyRestService queriesRestService;
+    QueriesRestService queriesRestService;
 
     @Test
     void privacyService_getCustomQueryResults_Filter_OK() {
