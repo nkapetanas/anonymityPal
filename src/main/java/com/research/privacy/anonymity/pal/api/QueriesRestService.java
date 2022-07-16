@@ -1,14 +1,10 @@
 package com.research.privacy.anonymity.pal.api;
 
 import com.research.privacy.anonymity.pal.api.params.CustomQueryParams;
-import com.research.privacy.anonymity.pal.api.params.PrivacyCheckParams;
-import com.research.privacy.anonymity.pal.api.response.QueryResultsJson;
 import com.research.privacy.anonymity.pal.api.response.QueryResultsResponseJson;
 import com.research.privacy.anonymity.pal.common.utils.Utils;
 import com.research.privacy.anonymity.pal.exceptions.AnonymityPalException;
-import com.research.privacy.anonymity.pal.services.LooselyCoupledPrivacyPreservationService;
 import com.research.privacy.anonymity.pal.services.PrestoService;
-import com.research.privacy.anonymity.pal.services.PrivacyService;
 import com.research.privacy.anonymity.pal.services.customquery.CustomQueryBuilderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,33 +17,15 @@ import java.util.ArrayList;
 @Slf4j
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/api/privacy")
+@RequestMapping("/api/queryservice")
 public class QueriesRestService {
 
     private final PrestoService prestoService;
-    private final PrivacyService privacyService;
     private final CustomQueryBuilderService customQueryBuilderService;
-    private final LooselyCoupledPrivacyPreservationService looselyCoupledPrivacyPreservationService;
 
-    public QueriesRestService(PrestoService prestoService, PrivacyService privacyService, CustomQueryBuilderService customQueryBuilderService, LooselyCoupledPrivacyPreservationService looselyCoupledPrivacyPreservationService) {
+    public QueriesRestService(PrestoService prestoService, CustomQueryBuilderService customQueryBuilderService) {
         this.prestoService = prestoService;
-        this.privacyService = privacyService;
         this.customQueryBuilderService = customQueryBuilderService;
-        this.looselyCoupledPrivacyPreservationService = looselyCoupledPrivacyPreservationService;
-    }
-
-    @PostMapping("/getQueryResultsPrivacyChecked")
-    @ResponseStatus()
-    public ResponseEntity<Boolean> getQueryResultsPrivacyChecked(@RequestBody PrivacyCheckParams privacyCheckParams) {
-        if (Utils.isEmpty(privacyCheckParams)) {
-            ResponseEntity.ok(false);
-        }
-
-        try {
-            return ResponseEntity.ok(privacyService.getQueryResultsPrivacyChecked(privacyCheckParams));
-        } catch (AnonymityPalException e) {
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     @GetMapping("/getQueryResults")
@@ -83,21 +61,5 @@ public class QueriesRestService {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().body(queryResults);
-    }
-
-    @PostMapping("/checkPrivacyPreservation")
-    @ResponseStatus()
-    public ResponseEntity<Boolean> checkPrivacyPreservation(@RequestBody QueryResultsJson queryResults) {
-        if (Utils.isEmpty(queryResults)) {
-            ResponseEntity.ok(new ArrayList<>());
-        }
-
-        Boolean privacyCheckResult;
-        try {
-            privacyCheckResult = looselyCoupledPrivacyPreservationService.looselyCoupledPrivacyPreservationCheck(queryResults);
-        } catch (AnonymityPalException e) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok().body(privacyCheckResult);
     }
 }

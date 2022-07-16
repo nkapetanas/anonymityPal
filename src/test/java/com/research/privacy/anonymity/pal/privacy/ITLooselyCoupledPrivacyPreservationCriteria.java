@@ -1,11 +1,9 @@
 package com.research.privacy.anonymity.pal.privacy;
 
 import com.research.privacy.anonymity.pal.Application;
-import com.research.privacy.anonymity.pal.api.response.DBRecordKeyValue;
-import com.research.privacy.anonymity.pal.api.response.DBRecordWrapper;
-import com.research.privacy.anonymity.pal.api.response.QuasiKeyPairValue;
-import com.research.privacy.anonymity.pal.api.response.QueryResultsJson;
+import com.research.privacy.anonymity.pal.api.response.*;
 import com.research.privacy.anonymity.pal.common.utils.Utils;
+import com.research.privacy.anonymity.pal.exceptions.AnonymityPalErrorCode;
 import com.research.privacy.anonymity.pal.exceptions.AnonymityPalException;
 import com.research.privacy.anonymity.pal.services.LooselyCoupledPrivacyPreservationService;
 import com.research.privacy.anonymity.pal.services.PrivacyService;
@@ -99,13 +97,23 @@ class ITLooselyCoupledPrivacyPreservationCriteria {
         Set<QuasiKeyPairValue> quasiColumnsToCheck = new HashSet<>(Collections.singletonList(new QuasiKeyPairValue(COLUMN_NAME_MARITAL_STATUS, MARRIED)));
 
         List<DBRecordWrapper> dbRecordWrapperList = Utils.asList(dbRecord1, dbRecord2, dbRecord3);
+
         QueryResultsJson resultsJson = new QueryResultsJson(dbRecordWrapperList, quasiColumnsToCheck, false);
-        Assertions.assertFalse(looselyCoupledPrivacyPreservationService.looselyCoupledPrivacyPreservationCheck(resultsJson));
+
+        PrivacyPreservationResultJson privacyPreservationResultJson = looselyCoupledPrivacyPreservationService.looselyCoupledPrivacyPreservationCheck(resultsJson);
+
+        Assertions.assertFalse(privacyPreservationResultJson.getPrivacyCheckResult());
+
+        Assertions.assertEquals(AnonymityPalErrorCode.AP_E_0009.getDescription(), privacyPreservationResultJson.getResultMessage());
 
         quasiColumnsToCheck = new HashSet<>(Collections.singletonList(new QuasiKeyPairValue(COLUMN_NAME_MARITAL_STATUS, SINGLE)));
 
         resultsJson = new QueryResultsJson(dbRecordWrapperList, quasiColumnsToCheck, false);
-        Assertions.assertFalse(looselyCoupledPrivacyPreservationService.looselyCoupledPrivacyPreservationCheck(resultsJson));
+
+        privacyPreservationResultJson = looselyCoupledPrivacyPreservationService.looselyCoupledPrivacyPreservationCheck(resultsJson);
+
+        Assertions.assertFalse(privacyPreservationResultJson.getPrivacyCheckResult());
+        Assertions.assertEquals(AnonymityPalErrorCode.AP_E_0010.getDescription(), privacyPreservationResultJson.getResultMessage());
     }
 
     @Test
@@ -280,13 +288,20 @@ class ITLooselyCoupledPrivacyPreservationCriteria {
         Set<QuasiKeyPairValue> quasiColumnsToCheck = new HashSet<>(Collections.singletonList(new QuasiKeyPairValue(COLUMN_NAME_MARITAL_STATUS, SINGLE)));
 
         QueryResultsJson resultsJson = new QueryResultsJson(dbRecordList, quasiColumnsToCheck, false);
-        Assertions.assertFalse(looselyCoupledPrivacyPreservationService.looselyCoupledPrivacyPreservationCheck(resultsJson));
+        PrivacyPreservationResultJson privacyPreservationResultJson = looselyCoupledPrivacyPreservationService.looselyCoupledPrivacyPreservationCheck(resultsJson);
 
+        Assertions.assertFalse(privacyPreservationResultJson.getPrivacyCheckResult());
+        Assertions.assertEquals(AnonymityPalErrorCode.AP_E_0010.getDescription(), privacyPreservationResultJson.getResultMessage());
+
+        // We expect the privacy to be broken when checking for the blood type column
         quasiColumnsToCheck = new HashSet<>(Utils.asList(new QuasiKeyPairValue(COLUMN_NAME_MARITAL_STATUS, MARRIED),
                 new QuasiKeyPairValue(COLUMN_NAME_BLOOD_TYPE, BLOOD_TYPE_AB)));
 
         resultsJson = new QueryResultsJson(dbRecordList, quasiColumnsToCheck, false);
-        Assertions.assertFalse(looselyCoupledPrivacyPreservationService.looselyCoupledPrivacyPreservationCheck(resultsJson));
+        privacyPreservationResultJson = looselyCoupledPrivacyPreservationService.looselyCoupledPrivacyPreservationCheck(resultsJson);
+
+        Assertions.assertFalse(privacyPreservationResultJson.getPrivacyCheckResult());
+        Assertions.assertEquals(AnonymityPalErrorCode.AP_E_0009.getDescription(), privacyPreservationResultJson.getResultMessage());
     }
 
     @Test
@@ -295,6 +310,9 @@ class ITLooselyCoupledPrivacyPreservationCriteria {
         Set<QuasiKeyPairValue> quasiColumnsToCheck = new HashSet<>(Collections.singletonList(new QuasiKeyPairValue(COLUMN_NAME_MARITAL_STATUS, MARRIED)));
 
         QueryResultsJson resultsJson = new QueryResultsJson(dbRecords, quasiColumnsToCheck, false);
-        Assertions.assertTrue(looselyCoupledPrivacyPreservationService.looselyCoupledPrivacyPreservationCheck(resultsJson));
+        final PrivacyPreservationResultJson privacyPreservationResultJson = looselyCoupledPrivacyPreservationService.looselyCoupledPrivacyPreservationCheck(resultsJson);
+
+        Assertions.assertTrue(privacyPreservationResultJson.getPrivacyCheckResult());
+        Assertions.assertNull(privacyPreservationResultJson.getResultMessage());
     }
 }

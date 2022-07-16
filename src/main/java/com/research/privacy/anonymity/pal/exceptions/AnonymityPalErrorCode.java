@@ -15,6 +15,8 @@ public enum AnonymityPalErrorCode {
     AP_E_0006(6, ErrorMessagesEnum.AP_E_0006, "Join table is empty"),
     AP_E_0007(7, ErrorMessagesEnum.AP_E_0007, "One or both of the join columns are invalid"),
     AP_E_0008(8, ErrorMessagesEnum.AP_E_0008, "The quasi column/s to check or the values are empty"),
+    AP_E_0009(9, ErrorMessagesEnum.AP_E_0009, "The Rule 1 holds. Possible breach of confidentiality detected"),
+    AP_E_0010(10, ErrorMessagesEnum.AP_E_0010, "The Rule 2 holds. Possible breach of confidentiality detected"),
     ;
 
     @Getter
