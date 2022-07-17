@@ -61,7 +61,7 @@ export class CustomQueryComponent implements OnInit {
                 completeTablePathToFilter: filterDataUI.completeTablePathToFilter,
                 columnName: filterDataUI.columnName,
                 columnValues: [filterDataUI.firstColumnValue, filterDataUI.secondColumnValue],
-                filterOperator: filterDataUI.filterOperator.label
+                filterOperator: filterDataUI.filterOperator.sqlOperatorEnum
             }
             return filterData;
         })
@@ -113,6 +113,7 @@ export class CustomQueryComponent implements OnInit {
      */
     getSelectedTable(value: string) {
         this.customQueryParamsUI.completeTablePath = value;
+        this.tableFilterOptions.set(this.customQueryParamsUI.completeTablePath, this.columns);
         this.setAvailableTableColumn();
     }
 

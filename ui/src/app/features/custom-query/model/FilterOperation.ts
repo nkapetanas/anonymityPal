@@ -16,7 +16,7 @@ export class FilterOperationUI {
         this.secondColumnValue = '';
         this.filterOperator = {
             label: '',
-            sqlOperatorEnum: null
+            sqlOperatorEnum: ''
         };
         this.filterLabel = '';
     }
@@ -24,7 +24,7 @@ export class FilterOperationUI {
 
 export interface FilterOperatorUI {
     label: string;
-    sqlOperatorEnum: number | null;
+    sqlOperatorEnum: string;
 }
 
 export interface FilterOperation {
