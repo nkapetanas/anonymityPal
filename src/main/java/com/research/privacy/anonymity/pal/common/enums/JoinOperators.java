@@ -13,9 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 public enum JoinOperators {
 
-    LEFT_OUTER_JOIN("Left outer join", "LEFT OUTER JOIN %s t2 ON "),
-    RIGHT_OUTER_JOIN("Right outer join", "RIGHT OUTER JOIN %s t2 ON "),
-    INNER_JOIN("Inner join", "INNER JOIN %s t2 ON ");
+    LEFT_OUTER_JOIN("Left outer join", "LEFT OUTER JOIN %s %s ON "),
+    RIGHT_OUTER_JOIN("Right outer join", "RIGHT OUTER JOIN %s %s ON "),
+    INNER_JOIN("Inner join", "INNER JOIN %s %s ON ");
 
     @Getter
     private final String field;

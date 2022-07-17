@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FilterOperations {
+    private String completeTablePathToFilter;
     private String columnName;
     private List<String> columnValues;
     private String filterOperator;
