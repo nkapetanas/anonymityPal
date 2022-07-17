@@ -4,11 +4,11 @@
             <div class="col-6 field">
                 <label><strong>Select the Quasi-Identifier that might be related to your subject</strong></label>
                 <p-multiSelect [options]="dataOptions" [(ngModel)]="selectedColumns" defaultLabel="Select a column"
-                    display="chip" styleClass="mt-4" optionLabel="columnName">
+                    display="chip" styleClass="mt-4" optionLabel="columnName" (onChange)="valueChangeColumns($event)">
                 </p-multiSelect>
             </div>
         </div>
-        <p-table [value]="selectedColumns">
+        <p-table [value]="selectedValue">
             <ng-template pTemplate="body" let-item let-rowIndex="rowIndex" ;>
                 <tr>
                     <td>

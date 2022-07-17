@@ -8,7 +8,15 @@ export class MessagesService {
         private messageService: MessageService
     ) { }
     
-    showMessage(message: Message) {
-        this.messageService.add(message);
+    showSuccessMessage(summary: string) {
+        this.messageService.add({ severity: 'success', summary: summary });
+    }
+
+    showErrorMessage(summary: string) {
+        this.messageService.add({ severity: 'error', summary: summary, sticky: true });
+    }
+
+    showInfoMessage(summary: string) {
+        this.messageService.add({ severity: 'info', summary: summary, sticky: true });
     }
 }

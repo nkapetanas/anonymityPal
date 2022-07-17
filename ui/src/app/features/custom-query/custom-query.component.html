@@ -1,29 +1,23 @@
 <div class="p-5">
-    <p-messages></p-messages>
-    <app-overlay-panel-table [databasesOptions]="databasesOptions" (onSelectTable)="getSelectedTable($event)">
+    <p-toast position="top-right"></p-toast>
+    <app-overlay-panel-table [databasesOptions]="databasesOptions" [table]="customQueryParamsUI.completeTablePath" (onSelectTable)="getSelectedTable($event)">
     </app-overlay-panel-table>
-    <div *ngIf="selectedTable">
+    <div *ngIf="customQueryParamsUI.completeTablePath">
         <div class="pt-3">
-            <p-selectButton [options]="joinDataOption" [(ngModel)]="joinDataValue" optionLabel="icon"
-                optionValue="value">
-                <ng-template let-item>
-                    <i [class]="item.icon" [pTooltip]="item.value.tooltip" tooltipPosition="top"></i>
-                </ng-template>
-            </p-selectButton>
-            <div *ngIf="joinDataValue.joinValue" class="pt-3">
-                <div class="d-flex p-2 light-blue-background radius">
-                    <app-join-data [selectedTable]="selectedTable" [databaseOptions]="databasesOptions"
-                        [selectedJoinValue]="joinDataValue" (onChangeJoinQuery)="getJoinQuery($event)">
-                    </app-join-data>
-                    <button pButton pRipple type="button" icon="pi pi-times"
-                        class="p-button-rounded p-button-secondary p-button-sm p-button-text vertical-align-middle remove-join-button mt-2"
-                        (click)="removeJoinPanel()">
-                    </button>
-                </div>
+            <div class="d-flex p-2 mb-2 light-blue-background radius" *ngFor="let joinData of customQueryParamsUI.joins; let index = index">
+                <app-join-data [databaseOptions]="databasesOptions" [selectedTable]="customQueryParamsUI.completeTablePath" 
+                    [joinData]="joinData" (onChangeJoinQuery)="getJoinQueryData($event, index)">
+                </app-join-data>
+                <button pButton pRipple type="button" icon="pi pi-times"
+                    class="p-button-rounded p-button-secondary p-button-sm p-button-text vertical-align-middle remove-join-button mt-2"
+                    (click)="removeJoinPanel(index, joinData.tableToJoinPathCatalog)">
+                </button>
             </div>
+            <button pButton pRipple type="button" class="p-button-primary" label="Add join table" [loading]="loading"
+                (click)="addJoin()"></button>
         </div>
         <div class="pt-3">
-            <app-filter [selectedTable]="selectedTable" (onChangeFilterQuery)="getFilterQuery($event)"></app-filter>
+            <app-filter *ngIf="tableFilterOptions.size>0" [customQueryParams]="customQueryParamsUI" (onChangeFilterQuery)="getFilterQuery($event)"></app-filter>
         </div>
         <div class="pt-3">
             <p-selectButton [options]="moreOptions" [(ngModel)]="optionValue" optionLabel="icon" [multiple]="true"
@@ -33,10 +27,10 @@
                 </ng-template>
             </p-selectButton>
         </div>
-        <div *ngIf="optionValue.includes(0)" class="pt-3">
+        <div *ngIf="optionValue.includes(moreOptionsEnum.SORT)" class="pt-3">
             <app-sorting [columns]="columns" (onChange)="getSortBy($event)"></app-sorting>
         </div>
-        <div *ngIf="optionValue.includes(1)" class="pt-3">
+        <div *ngIf="optionValue.includes(moreOptionsEnum.ROW_LIMIT)" class="pt-3">
             <app-row-limit (onChange)="getRowLimit($event)"></app-row-limit>
         </div>
         <div class="pt-3">

@@ -1,11 +1,21 @@
 <p-chip class="pr-2" [label]="selectedTable"></p-chip>
-<p-chip [icon]="selectedJoinValue.icon" class="vertical-align-middle"></p-chip>
+<p-chip [icon]="joinData.joinOperator.icon" class="vertical-align-middle" (click)="op.toggle($event)"></p-chip>
 <app-overlay-panel-table class="d-inline-block" [databasesOptions]="databaseOptions"
     (onSelectTable)="getSelectedTable($event)"></app-overlay-panel-table>
-<div *ngIf="selectedTableJoin" class="d-inline-block">
+<div *ngIf="joinData.tableToJoinPathCatalog" class="d-inline-block">
     <p-chip label="ON"></p-chip>
     <app-select-matching-columns class="d-inline-block" [columnOptions]="columnsOptions"
-        [joinColumnOptions]="columnsJoinOptions" [selectedTable]="selectedTable" [selectedTableJoin]="selectedTableJoin"
+        [joinColumnOptions]="columnsJoinOptions" [selectedTable]="selectedTable" [selectedTableJoin]="joinData.tableToJoinPathCatalog"
         (onChangeColumns)="getSelectedColumns($event)">
     </app-select-matching-columns>
 </div>
+
+<p-overlayPanel #op>
+    <ng-template pTemplate>
+        <p-selectButton [options]="joinDataOption" [(ngModel)]="joinData.joinOperator" optionLabel="icon" optionValue="value">
+            <ng-template let-item>
+                <i [class]="item.icon" [pTooltip]="item.value.tooltip" tooltipPosition="top"></i>
+            </ng-template>
+        </p-selectButton>
+    </ng-template>
+</p-overlayPanel>

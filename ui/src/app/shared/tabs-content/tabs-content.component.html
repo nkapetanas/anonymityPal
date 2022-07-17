@@ -7,7 +7,7 @@
     </p-accordion>
     <p-accordion>
         <p-accordionTab header="Privacy check">
-            <app-privacy-check></app-privacy-check>
+            <app-privacy-check [dbRecordList]="data.dbRecordList"></app-privacy-check>
         </p-accordionTab>
     </p-accordion>
     <app-data-table [data]='data' [isPrivacyPreserved]="isPrivacyPreserved"></app-data-table>

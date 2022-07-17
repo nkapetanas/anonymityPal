@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Message } from 'primeng/api';
 import { PrivacyService } from 'src/app/core/services/privacy/privacy-service.service';
 import { MessagesService } from 'src/app/shared/services/messages.service';
 import { DataTable } from 'src/app/shared/tabs-content/data-table/DataTable.model';
@@ -9,7 +8,7 @@ import { DataTable } from 'src/app/shared/tabs-content/data-table/DataTable.mode
     selector: 'app-native-query',
     templateUrl: './native-query.component.html',
     styleUrls: ['./native-query.component.scss'],
-    providers: [ MessagesService ]
+    providers: [MessagesService]
 })
 export class NativeQueryComponent implements OnInit {
 
@@ -37,8 +36,8 @@ export class NativeQueryComponent implements OnInit {
             this.loading = false;
         },
         (error) => {
-            const message: Message = { severity: 'error', summary: 'The query does not fulfill the criteria.'};
-            this.messagesService.showMessage(message);
+            const summary: string = 'The query does not fulfill the criteria.';
+            this.messagesService.showErrorMessage(summary);
             this.loading = false;
         });
     }

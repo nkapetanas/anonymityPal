@@ -33,4 +33,9 @@ export class QuashiColumnsSelectorComponent implements OnInit {
         })
     }
 
+    valueChangeColumns(event: any) {
+        console.log(event);
+        this.selectedValue.filter(res => event.value.includes(res.quasiColumn));
+    }
+
 }

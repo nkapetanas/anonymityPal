@@ -1,9 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import * as _ from 'lodash';
 import { SelectItem } from 'primeng/api';
 import { forkJoin } from 'rxjs';
 import { QueryPrestoService } from 'src/app/core/services/queryPresto/query-presto-service.service';
 import { createDropdownOptions } from 'src/app/core/utils/dropdown-options.helper';
-import { JoinColumns, JoinOperation } from '../../model/JoinOperation';
+import { JoinDataUI } from '../../model/CustomQueryParams';
+import { JoinColumns } from '../../model/JoinOperation';
+import { JoinOperatorsEnum } from '../../model/JoinOperatorsEnum';
 
 @Component({
     selector: 'app-join-data',
@@ -13,24 +16,31 @@ import { JoinColumns, JoinOperation } from '../../model/JoinOperation';
 export class JoinDataComponent implements OnInit {
 
     @Input() selectedTable: string;
+    @Input() joinData: JoinDataUI;
     @Input() databaseOptions: Array<SelectItem> = [];
-    @Input() selectedJoinValue: { joinValue: string, icon: string };
-    @Output() onChangeJoinQuery: EventEmitter<JoinOperation> = new EventEmitter<JoinOperation>();
+    @Output() onChangeJoinQuery: EventEmitter<{joinData: JoinDataUI, columnsJoinOptions: SelectItem[]}> = new EventEmitter<{joinData: JoinDataUI, columnsJoinOptions: SelectItem[]}>();
+    // @Output() onGetFilterTables: EventEmitter<string[]> = new EventEmitter<string[]>();
 
-    selectedTableJoin: string = '';
     columnsOptions: Array<SelectItem> = [];
     columnsJoinOptions: Array<SelectItem> = [];
-    joinOperation: JoinOperation;
+    readonly joinDataOption: Array<SelectItem> = [
+        { icon: 'join-icons join-left-icon', label: 'Left outer join', value: { joinValue: JoinOperatorsEnum.LEFT_OUTER_JOIN, icon: 'join-icons join-left-icon', tooltip: 'Left join' } },
+        { icon: 'join-icons join-right-icon', label: 'Right outer join', value: { joinValue: JoinOperatorsEnum.RIGHT_OUTER_JOIN, icon: 'join-icons join-right-icon', tooltip: 'Right join' } },
+        { icon: 'join-icons join-inner-icon', label: 'Inner join', value: { joinValue: JoinOperatorsEnum.INNER_JOIN, icon: 'join-icons join-inner-icon', tooltip: 'Inner join' } },
+    ];
+
     constructor(
         private queryPrestoService: QueryPrestoService
     ) { }
 
-    ngOnInit(): void { }
+    ngOnInit(): void {
+        this.joinData.joinOperator = (_.head(this.joinDataOption))?.value;
+    }
 
     getSelectedTable(value: string) {
-        this.selectedTableJoin = value;
-        if (this.selectedTableJoin !== '') {
-            const getColumnsFromJoinTable = this.queryPrestoService.getColumnsFromTable(this.selectedTableJoin);
+        this.joinData.tableToJoinPathCatalog = value;
+        if (this.joinData.tableToJoinPathCatalog !== '') {
+            const getColumnsFromJoinTable = this.queryPrestoService.getColumnsFromTable(this.joinData.tableToJoinPathCatalog);
             const getColumnsFromTable = this.queryPrestoService.getColumnsFromTable(this.selectedTable);
             forkJoin({ getColumnsFromJoinTable, getColumnsFromTable }).subscribe(response => {
                 this.columnsOptions = createDropdownOptions(response.getColumnsFromTable);
@@ -40,15 +50,10 @@ export class JoinDataComponent implements OnInit {
     }
 
     getSelectedColumns(value: JoinColumns) {
-        this.joinOperation = { tableToJoinPathCatalog: this.selectedTableJoin, columnValues: [ value.selectedColumn, value.selectedJoinColumn ]};
-        this.onChangeJoinQuery.emit(this.joinOperation);
+        this.joinData.joinTableColumnValues = [ value.selectedColumn, value.selectedJoinColumn ];
+        this.onChangeJoinQuery.emit({ joinData: this.joinData, columnsJoinOptions: this.columnsJoinOptions });
+        // let tableForFiltering: any;
+        // tableForFiltering[this.joinData.tableToJoinPathCatalog] = this.columnsJoinOptions;
+        // this.onGetFilterTables.emit(tableForFiltering);
     }
-
-    removeJoinPanel() {
-        this.joinOperation = { tableToJoinPathCatalog: '', columnValues: []};
-        this.selectedJoinValue = { joinValue: '', icon: '' };
-        this.selectedTableJoin = '';
-        this.onChangeJoinQuery.emit(this.joinOperation);
-    }
-
 }

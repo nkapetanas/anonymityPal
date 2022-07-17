@@ -16,13 +16,13 @@ export class OverlayPanelTableComponent implements OnInit {
 
     isOpen: boolean = false;
     @Input() databasesOptions: Array<SelectItem> = [];
+    @Input() table: string;
     @Output() onSelectTable: EventEmitter<string> = new EventEmitter<string>();
     schemasOptions: Array<SelectItem> = [];
     tablesOptions: Array<SelectItem> = [];
 
     database: string = '';
     schema: string = '';
-    table: string = '';
 
     constructor(
         private queryPrestoService: QueryPrestoService

@@ -1,0 +1,34 @@
+<p-dialog header="Please choose the column, the value and filter to apply" [(visible)]="display" [modal]="true"
+    width="350" (onHide)="closeModal()">
+    <div class="row">
+        <div class="col-6">
+            <p-dropdown [options]="tableFilterData.tableFilterOptions" [(ngModel)]="filterData.completeTablePathToFilter"
+                placeholder="Select a Table" appendTo="body" [style]="{'width':'100%'}" (onChange)="getValueChangeTable($event)"></p-dropdown>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <p-dropdown [options]="tableFilterData.tableFilter.get(filterData.completeTablePathToFilter)" [(ngModel)]="filterData.columnName" 
+                [disabled]="filterData.completeTablePathToFilter === ''" placeholder="Select a Table Column" appendTo="body" [style]="{'width':'100%'}"></p-dropdown>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <p-dropdown [options]="filterOperationOptionsDropdown" [(ngModel)]="filterData.filterOperator" placeholder="Select Filter"
+            [disabled]="filterData.completeTablePathToFilter === ''" appendTo="body" [style]="{'width':'100%'}" [showClear]="true"></p-dropdown>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <input [disabled]="filterData.completeTablePathToFilter === ''" type="text" pInputText [(ngModel)]="filterData.firstColumnValue" />
+        </div>
+        <div *ngIf="filterData?.filterLabel === filterEnum.BETWEEN" class="col-6">
+            <input [disabled]="filterData.completeTablePathToFilter === ''" type="text" pInputText [(ngModel)]="filterData.secondColumnValue" />
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton icon="fa fa-check" (click)="handleFilter()" label="Save"></button>
+        </div>
+    </p-footer>
+</p-dialog>

@@ -38,6 +38,9 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { FilterComponent } from './features/custom-query/components/filter/filter.component';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { FilterModalComponent } from './features/custom-query/components/filter/filter-modal/filter-modal.component';
 
 @NgModule({
     declarations: [
@@ -52,7 +55,8 @@ import { MessageModule } from 'primeng/message';
         JoinDataComponent,
         SortingComponent,
         RowLimitComponent,
-        FilterComponent
+        FilterComponent,
+        FilterModalComponent
     ],
     imports: [
         BrowserModule,
@@ -81,9 +85,10 @@ import { MessageModule } from 'primeng/message';
         MessagesModule,
         MessageModule,
         InputNumberModule,
-        OverlayModule
+        OverlayModule,
+        ToastModule
     ],
-    providers: [],
+    providers: [MessageService],
     bootstrap: [AppComponent]
 })
 export class AppModule {

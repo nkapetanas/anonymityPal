@@ -11,7 +11,7 @@ import { SelectColumnComponent } from './select-matching-columns/select-column/s
 import { PrivacyCheckComponent } from './tabs-content/privacy-check/privacy-check.component';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FormsModule } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+
 
 @NgModule({
     declarations: [
@@ -28,16 +28,15 @@ import { MessageService } from 'primeng/api';
         ButtonModule, 
         ChipModule, 
         InputNumberModule, 
-        FormsModule,
+        FormsModule
     ],
     exports: [
         CardComponent, 
         OverlayPanelTableComponent, 
         SelectMatchingColumnsComponent, 
         PrivacyCheckComponent
+
     ],
-    providers: [
-        MessageService
-    ]
+    providers: []
 })
 export class SharedModule { }

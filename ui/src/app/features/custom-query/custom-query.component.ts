@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Message, SelectItem } from 'primeng/api';
+import { SelectItem } from 'primeng/api';
 import { PrivacyService } from 'src/app/core/services/privacy/privacy-service.service';
 import { QueryPrestoService } from 'src/app/core/services/queryPresto/query-presto-service.service';
 import { MessagesService } from 'src/app/shared/services/messages.service';
 import { DataTable } from 'src/app/shared/tabs-content/data-table/DataTable.model';
 import { createDropdownOptions } from '../../core/utils/dropdown-options.helper'
-import { CustomQueryParams } from './model/CustomQueryParams';
-import { FilterOperation } from './model/FilterOperation';
-import { JoinColumns, JoinOperation } from './model/JoinOperation';
-import { JoinOperatorsEnum } from './model/JoinOperatorsEnum';
+import { CustomQueryParams, CustomQueryParamsUI, JoinDataUI, JoinQueryParams } from './model/CustomQueryParams';
+import { FilterOperation, FilterOperationUI } from './model/FilterOperation';
+import { MoreOptionsEnum } from './model/MoreOptionsEnum';
+import { FilterTablesService } from './services/filter-tables.service';
 
 @Component({
     selector: 'app-custom-query',
@@ -19,55 +19,60 @@ import { JoinOperatorsEnum } from './model/JoinOperatorsEnum';
 })
 export class CustomQueryComponent implements OnInit {
 
-    selectedTable: string;
+    customQueryParamsUI: CustomQueryParamsUI = new CustomQueryParamsUI();
     databasesOptions: Array<SelectItem> = [];
     results: DataTable;
-    joinDataOption: Array<SelectItem> = [];
-    moreOptions: Array<SelectItem> = [];
-    joinDataValue: { joinValue: string, icon: string } = { joinValue: '', icon: '' };
     optionValue: Array<number> = [];
-    filterLists: Array<FilterOperation>;
-    joinData: JoinOperation;
     loading: boolean = false;
     columns: any[] = [];
-    sortBy: string;
-    rowLimit: string;
+    moreOptionsEnum = MoreOptionsEnum;
+    tableFilterOptions: Map<string, SelectItem[]> = new Map<string, SelectItem[]>();
+    readonly moreOptions: Array<SelectItem> = [
+        { icon: 'pi pi-sort-alt', label: 'Sort', value: MoreOptionsEnum.SORT },
+        { icon: 'pi pi-list', label: 'Row limit', value: MoreOptionsEnum.ROW_LIMIT },
+    ]
 
     constructor(
         private route: ActivatedRoute,
         private privacyService: PrivacyService,
         private queryPrestoService: QueryPrestoService,
-        private messagesService: MessagesService) {
+        private messagesService: MessagesService,
+        private filterTableService: FilterTablesService) {
     }
 
     ngOnInit(): void {
-
-        this.joinDataOption = [
-            { icon: 'join-icons join-left-icon', label: 'Left outer join', value: { joinValue: JoinOperatorsEnum.LEFT_OUTER_JOIN, icon: 'join-icons join-left-icon', tooltip: 'Left join' } },
-            { icon: 'join-icons join-right-icon', label: 'Right outer join', value: { joinValue: JoinOperatorsEnum.RIGHT_OUTER_JOIN, icon: 'join-icons join-right-icon', tooltip: 'Right join' } },
-            { icon: 'join-icons join-inner-icon', label: 'Inner join', value: { joinValue: JoinOperatorsEnum.INNER_JOIN, icon: 'join-icons join-inner-icon', tooltip: 'Inner join' } },
-        ];
-
-        this.moreOptions = [
-            { icon: 'pi pi-sort-alt', label: 'Sort', value: 0 },
-            { icon: 'pi pi-list', label: 'List', value: 1 },
-        ]
-
         this.route.data.subscribe(data => {
             this.onRouteDataChange(data);
         })
     }
 
     execute() {
+        debugger;
+        const joinDataArray: JoinQueryParams[] = this.customQueryParamsUI.joins.map(joinDataUI=> { 
+            const joinData: JoinQueryParams = {
+                tableToJoinPathCatalog: joinDataUI.tableToJoinPathCatalog,
+                joinOperator: joinDataUI.joinOperator.joinValue,
+                joinTableColumnValues: joinDataUI.joinTableColumnValues
+            }
+            return joinData;
+        })
+
+        const filterDataArray: FilterOperation[] = this.customQueryParamsUI.filterOperationsList.map(filterDataUI => {
+            const filterData: FilterOperation = {
+                completeTablePathToFilter: filterDataUI.completeTablePathToFilter,
+                columnName: filterDataUI.columnName,
+                columnValues: [filterDataUI.firstColumnValue, filterDataUI.secondColumnValue],
+                filterOperator: filterDataUI.filterOperator.label
+            }
+            return filterData;
+        })
+
         const query: CustomQueryParams = {
-            completeTablePath: this.selectedTable,
-            isJoin: !!this.joinDataValue.joinValue,
-            tableToJoinPathCatalog: this.joinData ? this.joinData.tableToJoinPathCatalog : '',
-            joinOperator: this.joinDataValue.joinValue,
-            sortBy: this.sortBy,
-            rowLimit: this.rowLimit,
-            joinTableColumnValues: this.joinData ? this.joinData.columnValues : [],
-            filterOperationsList: this.filterLists
+            completeTablePath: this.customQueryParamsUI.completeTablePath,
+            joinQueryParams: joinDataArray,
+            sortBy: this.customQueryParamsUI.sortBy,
+            rowLimit: this.customQueryParamsUI.rowLimit,
+            filterOperationsList: filterDataArray
         }
 
         this.loading = true;
@@ -76,17 +81,14 @@ export class CustomQueryComponent implements OnInit {
             this.loading = false;
         },
         (error) => {
-            const message: Message = { severity: 'error', summary: 'The query does not fulfill the criteria.'};
-            this.messagesService.showMessage(message);
+            const summary: string = 'The query does not fulfill the criteria.';
+            this.messagesService.showErrorMessage(summary);
             this.loading = false;
         });
     }
 
     reset() {
-        // this.selectedTable = '';
-        this.joinDataValue = { joinValue: '', icon: '' };
-        this.joinData = { tableToJoinPathCatalog: '', columnValues: [] };
-        this.filterLists = [];
+        this.customQueryParamsUI = new CustomQueryParamsUI();
         this.optionValue = [];
         this.results = {
             columnNames: [],
@@ -95,41 +97,82 @@ export class CustomQueryComponent implements OnInit {
         };
     }
 
-    private onRouteDataChange(data: any) {
-        this.databasesOptions = createDropdownOptions(data.resolver.databaseData);
+    /**
+     * @description Get specific Join data from array
+     * @param data JoinDataUI
+     * @param index number
+     */
+    getJoinQueryData(data: {joinData: JoinDataUI, columnsJoinOptions: SelectItem[]}, index: number) {
+        this.customQueryParamsUI.joins[index] = data.joinData;
+        this.tableFilterOptions.set(data.joinData.tableToJoinPathCatalog, data.columnsJoinOptions);
+        this.filterTableService.setFilterTables(this.tableFilterOptions);
+        console.log(this.tableFilterOptions)
     }
 
+    /**
+     * @description Set selected table
+     */
     getSelectedTable(value: string) {
-        this.selectedTable = value;
+        this.customQueryParamsUI.completeTablePath = value;
         this.setAvailableTableColumn();
     }
 
+    /**
+     * @description Set columns of selected table
+     */
     setAvailableTableColumn() {
-        this.queryPrestoService.getColumnsFromTable(this.selectedTable).subscribe((response: any) => {
+        this.queryPrestoService.getColumnsFromTable(this.customQueryParamsUI.completeTablePath).subscribe((response: any) => {
             this.columns =  response;
+            this.tableFilterOptions.set(this.customQueryParamsUI.completeTablePath, this.columns);
+            this.filterTableService.setFilterTables(this.tableFilterOptions);
         },
             () => {
                 this.columns =  [];
             });
     }
 
-    getFilterQuery(value: Array<FilterOperation>) {
-        this.filterLists = value;
+    /**
+     * @description Get the value of Filter Array
+     * @param value Array<FilterOperation>
+     */
+    getFilterQuery(value: Array<FilterOperationUI>) {
+        this.customQueryParamsUI.filterOperationsList = value;
     }
 
-    getJoinQuery(value: JoinOperation) {
-        this.joinData = value;
-    }
-
-    removeJoinPanel() {
-        this.joinDataValue = { joinValue: '', icon: '' };
-    }
-
+    /**
+     * @description Get the value of Row Limit
+     * @param value string
+     */
     getRowLimit(value: string) {
-        this.rowLimit = value;
+        this.customQueryParamsUI.rowLimit = value;
     }
 
+    /**
+     * @description Get the value of Sort By
+     * @param value string
+     */
     getSortBy(value: string) {
-        this.sortBy = value;
+        this.customQueryParamsUI.sortBy = value;
+    }
+
+    /**
+     * @description Add new join object in array
+     */
+    addJoin() {
+        this.customQueryParamsUI.joins.push(new JoinDataUI());
+    }
+
+    /**
+     * @description Remove from Join Array the specific index
+     * @param index number
+     */
+    removeJoinPanel(index: number, tableToJoinPathCatalog: string) {
+        this.tableFilterOptions.delete(tableToJoinPathCatalog);
+        this.filterTableService.setFilterTables(this.tableFilterOptions);
+        this.customQueryParamsUI.joins.splice(index, 1);
+    }
+
+    private onRouteDataChange(data: any) {
+        this.databasesOptions = createDropdownOptions(data.resolver.databaseData);
     }
 }
