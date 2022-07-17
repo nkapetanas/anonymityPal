@@ -47,7 +47,6 @@ export class CustomQueryComponent implements OnInit {
     }
 
     execute() {
-        debugger;
         const joinDataArray: JoinQueryParams[] = this.customQueryParamsUI.joins.map(joinDataUI=> { 
             const joinData: JoinQueryParams = {
                 tableToJoinPathCatalog: joinDataUI.tableToJoinPathCatalog,
