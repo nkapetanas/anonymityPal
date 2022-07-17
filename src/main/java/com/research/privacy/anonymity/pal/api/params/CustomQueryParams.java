@@ -14,11 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 public class CustomQueryParams {
     private String completeTablePath;
-    private boolean isJoin;
-    private String tableToJoinPathCatalog;
-    private String joinOperator;
+    private List<JoinQueryParams> joinQueryParams;
     private String sortBy;
     private Integer rowLimit;
-    private List<String> joinTableColumnValues;
     private List<FilterOperations> filterOperationsList;
 }

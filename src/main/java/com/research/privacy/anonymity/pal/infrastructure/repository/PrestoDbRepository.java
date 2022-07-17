@@ -33,7 +33,8 @@ public class PrestoDbRepository {
                             .mapToMap()
                             .list());
         } catch (Exception e) {
-            throw new AnonymityPalException(AnonymityPalErrorCode.AP_E_0001);
+            log.warn("Exception occurred when retrieving the columns from the table", e);
+            return Collections.emptyList();
         }
     }
 
