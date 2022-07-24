@@ -14,6 +14,4 @@ import java.util.List;
 @NoArgsConstructor
 public class PrivacyCheckParams {
     private List<DBRecordWrapper> dbRecordList;
-    private Integer kAnonymityParam;
-    private Integer lDiversityParam;
 }

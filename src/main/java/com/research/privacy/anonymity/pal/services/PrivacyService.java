@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 import static com.research.privacy.anonymity.pal.services.PrestoService.transformToDBRecords;
 
@@ -34,9 +33,7 @@ public class PrivacyService {
         return isKAnonymous && isLDiverse;
     }
 
-    public boolean getQueryResultsPrivacyChecked(final PrivacyCheckParams privacyCheckParams) throws AnonymityPalException {
-        final Integer kAnonymityParam = privacyCheckParams.getKAnonymityParam();
-        final Integer lDiversityParam = privacyCheckParams.getLDiversityParam();
+    public boolean getQueryResultsPrivacyChecked(final PrivacyCheckParams privacyCheckParams, final Integer kAnonymityParam, final Integer lDiversityParam) throws AnonymityPalException {
         final List<DBRecordWrapper> dataToCheck = privacyCheckParams.getDbRecordList();
 
         if (Utils.isEmpty(dataToCheck)) {

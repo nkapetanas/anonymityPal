@@ -29,13 +29,14 @@ public class PrivacyRestService {
 
     @PostMapping("/getQueryResultsPrivacyChecked")
     @ResponseStatus()
-    public ResponseEntity<Boolean> getQueryResultsPrivacyChecked(@RequestBody PrivacyCheckParams privacyCheckParams) {
+    public ResponseEntity<Boolean> getQueryResultsPrivacyChecked(@RequestBody PrivacyCheckParams privacyCheckParams,
+                                                                 @RequestParam Integer kAnonymityParam, @RequestParam Integer lDiversityParam) {
         if (Utils.isEmpty(privacyCheckParams)) {
             ResponseEntity.ok(false);
         }
 
         try {
-            return ResponseEntity.ok(privacyService.getQueryResultsPrivacyChecked(privacyCheckParams));
+            return ResponseEntity.ok(privacyService.getQueryResultsPrivacyChecked(privacyCheckParams, kAnonymityParam, lDiversityParam));
         } catch (AnonymityPalException e) {
             return ResponseEntity.badRequest().build();
         }

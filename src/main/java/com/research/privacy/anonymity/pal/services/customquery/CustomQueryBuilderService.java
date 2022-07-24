@@ -47,6 +47,27 @@ public class CustomQueryBuilderService {
         customQuery.append(String.format(SELECT_ALL_OPERATION, completeTablePath, mainSelectedTable));
         tableAliasNameMap.put(completeTablePath, mainSelectedTable);
 
+        addJoinOperations(joinQueryParamsList, customQuery, tablesToJoinCounter, tableAliasNameMap);
+
+        if (Utils.isNotEmpty(filterOperationsList)) {
+            addFilters(filterOperationsList, customQuery, tableAliasNameMap);
+        }
+
+        final Integer rowLimit = customQueryParams.getRowLimit();
+        final String sortBy = customQueryParams.getSortBy();
+
+        if (Utils.isNotEmpty(sortBy)) {
+            customQuery.append(String.format(ORDER_BY, sortBy));
+        }
+
+        if (rowLimit != null) {
+            customQuery.append(String.format(ROW_LIMIT, rowLimit));
+        }
+
+        return customQuery.toString();
+    }
+
+    private void addJoinOperations(List<JoinQueryParams> joinQueryParamsList, StringBuilder customQuery, int tablesToJoinCounter, HashMap<String, String> tableAliasNameMap) throws AnonymityPalException {
         if (Utils.isNotEmpty(joinQueryParamsList)) {
 
             for (JoinQueryParams joinOperation : joinQueryParamsList) {
@@ -78,23 +99,6 @@ public class CustomQueryBuilderService {
                 customQuery.append(String.format(JOIN_COLUMNS, firstColumnInJoin, additionalTableToJoin + "." + secondColumnInJoin));
             }
         }
-
-        if (Utils.isNotEmpty(filterOperationsList)) {
-            addFilters(filterOperationsList, customQuery, tableAliasNameMap);
-        }
-
-        final Integer rowLimit = customQueryParams.getRowLimit();
-        final String sortBy = customQueryParams.getSortBy();
-
-        if (Utils.isNotEmpty(sortBy)) {
-            customQuery.append(String.format(ORDER_BY, sortBy));
-        }
-
-        if (rowLimit != null) {
-            customQuery.append(String.format(ROW_LIMIT, rowLimit));
-        }
-
-        return customQuery.toString();
     }
 
     private void addFilters(final List<FilterOperations> filterOperationsList, StringBuilder customQuery, final HashMap<String, String> tableAliasNameMap) {

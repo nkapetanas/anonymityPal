@@ -187,12 +187,10 @@ class ITQueryRestServices {
         ));
 
         PrivacyCheckParams privacyCheckParams = new PrivacyCheckParams();
-        privacyCheckParams.setKAnonymityParam(K_ANONYMITY_PARAM);
-        privacyCheckParams.setLDiversityParam(L_DIVERSITY_PARAM_2);
         privacyCheckParams.setDbRecordList(Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4));
 
         try {
-            Assertions.assertTrue(privacyService.getQueryResultsPrivacyChecked(privacyCheckParams));
+            Assertions.assertTrue(privacyService.getQueryResultsPrivacyChecked(privacyCheckParams, K_ANONYMITY_PARAM, L_DIVERSITY_PARAM_2));
         } catch (AnonymityPalException e) {
             Assertions.fail(SHOULD_NOT_FAIL);
         }
@@ -230,14 +228,11 @@ class ITQueryRestServices {
                 new DBRecordKeyValue(COLUMN_NAME_HEALTH_CONDITION, HEALTH_CONDITION_1)
         ));
 
-
         PrivacyCheckParams privacyCheckParams = new PrivacyCheckParams();
-        privacyCheckParams.setKAnonymityParam(K_ANONYMITY_PARAM);
-        privacyCheckParams.setLDiversityParam(L_DIVERSITY_PARAM_2);
         privacyCheckParams.setDbRecordList(Utils.asList(dbRecord1, dbRecord2, dbRecord3));
 
         try {
-            Assertions.assertFalse(privacyService.getQueryResultsPrivacyChecked(privacyCheckParams));
+            Assertions.assertFalse(privacyService.getQueryResultsPrivacyChecked(privacyCheckParams, K_ANONYMITY_PARAM, L_DIVERSITY_PARAM_2));
         } catch (AnonymityPalException e) {
             Assertions.fail(SHOULD_NOT_FAIL);
         }
@@ -296,12 +291,10 @@ class ITQueryRestServices {
         ));
 
         PrivacyCheckParams privacyCheckParams = new PrivacyCheckParams();
-        privacyCheckParams.setKAnonymityParam(K_ANONYMITY_PARAM);
-        privacyCheckParams.setLDiversityParam(L_DIVERSITY_PARAM_3);
         privacyCheckParams.setDbRecordList(Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4, dbRecord5));
 
         try {
-            Assertions.assertFalse(privacyService.getQueryResultsPrivacyChecked(privacyCheckParams));
+            Assertions.assertFalse(privacyService.getQueryResultsPrivacyChecked(privacyCheckParams, K_ANONYMITY_PARAM, L_DIVERSITY_PARAM_3));
         } catch (AnonymityPalException e) {
             Assertions.fail(SHOULD_NOT_FAIL);
         }
@@ -319,7 +312,7 @@ class ITQueryRestServices {
         privacyCheckParams.setDbRecordList(Utils.asList(dbRecord1, dbRecord2, dbRecord3, dbRecord4, dbRecord5, dbRecord6));
 
         try {
-            Assertions.assertTrue(privacyService.getQueryResultsPrivacyChecked(privacyCheckParams));
+            Assertions.assertTrue(privacyService.getQueryResultsPrivacyChecked(privacyCheckParams, K_ANONYMITY_PARAM, L_DIVERSITY_PARAM_3));
         } catch (AnonymityPalException e) {
             Assertions.fail(SHOULD_NOT_FAIL);
         }
