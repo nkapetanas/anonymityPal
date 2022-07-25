@@ -10,3 +10,8 @@ interface QuasiKeyPairValue {
     quasiColumn: string;
     valueToCheck: string;
 }
+
+export interface PrivacyPreservation {
+    privacyCheckResult: boolean;
+    resultMessage: string | null;
+}

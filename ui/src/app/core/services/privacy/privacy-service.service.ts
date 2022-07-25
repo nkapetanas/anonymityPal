@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 import { Consts } from 'src/app/consts';
 import { CustomQueryParams } from 'src/app/features/custom-query/model/CustomQueryParams';
@@ -34,6 +35,14 @@ export class PrivacyService {
     }
 
     getQueryResultsPrivacyChecked(data: PrivacyCheck) {
-        return this.http.post<any>(Consts.API_PATH + Consts.API_GET_QUERY_PRIVACY_RESULTS, data, this.httpOptions);
+        let params = new HttpParams;
+        if(!_.isNull(data.kAnonymityParam)) {
+            params = params.set('kAnonymityParam', data.kAnonymityParam);
+        }
+        if(!_.isNull(data.lDiversityParam)) {
+            params = params.set('lDiversityParam', data.lDiversityParam);
+        }
+        
+        return this.http.post<any>(Consts.API_PATH + Consts.API_GET_QUERY_PRIVACY_RESULTS, { dbRecordList: data.dbRecordList }, { params });
     }
 }

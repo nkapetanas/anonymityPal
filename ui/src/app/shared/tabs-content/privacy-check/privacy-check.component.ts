@@ -29,7 +29,7 @@ export class PrivacyCheckComponent implements OnInit {
     }
 
     getPrivacyCheck() {
-        this.privacyService.getQueryResultsPrivacyChecked(this.privacyAttributes).subscribe(response => {
+        this.privacyService.getQueryResultsPrivacyChecked(this.privacyAttributes).subscribe((response: boolean) => {
             if(response) {
                 const summary: string = 'The results are fulfilling the privacy criteria.';
                 this.messagesService.showSuccessMessage(summary);
