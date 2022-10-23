@@ -1,5 +1,6 @@
 package com.research.privacy.anonymity.pal.dataset.attributes;
 
+import com.research.privacy.anonymity.pal.common.utils.Utils;
 import com.research.privacy.anonymity.pal.dataset.attributes.enums.AttributeEnumType;
 import com.research.privacy.anonymity.pal.dataset.attributes.enums.IdentifierEnumType;
 import lombok.Getter;
@@ -30,6 +31,9 @@ public abstract class Attribute {
     public abstract boolean equivalentTo(Attribute other);
 
     public static AttributeEnumType resolveAttributeEnumType(final Object value) {
+        if (Utils.isEmpty(value)) {
+            return AttributeEnumType.NOT_APPLICABLE;
+        }
         if (value.getClass() == Integer.class) {
             return AttributeEnumType.NUMERIC;
         } else if (value.getClass() == String.class) {
